@@ -8,7 +8,7 @@
 
 # production
 /build
-.consts.js
+consts.js
 
 # misc
 .DS_Store
