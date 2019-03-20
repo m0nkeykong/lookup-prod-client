@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import '../css/SomePage.css';
+import '../css/AutoGenerateTrack.css';
+// import {load_google_maps} from './../../utils'
 
-class somePage extends Component {
+class AutoGenerateTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,13 +12,11 @@ class somePage extends Component {
   render() {
     return (
       <div className="container">
-        <div className ="row">
-          <p> hello SomePage! </p>
+        <div id ="map">
+
+        
         </div>
       </div>
     );
   }
 }
-
-
-export default somePage;
