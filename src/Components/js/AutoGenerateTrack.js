@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../css/AutoGenerateTrack.css';
-// import {load_google_maps} from './../../utils'
 
 class AutoGenerateTrack extends Component {
   constructor(props) {
@@ -12,11 +11,13 @@ class AutoGenerateTrack extends Component {
   render() {
     return (
       <div className="container">
-        <div id ="map">
-
-        
+        <div className ="row">
+          <p> hello AutoGenerateTrack! </p>
         </div>
       </div>
     );
   }
 }
+
+
+export default AutoGenerateTrack;
