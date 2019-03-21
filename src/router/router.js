@@ -1,5 +1,5 @@
 import React from "react";
-import {Route } from "react-router-dom";
+import {Route} from "react-router-dom";
 import somePage from "../Components/js/somePage";
 import autoGenerateTrack from "../Components/js/AutoGenerateTrack";
 import chooseExistingTrack from "../Components/js/ChooseExistingTrack";
