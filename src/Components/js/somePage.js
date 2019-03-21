@@ -6,6 +6,17 @@ class somePage extends Component {
     super(props);
     this.state = {
     }
+
+
+  }
+
+  currentLocation(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position)=>{
+        console.log(position);
+        return position;
+      })
+    }
   }
   
   render() {
@@ -13,6 +24,7 @@ class somePage extends Component {
       <div className="container">
         <div className ="row">
           <p> hello SomePage! </p>
+          {this.currentLocation()}
         </div>
       </div>
     );
