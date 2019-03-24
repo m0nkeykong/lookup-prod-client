@@ -62,6 +62,7 @@ class CustomTrack extends Component {
                 lat: 32.0604053,
                 lng: 34.787241699999996
             }}
+            
             onClick={this.onMapClicked}
             >
        
