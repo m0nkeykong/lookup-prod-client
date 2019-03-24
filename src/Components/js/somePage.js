@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
-import '../css/somePage_style.css';
+import '../css/SomePage.css';
 
 class somePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+    }
+
+
+  }
+
+  currentLocation(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position)=>{
+        console.log(position);
+        return position;
+      })
     }
   }
   
@@ -12,7 +23,8 @@ class somePage extends Component {
     return (
       <div className="container">
         <div className ="row">
-          <p> hello world! </p>
+          <p> hello SomePage! </p>
+          {this.currentLocation()}
         </div>
       </div>
     );
