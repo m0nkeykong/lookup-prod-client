@@ -55,6 +55,21 @@ getLongitude(){
       }
 }
 
+mapClicked(mapProps, map, clickEvent) {
+  // ...
+  console.log('function mapClicked');
+  console.log(mapProps);
+  console.log(map);
+  console.log(clickEvent);
+}
+
+onMarkerClick(props, marker, e) {
+  console.log('function onMarkerClick');
+  console.log(props);
+  console.log(marker);
+  console.log(e);
+}
+
 render() {
 
     return (
@@ -64,15 +79,15 @@ render() {
             lng: 34.787241699999996
         }}
         
-        onClick={this.onMapClicked}
+        onClick={this.mapClicked} 
         >
    
-          <Marker onClick={this.onMarkerClick}
-                  name={'Current location'} />
+        <Marker onClick={this.onMarkerClick}
+          name={'Current location'} />
    
-          <InfoWindow onClose={this.onInfoWindowClose}>
-             
-          </InfoWindow>
+        <InfoWindow onClose={this.onInfoWindowClose}>
+            
+        </InfoWindow>
         </Map>
       );
   }
