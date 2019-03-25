@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../css/StartNavigate.css';
+import './style/AutoGenerateTrack.css';
 
-class StartNavigate extends Component {
+class AutoGenerateTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,7 @@ class StartNavigate extends Component {
     return (
       <div className="container">
         <div className ="row">
-          <p> hello StartNavigate! </p>
+          <p> hello AutoGenerateTrack! </p>
         </div>
       </div>
     );
@@ -20,4 +20,4 @@ class StartNavigate extends Component {
 }
 
 
-export default StartNavigate;
+export default AutoGenerateTrack;

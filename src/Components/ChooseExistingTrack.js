@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import '../css/CustomTrack.css';
+import './style//ChooseExistingTrack.css';
 
-class CustomTrack extends Component {
+class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,7 @@ class CustomTrack extends Component {
     return (
       <div className="container">
         <div className ="row">
-          <p> hello CustomTrack! </p>
+          <p> hello ChooseExistingTrack! </p>
         </div>
       </div>
     );
@@ -20,4 +20,4 @@ class CustomTrack extends Component {
 }
 
 
-export default CustomTrack;
+export default ChooseExistingTrack;
