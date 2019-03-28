@@ -20,7 +20,11 @@ class SomePage extends Component {
     }
     
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
+    // this.renderEmpty = this.renderEmpty.bind(this);
     this.watchPosition = this.watchPosition.bind(this);
+
+    this.newLocation =  document.getElementById('root');
+
   }
 
   watchPosition(){
@@ -29,7 +33,7 @@ class SomePage extends Component {
     
     options = {
       enableHighAccuracy: true,
-      timeout: 1000,
+      timeout: 10000,
       maximumAge: 0,
       distanceFilter: 1
     };
@@ -38,6 +42,10 @@ class SomePage extends Component {
       self.setState({i: this.state.i+1});
       self.setState({watchPosition: {Latitude: pos.coords.latitude, Longitude: pos.coords.longitude}});
 
+      let newElement = document.createElement('p');
+      newElement.innerHTML = 'Location ' + 'fetched' + ': <a href="https://maps.google.com/maps?&z=15&q=' + pos.coords.latitude + '+' + pos.coords.longitude + '&ll=' + pos.coords.latitude + '+' + pos.coords.longitude + '" target="_blank">' + pos.coords.latitude + ', ' + pos.coords.longitude + '</a>';
+      this.newLocation.appendChild(newElement);
+
       if (pos.coords.latitude === self.state.CurrentPosition.Latitude+"123" && pos.coords.longitude === self.state.CurrentPosition.Longitude) {
         console.log('Congratulations, you reached the target');
         navigator.geolocation.clearWatch(id);
@@ -45,7 +53,7 @@ class SomePage extends Component {
       console.log("In watchPosition")
     }, (err) => {
       console.warn('ERROR(' + err.code + '): ' + err.message);
-    }, options);   
+    }, options);
     
   }
 
@@ -54,21 +62,26 @@ class SomePage extends Component {
 
     var options = {
       enableHighAccuracy: true,
-      timeout: 1000,
+      timeout: 10000,
       maximumAge: 0,
       distanceFilter: 1
     };
 
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition( (pos) => {
+        self.setState({i: this.state.i+1});
+        
         self.setState({CurrentPosition: {Latitude: pos.coords.latitude, Longitude: pos.coords.longitude}});
 
         console.log('Your CurrentPosition position is:');
         console.log(`Latitude : ${pos.coords.latitude}`);
         console.log(`Longitude: ${pos.coords.longitude}`);
-  
+        console.log(`i is this: ${this.state.i}`);
+        self.setState({fetch: false});
+
         self.watchPosition();
         // console.log(`More or less ${this.state.accuracy} meters.`);
+        console.log('returned from watchPosition');
       }, (err) => {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       }, options);
@@ -91,15 +104,24 @@ class SomePage extends Component {
 
   // Last function Before component removed 
   componentWillUnmount(){
-
+    // {!this.state.CurrentPosition.longitude && this.getCurrentPosition()}
   }
   
+  // renderEmpty() {
+  //   return (
+  //     <div className="container">
+  //       <div className="row">
+  //         <p>Nothing To Do</p>
+  //       </div>
+  //     </div>
+  //   )
+  // }
   render() {
     // this.setState({ i: this.state.i+1 })
     return (
     this.state.fetch && <div className="container">
-      <div className ="row">
       {this.getCurrentPosition()}
+      <div className ="row">
       </div>
     </div>
     )

@@ -12,4 +12,8 @@ ReactDOM.render(
     </Router>, document.getElementById('root')
     );
 
+// TO DEPLOY
+// npm run build
+// npm run deploy
+
 registerServiceWorker();

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^1.2.0-alpha.6",
     "axios": "^0.18.0",
     "express": "^4.16.4",
     "google-maps-react": "^2.0.2",
@@ -21,7 +22,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "deploy": "aws s3 sync build/ s3://lookup.co.il",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
