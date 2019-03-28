@@ -1,0 +1,27 @@
+import React, { Component } from 'react';
+import './style/CustomTrack.css';
+
+class CustomTrack extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+  
+  render() {
+    return (
+      <div className="container">
+        <div className ="row">
+<<<<<<< HEAD:src/Components/js/somePage.js:src/Components/js/somePage.js
+          <p> hello SomePage! </p>
+=======
+          <p> hello CustomTrack! </p>
+>>>>>>> roni:src/Components/CustomTrack.js:src/Components/CustomTrack.js
+        </div>
+      </div>
+    );
+  }
+}
+
+
+export default CustomTrack;
