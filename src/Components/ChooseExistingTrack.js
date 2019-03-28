@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TamplateComponent from './TemplateComponent'
+import './style/AutoGenerateTrack.css';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
