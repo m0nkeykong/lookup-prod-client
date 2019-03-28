@@ -4,14 +4,15 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
+import { GoogleMap, LoadScript } from '@react-google-maps/api'
 
-class CustomTrack extends Component {
+class HomePage extends Component {
   constructor(props) {
     super(props);
     
     this.state = {
         userDetails: null,
-        loading: true
+        loading: false
     }
 
   }
@@ -19,13 +20,15 @@ class CustomTrack extends Component {
 
     // Remember to replace this method because UNSAFE
     componentWillMount(){
-        let userid = JSON.parse(sessionStorage.getItem('userDetails'))._id;
-        axios.get(`http://localhost/user/getAccountDetails/${userid}`)
+        let userid = JSON.parse(sessionStorage.getItem('userDetails'));
+        console.log(userid);
+        axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
         .then(response => {
-            console.log(response);
+            console.log(response.data);
+
             this.setState({
                 userDetails: response.data,
-                loading: false
+                loading: true
             })
         })
         .catch(error => {
@@ -37,24 +40,52 @@ class CustomTrack extends Component {
     // NotificationManager.warning(message, title, timeOut, callback, priority);
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
+  
 
 
 //   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
 //     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
 
+// {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 render() {
     return (
-      <div className="container">
-        <div className ="row">
-        </div>
-        {this.state.loading ? "Done." : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
+      <div style={{            
+          height: "400px",
+          width: "800px"}}>
 
+        <LoadScript
+        id="script-loader"
+        googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
+        onError={ () => {"Error"}}
+        onLoad={ () => {"Success"}}
+        language="English"
+        region="IL"
+      >
+        <GoogleMap
+          id='example-map'
+        //   onLoad={() =}
+          center={{ lat: 5.6219868, lng: -0.1733074 }}
+          clickableIcons={true}
+          mapContainerStyle={{
+            height: "400px",
+            width: "800px"
+          }}
+        //   onBoundsChanged={}
+        //   onCenterChanged={}
+        //   onClick={}
+        //   onDblClick={}
+        //   options={}
+          zoom={14}
+        >
+          ...Your map components
+        </GoogleMap>
+      </LoadScript>
       </div>
     );
   }
 }
 
 
-export default CustomTrack;
+export default HomePage;
 
 
