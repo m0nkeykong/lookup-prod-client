@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import '../css/StartNavigate.css';
+import './style//StartNavigate.css';
+import SomePage from './SomePage';
 
 class StartNavigate extends Component {
   constructor(props) {
@@ -13,6 +14,8 @@ class StartNavigate extends Component {
       <div className="container">
         <div className ="row">
           <p> hello StartNavigate! </p>
+          <SomePage>
+          </SomePage>
         </div>
       </div>
     );

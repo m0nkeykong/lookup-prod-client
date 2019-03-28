@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TamplateComponent from './TemplateComponent'
-import '../css/ChooseExistingTrack.css';
+import './style/AutoGenerateTrack.css';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class ChooseExistingTrack extends Component {
   }
   
   onSubmit(){
-    
+    // this.getTracks();
   }
 
 
@@ -78,7 +78,7 @@ class ChooseExistingTrack extends Component {
     return (
       <div className="container">
         <div className ="row">
-        <div className="col-12 p-md-4 bg-dark border">
+        <div className="col-12 p-md-4 border">
           <from onSubmit={this.onSubmit}>
             <div className="row">
               
@@ -89,8 +89,9 @@ class ChooseExistingTrack extends Component {
           </label>
           </div>
           <div className="col bg-white border rounded  float-left">
-              <label>To</label>
+              <label>To
               <input className="d-block form-control  float-left" type="text" name="to" value={this.state.to} onChange={this.onChange}/>
+              </label>
           </div> 
         
 
