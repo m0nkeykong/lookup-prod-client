@@ -13,6 +13,7 @@ class ChooseExistingTrack extends Component {
     this.viewTracks = this.viewTracks.bind(this)
     this.updateTracks = this.updateTracks.bind(this)
     this.getTracks = this.getTracks.bind(this)
+    this.getComments = this.getComments.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
 
   }
@@ -42,6 +43,17 @@ class ChooseExistingTrack extends Component {
       )
     }))
   }
+  
+  getComments(comments){
+    let html=[];
+    // Outer loop to create parent
+    for (let i = 0; i < comments.length; i++) {
+      html.push(<p style={{ textAlign:`center`}}>{comments[i]}</p>)
+    }
+    return html;
+  }
+
+//  <p style={{ textAlign:`center`}}>{track.comment}</p>
 
   viewTracks(track,i) {
     return (          
@@ -50,7 +62,7 @@ class ChooseExistingTrack extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>    
                 <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
                 <p style={{ textAlign:`center`}}>{track.type}</p>
-                <p style={{ textAlign:`center`}}>{track.comment}</p>
+                <p style={{ textAlign:`center`}}>{this.getComments(track.comment)}</p>
            
           </TamplateComponent>
         </div>
@@ -81,7 +93,7 @@ class ChooseExistingTrack extends Component {
       <div className="container">
         <div className ="row">
         <div className="col-12 p-md-4 border">
-          <from onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit}>
             <div className="row">
               
 
@@ -98,7 +110,7 @@ class ChooseExistingTrack extends Component {
         
 
             </div>
-          </from>
+          </form>
         </div>
         
         
