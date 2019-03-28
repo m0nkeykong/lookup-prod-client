@@ -22,7 +22,7 @@ class ChooseExistingTrack extends Component {
   }
 
 
-  addTracks(_title,_type) {
+  addTracks(_title,_type, _comment) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -30,6 +30,7 @@ class ChooseExistingTrack extends Component {
           id: this.state.tracks.length + 1,
           title: _title,
           type: _type,
+          comment: _comment
       }]
     }))
   }
@@ -49,6 +50,7 @@ class ChooseExistingTrack extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>    
                 <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
                 <p style={{ textAlign:`center`}}>{track.type}</p>
+                <p style={{ textAlign:`center`}}>{track.comment}</p>
            
           </TamplateComponent>
         </div>
@@ -64,7 +66,7 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {        
       var self=this;        
       data.map((json) => {            
-        self.addTracks(json.title, json.type);        
+        self.addTracks(json.title, json.type, json.comment);        
           console.log(json);  
       })    // endOf data.map((data)  
     })
