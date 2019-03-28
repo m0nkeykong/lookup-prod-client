@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../css/CustomTrack.css';
-import * as consts  from '../../consts'
+// import '../css/CustomTrack.css';
+import * as consts  from '../consts'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
