@@ -3,6 +3,9 @@ import TamplateComponent from './TemplateComponent'
 import './style/AutoGenerateTrack.css';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
+import {getAllTracksURL} from '../globalVariables'
+import { NavLink , Link} from "react-router-dom";
+
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -46,12 +49,13 @@ class ChooseExistingTrack extends Component {
   this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_title,_type, _comment) {
+  addTracks(_id,_title,_type, _comment) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
       {
           id: this.state.tracks.length + 1,
+          idOfTrack: _id,
           title: _title,
           type: _type,
           comment: _comment
@@ -78,15 +82,34 @@ class ChooseExistingTrack extends Component {
 
 //  <p style={{ textAlign:`center`}}>{track.comment}</p>
 
+
+// <NavLink onClick={this.clickOnTrackTitle}>
+// <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
+// <p style={{ textAlign:`center`}}>type: {track.type}</p>
+// </NavLink> 
+
+
+
   viewTracks(track,i) {
     return (          
       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <div className="">
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-          <a onClick={this.clickOnTrackTitle}>
+
+          <NavLink to=
+          //navigate to TrackDetails via TemplateComponent with the params
+          {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+            idOfTrack: track.idOfTrack}}
+            activeStyle={this.active} 
+            className="" >
+            
             <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
             <p style={{ textAlign:`center`}}>type: {track.type}</p>
-          </a>    
+
+          </NavLink>
+
+             
+          
           <div>
             <p>comment: </p>
             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
@@ -100,13 +123,13 @@ class ChooseExistingTrack extends Component {
   }
 
   getAllTracks(){
-    fetch('http://localhost:3000/track/getAllTracks')
+    fetch(getAllTracksURL())
     .then((res) => {        
       return res.json();      
     }).then((data) => {        
       var self=this;        
       data.map((json) => {            
-        self.addTracks(json.title, json.type, json.comment);        
+        self.addTracks(json._id,json.title, json.type, json.comment);        
           console.log(json);  
       })    // endOf data.map((data)  
     })

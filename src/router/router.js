@@ -7,6 +7,7 @@ import CustomTrack from "../Components/CustomTrack";
 import StartNavigate from "../Components/StartNavigate";
 import Login from "../Components/Login";
 import HomePage from "../Components/HomePage";
+import TrackDetails from "../Components/TrackDetails";
 import LoadMap from "../Components/LoadMap";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
@@ -28,6 +29,7 @@ const AppRouter = () =>{
       <Route exact path="/custom" component={CustomTrack} />
       <Route exact path="/start" component={StartNavigate} />
       <Route exact path="/map" component={LoadMap} />
+      <Route exact path="/trackDetails" component={TrackDetails} />
 
     </React.Fragment>
   );
