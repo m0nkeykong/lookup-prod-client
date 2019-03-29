@@ -80,16 +80,6 @@ class ChooseExistingTrack extends Component {
     return html;
   }
 
-//  <p style={{ textAlign:`center`}}>{track.comment}</p>
-
-
-// <NavLink onClick={this.clickOnTrackTitle}>
-// <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
-// <p style={{ textAlign:`center`}}>type: {track.type}</p>
-// </NavLink> 
-
-
-
   viewTracks(track,i) {
     return (          
       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
