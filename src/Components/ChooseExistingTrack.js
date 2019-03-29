@@ -1,27 +1,50 @@
 import React, { Component } from 'react';
 import TamplateComponent from './TemplateComponent'
 import './style/AutoGenerateTrack.css';
+import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
+import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: []
+
+      
     }
 
     this.addTracks = this.addTracks.bind(this)
     this.viewTracks = this.viewTracks.bind(this)
     this.updateTracks = this.updateTracks.bind(this)
-    this.getTracks = this.getTracks.bind(this)
+    this.getAllTracks = this.getAllTracks.bind(this)
     this.getComments = this.getComments.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.clickOnTrackTitle = this.clickOnTrackTitle.bind(this)
+    this.onChange = this.onChange.bind(this)
 
   }
   
   onSubmit(){
     // this.getTracks();
+
+    // e.preventDefault();
+    // console.log("VALUES: " + this.state.from + ", " + this.state.to + ", " + this.state.travelers );
+
+    //   this.props.history.push({
+    // pathname: "/results",
+    // state: this.state
+    // });
   }
 
+  clickOnTrackTitle(){
+
+
+  }
+
+  onChange(e){
+    console.log(this.props.width);
+  this.setState({[e.target.name]:e.target.value});
+  }
 
   addTracks(_title,_type, _comment) {
     this.setState(prevState => ({
@@ -48,7 +71,7 @@ class ChooseExistingTrack extends Component {
     let html=[];
     // Outer loop to create parent
     for (let i = 0; i < comments.length; i++) {
-      html.push(<p style={{ textAlign:`center`}}>{comments[i]}</p>)
+      html.push(<p>	&#8227; &#9;{comments[i]}</p>)
     }
     return html;
   }
@@ -57,12 +80,17 @@ class ChooseExistingTrack extends Component {
 
   viewTracks(track,i) {
     return (          
-      <div key={'container'+i} className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
+      <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <div className="">
-          <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>    
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
-                <p style={{ textAlign:`center`}}>{track.type}</p>
-                <p style={{ textAlign:`center`}}>{this.getComments(track.comment)}</p>
+          <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
+          <a onClick={this.clickOnTrackTitle}>
+            <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
+            <p style={{ textAlign:`center`}}>type: {track.type}</p>
+          </a>    
+          <div>
+            <p>comment: </p>
+            <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+          </div>
            
           </TamplateComponent>
         </div>
@@ -71,7 +99,7 @@ class ChooseExistingTrack extends Component {
     )
   }
 
-  getTracks(){
+  getAllTracks(){
     fetch('http://localhost:3000/track/getAllTracks')
     .then((res) => {        
       return res.json();      
@@ -85,36 +113,48 @@ class ChooseExistingTrack extends Component {
   }
 
   componentDidMount(){
-    this.getTracks();
+    this.getAllTracks();
   }
 
   render() {
     return (
       <div className="container">
         <div className ="row">
-        <div className="col-12 p-md-4 border">
+        <div className="col-12 p-md-4">
           <form onSubmit={this.onSubmit}>
             <div className="row">
               
 
-            <div className="col bg-white border rounded  float-left">
-              <label>from:
-              <input className="form-control float-left" type="text" name="from" value={this.state.from} onChange={this.onChange}/>
+            <div className="col bg-white rounded">
+              <label>City:
+              <input className="mt-2 form-control float-left" type="text" name="from" value={this.state.from} onChange={this.onChange}/>
           </label>
           </div>
-          <div className="col bg-white border rounded  float-left">
-              <label>To
-              <input className="d-block form-control  float-left" type="text" name="to" value={this.state.to} onChange={this.onChange}/>
-              </label>
-          </div> 
+          <div className="col bg-white rounded">
+              <label>Type:</label>
+              <span className="d-block">
+                <input className="loat-left" type="radio" name="option" id="walking" autocomplete="off" checked /> 
+                <MdDirectionsWalk /> 
+              </span>
+              <span className="d-block">
+                <input className="float-left" type="radio" name="option" id="bicycling" autocomplete="off" /> 
+                <IoAndroidBicycle /> 
+              </span>
+              </div> 
         
+          <div className="w-100 mb-md-4"></div>
+          <div className="col-12 mx-auto">
+            <button type="submit" className="mt-2 tn-block btnGreen rounded-0 w-100 btn border-0">חפש</button>
+          </div>
 
             </div>
           </form>
         </div>
         
-        
-        {this.state.tracks.map(this.viewTracks)}
+        <div className="w-100 mb-md-4 pt-3"></div>
+          <div className="col-12 mx-auto">
+              {this.state.tracks.map(this.viewTracks)}
+		      </div>
         </div>
       </div>
     );
