@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import './style/CustomTrack.css';
-import axios from 'axios';
-import 'react-notifications/lib/notifications.css';
-import { GoogleMap, LoadScript, Marker, DirectionsService } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api'
+
 
 class HaimPage extends Component {
   constructor(props) {
@@ -14,9 +12,27 @@ class HaimPage extends Component {
       CurrentPosition: {
         lat: null,
         lng: null
+      },
+      result: null
+    }
+    //this.directionsService = new DirectionsService();
+    this.DirectionsRenderer = new DirectionsRenderer();
+    this.handleRequest = this.handleRequest.bind(this);
+
+  }
+
+
+  handleRequest = (result) => {
+    console.log(result);
+    if (result !== null) {
+      if (result.status === 'OK') {
+        this.setState({
+          result
+        });
+      } else {
+        console.log('result : ', result)
       }
     }
-
   }
 
   // Remember to replace this method because UNSAFE
@@ -53,20 +69,43 @@ class HaimPage extends Component {
         language="English"
         region="IL"
       >
+
         <GoogleMap
           id='example-map'
-          //   onLoad={() =}
           center={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
           clickableIcons={true}
           mapContainerStyle={{
             height: "400px",
             width: "800px"
           }}
-          zoom={14}>
+          zoom={20}
+        >
+
           <Marker
             position={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
-          >
-          </Marker>
+          />
+          <DirectionsService
+            options={{
+              origin: { lat: 31.68030098, lng: 34.58657563 },
+              destination: { lat: 31.67763494, lng: 34.58624303 },
+              waypoints: [
+                {
+                  location: { lat: 31.67864841, lng: 34.58581388 }
+                },
+                {
+                  location: { lat: 31.67870319, lng: 34.584741 }
+                }
+              ],
+              travelMode: 'WALKING',
+            }}
+              callback={this.handleRequest}
+          />
+
+          <DirectionsRenderer
+            options={{
+              directions: this.state.result
+            }}
+          />
 
         </GoogleMap>
 
