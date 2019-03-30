@@ -131,14 +131,6 @@ class HomePage extends Component {
     this.onLoadPosition();
   }
 
-    };
-
-  
-
-//   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
-//     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
-
-// {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 render() {
     return (
       <div style={{   
@@ -178,19 +170,19 @@ render() {
 
 
               <DirectionsService
-              options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
+              options={{ 
                 destination: {lat: 32.439980, lng: 34.912760},
                 origin: {lat: 31.062490, lng: 35.024940},
                 travelMode: "WALKING"
               }}
-              // callback={this.directionsCallback}
+              callback={this.directionsCallback}
             />
           )
         }
 
         {
             <DirectionsRenderer
-              options={{ // eslint-disable-line react-perf/jsx-no-new-object-as-prop
+              options={{ 
                 directions: this.state.response
               }}
             />
