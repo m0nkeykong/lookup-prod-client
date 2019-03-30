@@ -35,12 +35,7 @@ class HaimPage extends Component {
     }
   }
 
-  // Remember to replace this method because UNSAFE
-  componentWillMount() {
-
-  }
-
-  componentDidMount() {
+  componentDidMount = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
       this.setState({
         CurrentPosition: {
@@ -51,9 +46,8 @@ class HaimPage extends Component {
     });
   };
 
-  render() {
+  render = () => {
 
-    
     return (
       <div style={{
         height: "600px",
@@ -89,11 +83,11 @@ class HaimPage extends Component {
             (
               <DirectionsService
                 options={{
-                  origin: { lat: 31.68030098, lng: 34.58657563 },
+                  origin: { lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng },
                   destination: { lat: 31.67763494, lng: 34.58624303 },
                   waypoints: [
                     {
-                      location: { lat: 31.67864841, lng: 34.58581388 }
+                      location: { lat: 31.67864841, lng: 34.58581388 } 
                     },
                     {
                       location: { lat: 31.67870319, lng: 34.584741 }
@@ -105,13 +99,16 @@ class HaimPage extends Component {
               />
             )
           }
-          
-          <DirectionsRenderer
-            options={{
-              directions: this.state.result
-            }}
-          />
-
+          { 
+            this.state.result !== null &&
+            (
+              <DirectionsRenderer
+                options={{
+                  directions: this.state.result
+                }}
+              />
+            )
+          }
         </GoogleMap>
 
       </LoadScript>
