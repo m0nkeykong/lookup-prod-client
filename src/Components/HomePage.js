@@ -53,9 +53,8 @@ class HomePage extends Component {
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
-        if(this._isMounted){
-          this.setState({userDetails: response.data, loading: true})
-        }
+        this.setState({userDetails: response.data, loading: true})
+
         console.log(response.data);
       })
       .catch(error => {
