@@ -42,12 +42,12 @@ class HomePage extends Component {
         navigator.geolocation.getCurrentPosition((pos) => {
           this.setState({
             CurrentPosition: {
-              lat: pos.coords.latitude,
-              lng: pos.coords.longitude
+              lat: parseFloat(pos.coords.latitude),
+              lng: parseFloat(pos.coords.longitude)
             }
           });
-          console.log(parseFloat(this.state.CurrentPosition.lng));
-          console.log(parseFloat(this.state.CurrentPosition.lat));
+          console.log(this.state.CurrentPosition.lng);
+          console.log(this.state.CurrentPosition.lat);
         });
       
 
@@ -84,7 +84,7 @@ render() {
         <GoogleMap
           id='example-map'
         //   onLoad={() =}
-              center={{ lat: parseFloat(this.state.CurrentPosition.lat), lng: parseFloat(this.state.CurrentPosition.lng) }}
+              center={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
           clickableIcons={true}
           mapContainerStyle={{
             height: "400px",
@@ -97,7 +97,7 @@ render() {
         //   options={}
           zoom={14}>
             <Marker 
-                position={{ lat: parseFloat(this.state.CurrentPosition.lat), lng: parseFloat(this.state.CurrentPosition.lng) }}
+                position={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
                 >
             </Marker>
             
