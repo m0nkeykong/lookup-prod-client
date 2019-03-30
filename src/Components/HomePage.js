@@ -182,7 +182,7 @@ render() {
                 travelMode: 'WALKING',
               }}
                 callback={this.directionsCallback}
-            >
+              >
               </DirectionsService>
   
               <DirectionsRenderer
