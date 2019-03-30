@@ -21,22 +21,26 @@ class HaimPage extends Component {
 
   }
 
-
   handleRequest = (result) => {
-    console.log(result);
+    console.log("in handle requests");
     if (result !== null) {
       if (result.status === 'OK') {
+        result.routes[0].legs.forEach(leg => {
+          console.log(leg);
+        })
         this.setState({
           result
         });
-      } else {
-        console.log('result : ', result)
       }
     }
   }
 
   // Remember to replace this method because UNSAFE
   componentWillMount() {
+
+  }
+
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition((pos) => {
       this.setState({
         CurrentPosition: {
@@ -44,17 +48,12 @@ class HaimPage extends Component {
           lng: parseFloat(pos.coords.longitude)
         }
       });
-      console.log(this.state.CurrentPosition.lng);
-      console.log(this.state.CurrentPosition.lat);
     });
-
-  }
-
-  componentDidMount() {
-
   };
 
   render() {
+
+    
     return (
       <div style={{
         height: "600px",
@@ -69,7 +68,7 @@ class HaimPage extends Component {
         language="English"
         region="IL"
       >
-
+      
         <GoogleMap
           id='example-map'
           center={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
@@ -84,23 +83,29 @@ class HaimPage extends Component {
           <Marker
             position={{ lat: this.state.CurrentPosition.lat, lng: this.state.CurrentPosition.lng }}
           />
-          <DirectionsService
-            options={{
-              origin: { lat: 31.68030098, lng: 34.58657563 },
-              destination: { lat: 31.67763494, lng: 34.58624303 },
-              waypoints: [
-                {
-                  location: { lat: 31.67864841, lng: 34.58581388 }
-                },
-                {
-                  location: { lat: 31.67870319, lng: 34.584741 }
-                }
-              ],
-              travelMode: 'WALKING',
-            }}
-              callback={this.handleRequest}
-          />
-
+                
+          {   
+            this.state.result === null && 
+            (
+              <DirectionsService
+                options={{
+                  origin: { lat: 31.68030098, lng: 34.58657563 },
+                  destination: { lat: 31.67763494, lng: 34.58624303 },
+                  waypoints: [
+                    {
+                      location: { lat: 31.67864841, lng: 34.58581388 }
+                    },
+                    {
+                      location: { lat: 31.67870319, lng: 34.584741 }
+                    }
+                  ],
+                  travelMode: 'WALKING',
+                }}
+                callback={this.handleRequest}
+              />
+            )
+          }
+          
           <DirectionsRenderer
             options={{
               directions: this.state.result
@@ -118,5 +123,3 @@ class HaimPage extends Component {
 
 
 export default HaimPage;
-
-
