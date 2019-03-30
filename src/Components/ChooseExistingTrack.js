@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/ChooseExistingTrack_style.css';
+import './css/ChooseExistingTrack_style.css';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {

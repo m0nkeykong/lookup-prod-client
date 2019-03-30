@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/StartNavigate_style.css';
+import './css/StartNavigate_style.css';
 
 class StartNavigate extends Component {
   constructor(props) {

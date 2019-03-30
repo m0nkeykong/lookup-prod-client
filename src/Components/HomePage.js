@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
-import { GoogleMap, LoadScript } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker, DirectionsService } from '@react-google-maps/api'
 
 class HomePage extends Component {
   constructor(props) {
@@ -12,7 +12,11 @@ class HomePage extends Component {
     
     this.state = {
         userDetails: null,
-        loading: false
+        loading: false,
+        CurrentPosition: {
+          lat: null,
+          lng: null
+        }
     }
 
   }
@@ -35,13 +39,29 @@ class HomePage extends Component {
             console.log(error);
         });
 
+        navigator.geolocation.getCurrentPosition((pos) => {
+          this.setState({
+            CurrentPosition: {
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude
+            }
+          });
+          console.log(parseFloat(this.state.CurrentPosition.lng));
+          console.log(parseFloat(this.state.CurrentPosition.lat));
+        });
+      
+
     // NotificationManager.info(message, title, timeOut, callback, priority);
     // NotificationManager.success(message, title, timeOut, callback, priority);
     // NotificationManager.warning(message, title, timeOut, callback, priority);
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
   
+    componentDidMount() {
 
+    };
+
+  
 
 //   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
 //     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
@@ -50,7 +70,7 @@ class HomePage extends Component {
 render() {
     return (
       <div style={{            
-          height: "400px",
+          height: "600px",
           width: "800px"}}>
 
         <LoadScript
@@ -64,7 +84,7 @@ render() {
         <GoogleMap
           id='example-map'
         //   onLoad={() =}
-          center={{ lat: 5.6219868, lng: -0.1733074 }}
+              center={{ lat: parseFloat(this.state.CurrentPosition.lat), lng: parseFloat(this.state.CurrentPosition.lng) }}
           clickableIcons={true}
           mapContainerStyle={{
             height: "400px",
@@ -75,11 +95,19 @@ render() {
         //   onClick={}
         //   onDblClick={}
         //   options={}
-          zoom={14}
-        >
+          zoom={14}>
+            <Marker 
+                position={{ lat: parseFloat(this.state.CurrentPosition.lat), lng: parseFloat(this.state.CurrentPosition.lng) }}
+                >
+            </Marker>
+            
           ...Your map components
         </GoogleMap>
+
       </LoadScript>
+
+
+      
       </div>
     );
   }

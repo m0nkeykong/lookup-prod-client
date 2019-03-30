@@ -12,11 +12,7 @@ class CustomTrack extends Component {
     return (
       <div className="container">
         <div className ="row">
-<<<<<<< HEAD:src/Components/js/somePage.js:src/Components/js/somePage.js
-          <p> hello SomePage! </p>
-=======
           <p> hello CustomTrack! </p>
->>>>>>> roni:src/Components/CustomTrack.js:src/Components/CustomTrack.js
         </div>
       </div>
     );

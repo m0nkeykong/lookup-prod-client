@@ -19,6 +19,7 @@ class SomePage extends Component {
       }
     }
     
+    
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     // this.renderEmpty = this.renderEmpty.bind(this);
     this.watchPosition = this.watchPosition.bind(this);
