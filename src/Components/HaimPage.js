@@ -15,24 +15,26 @@ class HaimPage extends Component {
       },
       result: null
     }
-    //this.directionsService = new DirectionsService();
-    this.DirectionsRenderer = new DirectionsRenderer();
     this.handleRequest = this.handleRequest.bind(this);
 
   }
 
   handleRequest = (result) => {
-    console.log("in handle requests");
-    if (result !== null) {
-      if (result.status === 'OK') {
-        result.routes[0].legs.forEach(leg => {
-          console.log(leg);
-        })
-        this.setState({
-          result
-        });
+    if (this.state.result === null){
+      if (result !== null) {
+        if (result.status === 'OK') {
+          result.routes[0].legs.forEach(leg => {
+            console.log(leg);
+          })
+          this.setState({
+            result
+          });
+        }
+      } else {
+        console.log('result === null');
       }
     }
+    console.log("in handle requests");
   }
 
   componentDidMount = () => {
