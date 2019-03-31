@@ -14,8 +14,9 @@ class HomePage extends Component {
     this.state = {
         userDetails: null,
         loading: false,
-        CurrentPosition: { lat: null, lng: null},
-        UpdatedPosition: { lat: null, lng: null}
+        CurrentPosition: { lat: null, lng: null,
+        UpdatedPosition: { lat: null, lng: null}},
+        response: null
     }
     this.onLoadPosition = this.onLoadPosition.bind(this);
     this.onLoadScriptError = this.onLoadScriptError.bind(this);
@@ -23,6 +24,9 @@ class HomePage extends Component {
 
     this.onGoogleMapSuccess = this.onGoogleMapSuccess.bind(this);
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
+
+    this.directionsCallback = this.directionsCallback.bind(this);
+
     this.newLocation = document.getElementById('root');
   }
 
@@ -43,52 +47,43 @@ class HomePage extends Component {
   }
 
   // Remember to replace this method because UNSAFE
-  componentWillMount() {
+  componentDidMount() {
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(userid);
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
-        this.setState({
-          userDetails: response.data,
-          loading: true
-        })
+        this.setState({userDetails: response.data, loading: true})
+
         console.log(response.data);
       })
       .catch(error => {
         console.log(error);
       });
-
-        navigator.geolocation.getCurrentPosition((pos) => {
-          this.setState({
-            CurrentPosition: {
-              lat: parseFloat(pos.coords.latitude),
-              lng: parseFloat(pos.coords.longitude)
-            }
-          });
-          console.log(this.state.CurrentPosition.lng);
-          console.log(this.state.CurrentPosition.lat);
-        });
-      
-
     // NotificationManager.info(message, title, timeOut, callback, priority);
     // NotificationManager.success(message, title, timeOut, callback, priority);
     // NotificationManager.warning(message, title, timeOut, callback, priority);
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
   
-  directionsCallback = response => {
-    console.log(response)
+  componentWillUnmount() {
+  }
 
+  // eslint-disable-next-line no-dupe-class-members
+
+
+  
+  directionsCallback = response => {
     if (response !== null) {
       if (response.status === 'OK') {
+        console.log(response)
         this.setState(
           () => ({
             response
           })
         )
       } else {
-        console.log('response: ', response)
+        console.log(response)
       }
     }
   }
@@ -104,40 +99,47 @@ class HomePage extends Component {
     if (navigator.geolocation) {
       // Get Current Position
       navigator.geolocation.getCurrentPosition((pos) => {
-        this.setState({ CurrentPosition: { lat: pos.coords.latitude, lng: pos.coords.longitude } });
-        console.log("CurrentPosition");
+        let lat = parseFloat(pos.coords.latitude);
+        let lng = parseFloat(pos.coords.longitude);
+        
+        this.setState({ CurrentPosition: { lat: lat, lng: lng } });
+        console.log(this.state.CurrentPosition);
 
         // Check Position Update
         var id = navigator.geolocation.watchPosition((pos) => {
-          this.setState({ UpdatedPosition: { lat: pos.coords.latitude, lng: pos.coords.longitude } });
+          let lat = parseFloat(pos.coords.latitude);
+          let lng = parseFloat(pos.coords.longitude);
+          this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
+
+          // Create new 'p' elemnt to print updated location
           let newElement = document.createElement('p');
           newElement.innerHTML = 'Location ' + 'fetched' + ': <a href="https://maps.google.com/maps?&z=15&q=' + pos.coords.latitude + '+' + pos.coords.longitude + '&ll=' + pos.coords.latitude + '+' + pos.coords.longitude + '" target="_blank">' + pos.coords.latitude + ', ' + pos.coords.longitude + '</a>';
           this.newLocation.appendChild(newElement);
           console.log("watching");
         }, (err) => {
           console.warn('ERROR(' + err.code + '): ' + err.message);
-        });
+        }, options);
       }, (err) => {
         console.log(this.state.CurrentPosition.lat);
         console.warn(`ERROR(${err.code}): ${err.message}`);
-      });
+      }, options);
     }
     else {
       console.log("Geolocation API not supported.")
     }
   }
 
-  componentDidMount(){
-    this.onLoadPosition();
-  }
+  // componentDidMount(){
+  // }
 
 render() {
     return (
-      <div style={{   
+      (this.state.loading) &&
+      (<div style={{   
           margin: "0 auto",  
           // border: '2px solid red',
           height: "400px",
-          maxWidth: "80%"}}>
+          maxWidth: "90%"}}>
         <div className="load-container">
           <LoadScript
           id="script-loader"
@@ -145,13 +147,13 @@ render() {
           onError={this.onLoadScriptError}
           onLoad={this.onLoadScriptSuccess}
           language="English"
-          region="IL"
+          region="US"
           >
           <div className="map-container">
             <GoogleMap
             id='example-map'
             onLoad={this.onGoogleMapSuccess}
-            center={{ lat: parseFloat(this.state.CurrentPosition.lat), lng: parseFloat(this.state.CurrentPosition.lng) }}
+            center={this.state.CurrentPosition}
             clickableIcons={true}
             mapContainerStyle={{
               margin: "0 auto",
@@ -160,38 +162,36 @@ render() {
             }}
             //   onBoundsChanged={}
             //   onCenterChanged={}
-            onClick={this.onGoogleMapClick()}
+            onClick={this.onGoogleMapClick}
             //   onDblClick={}
             //   options={}
             zoom={20}>   
               <Marker
-                  position={{ lat: parseFloat(this.state.UpdatedPosition.lat), lng: parseFloat(this.state.UpdatedPosition.lng) }}>
+                  position={this.state.UpdatedPosition}>
               </Marker>
 
-
               <DirectionsService
-              options={{ 
-                destination: {lat: 32.439980, lng: 34.912760},
-                origin: {lat: 31.062490, lng: 35.024940},
-                travelMode: "WALKING"
+              options={{
+                origin: this.state.CurrentPosition,
+                destination: { lat: 32.439980, lng: 34.912760 },
+                travelMode: 'WALKING',
               }}
-              callback={this.directionsCallback}
-            />
-          )
-        }
-
-        {
-            <DirectionsRenderer
-              options={{ 
-                directions: this.state.response
-              }}
-            />
-        }
+                callback={this.directionsCallback}
+              >
+              </DirectionsService>
+  
+              <DirectionsRenderer
+                options={{
+                  directions: this.state.response
+                }}
+              >
+              </DirectionsRenderer>
+              
             </GoogleMap>
           </div>
         </LoadScript>
       </div>
-      </div>
+      </div>)
     );
   }
 }
