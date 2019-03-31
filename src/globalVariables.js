@@ -7,3 +7,7 @@ export function getTrackByIdURL(trackId){
 export function getAllTracksURL(){
     return `${trackOriginURL}getAllTracks`;
 }
+
+export function getTracksByCityURL(city){
+    return `${trackOriginURL}getTracksByCity/${city}`;
+}

@@ -3,7 +3,7 @@ import TamplateComponent from './TemplateComponent'
 import './style/AutoGenerateTrack.css';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import {getAllTracksURL} from '../globalVariables'
+import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
 import { NavLink , Link} from "react-router-dom";
 
 
@@ -24,11 +24,11 @@ class ChooseExistingTrack extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.clickOnTrackTitle = this.clickOnTrackTitle.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.handleChange  = this.handleChange.bind(this)
 
   }
   
-  onSubmit(){
-    // this.getTracks();
+  onSubmit(e){
 
     // e.preventDefault();
     // console.log("VALUES: " + this.state.from + ", " + this.state.to + ", " + this.state.travelers );
@@ -37,6 +37,26 @@ class ChooseExistingTrack extends Component {
     // pathname: "/results",
     // state: this.state
     // });
+
+    e.preventDefault();
+    let city = this.state.city;
+    console.log("CITY:");
+    console.log(city);
+
+    fetch(getTracksByCityURL(city))
+    .then((res) => {        
+      return res.json();      
+    }).then((data) => {        
+      var self=this;        
+      data.map(element => {    
+        element.map(json=>{
+          console.log(`JSON: ${json}`); 
+          console.log(JSON.stringify(json) ); 
+          self.addTracks(json._id,json.title, json.type, json.comment);        
+        })
+      })    // endOf data.map((data)  
+    })
+
   }
 
   clickOnTrackTitle(){
@@ -118,7 +138,8 @@ class ChooseExistingTrack extends Component {
       return res.json();      
     }).then((data) => {        
       var self=this;        
-      data.map((json) => {            
+      data.map((json) => {   
+        // console.log(JSON.stringify(json) );          
         self.addTracks(json._id,json.title, json.type, json.comment);        
           console.log(json);  
       })    // endOf data.map((data)  
@@ -127,6 +148,10 @@ class ChooseExistingTrack extends Component {
 
   componentDidMount(){
     this.getAllTracks();
+  }
+
+  handleChange(event){
+    this.setState({city: event.target.value})
   }
 
   render() {
@@ -140,7 +165,7 @@ class ChooseExistingTrack extends Component {
 
             <div className="col bg-white rounded">
               <label>City:
-              <input className="mt-2 form-control float-left" type="text" name="from" value={this.state.from} onChange={this.onChange}/>
+              <input className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.city}/>
           </label>
           </div>
           <div className="col bg-white rounded">
