@@ -47,13 +47,15 @@ class HomePage extends Component {
   }
 
   // Remember to replace this method because UNSAFE
-  componentDidMount() {
+  componentWillMount() {
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(userid);
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
-        this.setState({userDetails: response.data, loading: true})
+        this.setState({ loading: true });
+        this.setState({userDetails: response.data});
+        this.onLoadPosition();
 
         console.log(response.data);
       })
@@ -66,26 +68,29 @@ class HomePage extends Component {
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
   
-  componentWillUnmount() {
-  }
+  // componentWillUnmount() {
+  // }
 
   // eslint-disable-next-line no-dupe-class-members
 
 
   
   directionsCallback = response => {
-    if (response !== null) {
-      if (response.status === 'OK') {
-        console.log(response)
-        this.setState(
-          () => ({
-            response
+    if (this.state.response === null) {
+      if (response !== null) {
+        if (response.status === 'OK') {
+          response.routes[0].legs.forEach(leg => {
+            console.log(leg);
           })
-        )
+          this.setState({
+            response
+          });
+        }
       } else {
-        console.log(response)
+        console.log('response === null');
       }
     }
+    console.log("in direectionsCallBack");
   }
 
   onLoadPosition(){
@@ -94,7 +99,7 @@ class HomePage extends Component {
       enableHighAccuracy: false,
       timeout: 10000,
       maximumAge: 0,
-      distanceFilter: 1
+      distanceFilter: Infinity
     };
     if (navigator.geolocation) {
       // Get Current Position
@@ -105,12 +110,12 @@ class HomePage extends Component {
         this.setState({ CurrentPosition: { lat: lat, lng: lng } });
         console.log(this.state.CurrentPosition);
 
-        // Check Position Update
-        var id = navigator.geolocation.watchPosition((pos) => {
+        // Check Position Update 
+          navigator.geolocation.watchPosition((pos) => {
           let lat = parseFloat(pos.coords.latitude);
           let lng = parseFloat(pos.coords.longitude);
           this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
-
+          
           // Create new 'p' elemnt to print updated location
           let newElement = document.createElement('p');
           newElement.innerHTML = 'Location ' + 'fetched' + ': <a href="https://maps.google.com/maps?&z=15&q=' + pos.coords.latitude + '+' + pos.coords.longitude + '&ll=' + pos.coords.latitude + '+' + pos.coords.longitude + '" target="_blank">' + pos.coords.latitude + ', ' + pos.coords.longitude + '</a>';
@@ -137,21 +142,27 @@ class HomePage extends Component {
 //     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
 
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
+
+
+
 render() {
+  const {loading} = this.state;
+
     return (
-      (this.state.loading) &&
-      (<div style={{   
+     <div style={{   
           margin: "0 auto",  
           // border: '2px solid red',
           height: "400px",
           maxWidth: "90%"}}>
-        <div className="load-container">
+        {loading ? 
+          (<div className="load-container">
           <LoadScript
           id="script-loader"
           googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
           onError={this.onLoadScriptError}
           onLoad={this.onLoadScriptSuccess}
           language="English"
+          version="3.36"
           region="US"
           >
           <div className="map-container">
@@ -167,41 +178,44 @@ render() {
             }}
             //   onBoundsChanged={}
             //   onCenterChanged={}
-            onClick={this.onGoogleMapClick}
+            // onClick={this.onGoogleMapClick}
             //   onDblClick={}
             //   options={}
             zoom={20}>   
               <Marker
                   position={this.state.UpdatedPosition}>
               </Marker>
-
-              <DirectionsService
-              options={{
-                origin: this.state.CurrentPosition,
-                destination: { lat: 32.439980, lng: 34.912760 },
-                travelMode: 'WALKING',
-              }}
-                callback={this.directionsCallback}
-              >
-              </DirectionsService>
-  
-              <DirectionsRenderer
-                options={{
-                  directions: this.state.response
-                }}
-              >
-              </DirectionsRenderer>
+                {
+                  this.state.response == null &&
+                  (
+                    <DirectionsService
+                    options={{
+                      origin: this.state.CurrentPosition,
+                      destination: { lat: 32.439980, lng: 34.912760 },
+                      travelMode: 'WALKING' }}
+                      callback= {this.directionsCallback}
+                    >
+                    </DirectionsService>
+                  )
+                }
+                {
+                  this.state.response != null &&
+                  (
+                    <DirectionsRenderer
+                      options={{ directions: this.state.response }}
+                    >
+                    </DirectionsRenderer>
+                  )
+                }
               
             </GoogleMap>
           </div>
         </LoadScript>
+      </div>) : <div> Roni </div>}
       </div>
-      </div>)
     );
   }
 }
 
 
 export default HomePage;
-
-
