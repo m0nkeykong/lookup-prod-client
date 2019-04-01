@@ -35,7 +35,7 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;        
-      self.addTrack(data._id,data.title, data.type, data.comment);        
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment);        
     })
 
   }

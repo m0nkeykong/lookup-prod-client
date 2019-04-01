@@ -5,6 +5,8 @@ import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
 import { NavLink , Link} from "react-router-dom";
+import ReactDOM from 'react-dom';
+
 
 
 class ChooseExistingTrack extends Component {
@@ -42,7 +44,7 @@ class ChooseExistingTrack extends Component {
     let city = this.state.city;
     console.log("CITY:");
     console.log(city);
-
+    // TODO: parse city to upper case and lower case:
     fetch(getTracksByCityURL(city))
     .then((res) => {        
       return res.json();      
@@ -50,11 +52,14 @@ class ChooseExistingTrack extends Component {
       var self=this;        
       data.map(element => {    
         element.map(json=>{
-          console.log(`JSON: ${json}`); 
           console.log(JSON.stringify(json) ); 
           self.addTracks(json._id,json.title, json.type, json.comment);        
         })
-      })    // endOf data.map((data)  
+      })    // endOf data.map((data)
+      // TODO: how to render react?
+      // ReactDOM.render(this.viewTracks(), document.getElementById('root')); 
+      // document.getElementById("response").innerHTML = ""
+ 
     })
 
   }
@@ -171,7 +176,7 @@ class ChooseExistingTrack extends Component {
           <div className="col bg-white rounded">
               <label>Type:</label>
               <span className="d-block">
-                <input className="loat-left" type="radio" name="option" id="walking" autocomplete="off" checked /> 
+                <input className="float-left" type="radio" name="option" id="walking" autocomplete="off" checked /> 
                 <MdDirectionsWalk /> 
               </span>
               <span className="d-block">

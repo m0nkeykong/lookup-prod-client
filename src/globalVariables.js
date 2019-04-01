@@ -4,6 +4,10 @@ export function getTrackByIdURL(trackId){
     return `${trackOriginURL}getTrackById/${trackId}`;
 }
 
+export function getTrackDetailsByIdURL(trackId){
+    return `${trackOriginURL}getTrackDetailsById/${trackId}`;
+}
+
 export function getAllTracksURL(){
     return `${trackOriginURL}getAllTracks`;
 }
@@ -11,3 +15,5 @@ export function getAllTracksURL(){
 export function getTracksByCityURL(city){
     return `${trackOriginURL}getTracksByCity/${city}`;
 }
+
+
