@@ -7,7 +7,11 @@ class TrackDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tracks: []
+      tracks: [],
+      startPoint: [],
+      endPoint: [],
+      middlePoints: []
+
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -35,12 +39,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;        
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment);        
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment,
+        data.startPoint, data.endPoint, data.middlePoints);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comment) {
+  addTrack(_id,_title,_type, _comment,_startPoint, _endPoint, _middlePoints) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -49,7 +54,10 @@ class TrackDetails extends Component {
           idOfTrack: _id,
           title: _title,
           type: _type,
-          comment: _comment
+          comment: _comment,
+          startPoint:_startPoint,
+          endPoint:_endPoint,
+          middlePoints:_middlePoints,
       }]
     }))
   }
@@ -72,7 +80,34 @@ class TrackDetails extends Component {
     return html;
   }
 
+  getStartPoint(startPoint){
+    let html=[];
+    console.log(`startPoint: ${startPoint}`);
+      html.push(<p>	&#8227; &#9; latitude: {startPoint.latitude}</p>)
+      html.push(<p>	&#8227; &#9; longitude: {startPoint.longtitude}</p>)
+    return html;
+  }
+
+  getEndPoint(endPoint){
+    let html=[];
+    console.log(`endPoint: ${endPoint}`);
+    html.push(<p>	&#8227; &#9; latitude: {endPoint.latitude}</p>)
+    html.push(<p>	&#8227; &#9; longitude: {endPoint.longtitude}</p>)
+    return html;
+  }
+
+  // getMiddlePoints(middlePoints){
+  //   let html=[];
+  //   console.log(middlePoints);
+  //   for (let i = 0; i < middlePoints.length; i++) {
+  //     html.push(<p>	&#8227; &#9;{comments[i]}</p>)
+  //   }
+  //   return html;
+  // }
+
   viewTrack(track,i) {
+    console.log("TRACKKKKKKKKKKK _____________________");
+    console.log(track);
     return (          
       <div key={'container'+i}>
            
@@ -91,6 +126,12 @@ class TrackDetails extends Component {
             <div>
               <p>comment: </p>
               <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+              <p>start point: </p>
+              <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
+              <p>end point: </p>
+              <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
+              <p>middle points: </p>
+              <p style={{fontSize:'10px'}}>{this.getComments(track.middlePoints)}</p>
             </div>
           </TamplateComponent>
         </div>
