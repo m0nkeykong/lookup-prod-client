@@ -7,6 +7,9 @@ import CustomTrack from "../Components/CustomTrack";
 import StartNavigate from "../Components/StartNavigate";
 import Login from "../Components/Login";
 import HomePage from "../Components/HomePage";
+import TrackDetails from "../Components/TrackDetails";
+import LoadMap from "../Components/LoadMap";
+import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
 // import UserSettings from "../Components/UserSettings";
@@ -26,6 +29,10 @@ const AppRouter = () =>{
       <Route exact path="/choose" component={ChooseExistingTrack} />
       <Route exact path="/custom" component={CustomTrack} />
       <Route exact path="/start" component={StartNavigate} />
+      <Route exact path="/map" component={LoadMap} />
+      <Route exact path="/trackDetails" component={TrackDetails} />
+      <Route exact path="/directions" component={DirectionsPoint} />
+
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />
