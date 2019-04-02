@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './css/AutoGenerateTrack_style.css';
+import './style/AutoGenerateTrack.css';
 
 class AutoGenerateTrack extends Component {
   constructor(props) {

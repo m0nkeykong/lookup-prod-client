@@ -6,7 +6,6 @@ import ChooseExistingTrack from "../Components/ChooseExistingTrack";
 import CustomTrack from "../Components/CustomTrack";
 import StartNavigate from "../Components/StartNavigate";
 import Login from "../Components/Login";
-import HaimPage from "../Components/HaimPage";
 import HomePage from "../Components/HomePage";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
@@ -21,7 +20,6 @@ const AppRouter = () =>{
     <React.Fragment>
       <Route exact path="/login" component={Login} />
       <Route exact path="/homePage" component={HomePage} />
-      <Route exact path="/HaimPage" component={HaimPage} />
 
       <Route exact path="/" component={SomePage} />
       <Route exact path="/auto" component={AutoGenerateTrack} />
