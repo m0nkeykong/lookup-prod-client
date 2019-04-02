@@ -13,10 +13,11 @@ class HomePage extends Component {
     
     this.state = {
         userDetails: null,
-        loading: false,
-        CurrentPosition: { lat: null, lng: null,
-        UpdatedPosition: { lat: null, lng: null}},
-        response: null
+        loading: true,
+        CurrentPosition: {lat: 0, lng: 0},
+        UpdatedPosition: {lat: 0, lng: 0},
+				response: null,
+				timestamp: 0
     }
     this.onLoadPosition = this.onLoadPosition.bind(this);
     this.onLoadScriptError = this.onLoadScriptError.bind(this);
@@ -49,7 +50,9 @@ class HomePage extends Component {
   // Remember to replace this method because UNSAFE
   componentWillMount() {
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(userid);
+		console.log(userid);
+		this.onLoadPosition();
+
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
@@ -71,36 +74,36 @@ class HomePage extends Component {
   // componentWillUnmount() {
   // }
 
-  // eslint-disable-next-line no-dupe-class-members
 
-
-  
-  directionsCallback = response => {
-    if (this.state.response === null) {
-      if (response !== null) {
-        if (response.status === 'OK') {
-          response.routes[0].legs.forEach(leg => {
+	// directionsCallback = response => {
+  directionsCallback(response){
+		console.log("in direectionsCallBack");
+		if (this.state.response === null) {
+			if (response !== null) {
+				if (response.status === 'OK') {
+					console.log(response.routes[0]);
+					response.routes[0].legs.forEach(leg => {
             console.log(leg);
           })
-          this.setState({
-            response
-          });
-        }
-      } else {
-        console.log('response === null');
-      }
-    }
-    console.log("in direectionsCallBack");
+					this.setState(
+						() => ({
+							response
+						})
+					)
+				} else {
+					console.log('response === null');
+				}
+			}
+		}
   }
 
   onLoadPosition(){
     // currentPosition & watchPoisition options
     var options = {
-      enableHighAccuracy: false,
-      timeout: 10000,
-      maximumAge: 0,
-      distanceFilter: Infinity
-    };
+      enableHighAccuracy: true,
+      timeout: 500,
+			maximumAge: 0
+		  };
     if (navigator.geolocation) {
       // Get Current Position
       navigator.geolocation.getCurrentPosition((pos) => {
@@ -111,18 +114,21 @@ class HomePage extends Component {
         console.log(this.state.CurrentPosition);
 
         // Check Position Update 
-          navigator.geolocation.watchPosition((pos) => {
+				this.watchID = navigator.geolocation.watchPosition((pos) => {
           let lat = parseFloat(pos.coords.latitude);
           let lng = parseFloat(pos.coords.longitude);
+					if (lat === this.state.UpdatedPosition.lat && lng === this.state.UpdatedPosition.lng) return;
+					if (pos.timestamp === this.state.timestamp ) return;
+					// if (pos.coords.accuracy < 100) navigator.geolocation.clearWatch(this.watchID);
+					this.setState({ timestamp: pos.timestamp});
           this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
-          
+
           // Create new 'p' elemnt to print updated location
           let newElement = document.createElement('p');
-          newElement.innerHTML = 'Location ' + 'fetched' + ': <a href="https://maps.google.com/maps?&z=15&q=' + pos.coords.latitude + '+' + pos.coords.longitude + '&ll=' + pos.coords.latitude + '+' + pos.coords.longitude + '" target="_blank">' + pos.coords.latitude + ', ' + pos.coords.longitude + '</a>';
-          this.newLocation.appendChild(newElement);
+					newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${ pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          this.newLocation.appendChild(newElement);
           console.log("watching");
         }, (err) => {
-          console.warn('ERROR(' + err.code + '): ' + err.message);
+          console.warn(`ERROR(${err.code}): ${err.message}`);
         }, options);
       }, (err) => {
         console.log(this.state.CurrentPosition.lat);
@@ -181,21 +187,36 @@ render() {
             // onClick={this.onGoogleMapClick}
             //   onDblClick={}
             //   options={}
-            zoom={20}>   
+						// Max Zoom: 0 to 18
+						zoom={18}>
+						
               <Marker
                   position={this.state.UpdatedPosition}>
               </Marker>
                 {
-                  this.state.response == null &&
-                  (
+									(
+										this.state.response === null
+									) && (
                     <DirectionsService
                     options={{
-                      origin: this.state.CurrentPosition,
+											// origin: LatLng | String | google.maps.Place,
+											// destination: LatLng | String | google.maps.Place,
+											// travelMode: TravelMode,
+											// transitOptions: TransitOptions,
+											// drivingOptions: DrivingOptions,
+											// unitSystem: UnitSystem,
+											// waypoints[]: DirectionsWaypoint,
+											// optimizeWaypoints: Boolean,
+											// provideRouteAlternatives: Boolean,
+											// avoidFerries: Boolean,
+											// avoidHighways: Boolean,
+											// avoidTolls: Boolean,
+											// region: String
+                      origin: { lat: 32.4411626, lng: 34.9153988 },
                       destination: { lat: 32.439980, lng: 34.912760 },
                       travelMode: 'WALKING' }}
-                      callback= {this.directionsCallback}
-                    >
-                    </DirectionsService>
+                      callback={this.directionsCallback}
+                    />
                   )
                 }
                 {
@@ -203,8 +224,8 @@ render() {
                   (
                     <DirectionsRenderer
                       options={{ directions: this.state.response }}
-                    >
-                    </DirectionsRenderer>
+                    />
+                    
                   )
                 }
               
