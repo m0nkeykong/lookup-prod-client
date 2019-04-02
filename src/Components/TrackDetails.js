@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
+import DirectionsPoint from '../Components/DirectionsPoints';
+
 
 class TrackDetails extends Component {
   constructor(props) {
@@ -133,14 +135,6 @@ class TrackDetails extends Component {
             <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
             <p style={{ textAlign:`center`}}>type: {track.type}</p>
             <div>
-              <p>comment: </p>
-              <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
-              <p>start point: </p>
-              <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-              <p>end point: </p>
-              <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-              <p>middle points: </p>
-              <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
             </div>
           </TamplateComponent>
         </div>
@@ -155,6 +149,7 @@ class TrackDetails extends Component {
         <div className ="row">
           {this.state.tracks.map(this.viewTrack)}
         </div>
+        <DirectionsPoint></DirectionsPoint>
       </div>
     );
   }
@@ -162,3 +157,15 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
+
+
+
+
+// <p>comment: </p>
+// <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+// <p>start point: </p>
+// <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
+// <p>end point: </p>
+// <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
+// <p>middle points: </p>
+// <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
