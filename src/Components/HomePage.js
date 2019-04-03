@@ -13,7 +13,7 @@ class HomePage extends Component {
     
     this.state = {
         userDetails: null,
-        loading: false,
+        loading: true,
         CurrentPosition: {lat: 0, lng: 0},
         UpdatedPosition: {lat: 0, lng: 0},
 				response: null,
@@ -153,6 +153,7 @@ class HomePage extends Component {
 
 render() {
   const {loading} = this.state;
+  // const {loading} = true;
 
     return (
      <div style={{   
@@ -212,9 +213,9 @@ render() {
 											// avoidHighways: Boolean,
 											// avoidTolls: Boolean,
 											// region: String
-                      origin: { lat: 32.4411626, lng: 34.9153988 },
-                      destination: { lat: 32.439980, lng: 34.912760 },
-                      travelMode: 'WALKING' }}
+                      origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                      destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                      travelMode: this.props.track.type.toUpperCase() }}
                       callback={this.directionsCallback}
                     />
                   )
@@ -230,6 +231,12 @@ render() {
                 }
               
             </GoogleMap>
+          </div>
+          <div>
+          {console.log("PROPSSSSSSSSSSSSSSSS:")}
+          {console.log(this.props.track.type.toUpperCase())}
+          {console.log(this.props.track.endPoint.latitude)}
+          {console.log("PROPSSSSSSSSSSSSSSSS!")}
           </div>
         </LoadScript>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}

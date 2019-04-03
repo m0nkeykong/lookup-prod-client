@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
-import DirectionsPoint from '../Components/DirectionsPoints';
+import HomePage from './HomePage';
 
 
 class TrackDetails extends Component {
@@ -134,13 +134,28 @@ class TrackDetails extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
             <p style={{ textAlign:`center`}}>type: {track.type}</p>
+              <p>comment: </p>
+             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+             <p>start point: </p>
+             <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
+             <p>end point: </p>
+             <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
+             <p>middle points: </p>
+                <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
             <div>
             </div>
           </TamplateComponent>
+          <div>
+            <HomePage track={track}></HomePage>
+          </div>
         </div>
         
       </div>
     )
+  }
+
+  getData(track,i){
+    return track.startPoint.latitude;
   }
 
   render() {
@@ -149,7 +164,6 @@ class TrackDetails extends Component {
         <div className ="row">
           {this.state.tracks.map(this.viewTrack)}
         </div>
-        <DirectionsPoint></DirectionsPoint>
       </div>
     );
   }
@@ -159,6 +173,7 @@ class TrackDetails extends Component {
 export default TrackDetails;
 
 
+// <HomePage task={this.state.tracks.map(this.getData)}></HomePage>
 
 
 // <p>comment: </p>
