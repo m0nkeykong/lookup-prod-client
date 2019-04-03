@@ -24,7 +24,6 @@ class ChooseExistingTrack extends Component {
     this.getAllTracks = this.getAllTracks.bind(this)
     this.getComments = this.getComments.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
-    this.clickOnTrackTitle = this.clickOnTrackTitle.bind(this)
     this.onChange = this.onChange.bind(this)
     this.handleChange  = this.handleChange.bind(this)
 
@@ -53,7 +52,7 @@ class ChooseExistingTrack extends Component {
       data.map(element => {    
         element.map(json=>{
           console.log(JSON.stringify(json) ); 
-          self.addTracks(json._id,json.title, json.type, json.comment);        
+          self.addTracksAfterFiltering(json._id,json.title, json.type, json.comment);        
         })
       })    // endOf data.map((data)
       // TODO: how to render react?
@@ -64,9 +63,17 @@ class ChooseExistingTrack extends Component {
 
   }
 
-  clickOnTrackTitle(){
-
-
+  addTracksAfterFiltering(_id,_title,_type, _comment) {
+    this.setState(prevState => ({
+      tracks: [
+      {
+          id: this.state.tracks.length + 1,
+          idOfTrack: _id,
+          title: _title,
+          type: _type,
+          comment: _comment
+      }]
+    }))
   }
 
   onChange(e){
@@ -117,14 +124,10 @@ class ChooseExistingTrack extends Component {
             idOfTrack: track.idOfTrack}}
             activeStyle={this.active} 
             className="" >
-            
             <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
             <p style={{ textAlign:`center`}}>type: {track.type}</p>
-
           </NavLink>
 
-             
-          
           <div>
             <p>comment: </p>
             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
@@ -187,7 +190,7 @@ class ChooseExistingTrack extends Component {
         
           <div className="w-100 mb-md-4"></div>
           <div className="col-12 mx-auto">
-            <button type="submit" className="mt-2 tn-block btnGreen rounded-0 w-100 btn border-0">חפש</button>
+            <button type="submit" className="mt-2 tn-block btnGreen rounded-0 w-100 btn border-0">search tracks</button>
           </div>
 
             </div>
