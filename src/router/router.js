@@ -20,10 +20,9 @@ import DirectionsPoint from "../Components/DirectionsPoints";
 const AppRouter = () =>{
   return(
     <React.Fragment>
+      <Route exact path="/" component={SomePage} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/homePage" component={HomePage} />
-
-      <Route exact path="/" component={SomePage} />
       <Route exact path="/auto" component={AutoGenerateTrack} />
       <Route exact path="/choose" component={ChooseExistingTrack} />
       <Route exact path="/custom" component={CustomTrack} />

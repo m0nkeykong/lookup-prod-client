@@ -1,0 +1,13 @@
+.half-black {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .padding2em{
+    padding: 2em;
+  }

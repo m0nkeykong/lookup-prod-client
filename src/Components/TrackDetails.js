@@ -4,6 +4,7 @@ import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiBackspace from 'react-icons/lib/ti/backspace';
 import HomePage from './HomePage';
+import './style/TrackDetails.css'
 
 
 class TrackDetails extends Component {
@@ -124,19 +125,20 @@ class TrackDetails extends Component {
       {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
         idOfTrack: track.idOfTrack}}
         activeStyle={this.active} 
-        className="btn btn-primary float-right" >Start Navigator</NavLink>
+        style={{backgroundColor:'black'}}
+        className="btn float-right" >Start Navigator</NavLink>
 
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/choose`, 
           idOfTrack: track.idOfTrack}}
           activeStyle={this.active}>
-          <TiBackspace size={29}/> </NavLink>
+          <TiBackspace size={29} color='black'/> </NavLink>
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
-            <p style={{ textAlign:`center`}}>type: {track.type}</p>
+            <h1 className="card-title" style={{ textAlign:`center`, color: 'white'}}>{track.title} </h1>
+            <p style={{ textAlign:`center`, color: 'white'}}>type: {track.type}</p>
               <p className="titles">comments: </p>
              <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
              <p className="titles">start point: </p>
@@ -158,8 +160,8 @@ class TrackDetails extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className ="row">
+      <div className="container half-black">
+        <div className ="row padding2em">
           {this.state.tracks.map(this.viewTrack)}
         </div>
       </div>
