@@ -116,24 +116,24 @@ class ChooseExistingTrack extends Component {
     return (          
       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <div className="">
-          <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
+            <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
 
-          <NavLink to=
-          //navigate to TrackDetails via TemplateComponent with the params
-          {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-            idOfTrack: track.idOfTrack}}
-            activeStyle={this.active} 
-            className="" >
-            <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
-            <p style={{ textAlign:`center`}}>type: {track.type}</p>
-          </NavLink>
+            <NavLink to=
+            //navigate to TrackDetails via TemplateComponent with the params
+            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+              idOfTrack: track.idOfTrack}}
+              activeStyle={this.active} 
+              className="" >
+              <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
+              <p style={{ textAlign:`center`}}>type: {track.type}</p>
+            </NavLink>
 
-          <div>
-            <p>comment: </p>
-            <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
-          </div>
-           
-          </TamplateComponent>
+            <div>
+              <p>comment: </p>
+              <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+            </div>
+            
+            </TamplateComponent>
         </div>
         
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api'
+import {getGoogleApiKey} from '../globalVariables';
 
 
 class DirectionsPoints extends Component {
@@ -63,7 +64,7 @@ class DirectionsPoints extends Component {
 
       <LoadScript
         id="script-loader"
-        googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
+        googleMapsApiKey={getGoogleApiKey()}
         onError={() => { "Error" }}
         onLoad={() => { "Success" }}
         language="English"
