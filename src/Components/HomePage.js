@@ -29,7 +29,6 @@ class HomePage extends Component {
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
     this.directionsCallback = this.directionsCallback.bind(this);
-    this.getMiddlePoints = this.getMiddlePoints.bind(this);
 
     this.newLocation = document.getElementById('root');
   }
@@ -164,16 +163,6 @@ getMiddlePoints(middlePoints){
   return html;
 }
 
-getMiddle()
-{
-  let html = [];
-  html.push({location: { lat: 31.67864841, lng: 34.58581388 }});
-  html.push({location: { lat: 31.67870319, lng: 34.584741 }});
-
-  return html;
-  
-}
-
 render() {
   const {loading} = this.state;
   // const {loading} = true;
@@ -255,12 +244,6 @@ render() {
                 }
               
             </GoogleMap>
-          </div>
-          <div>
-          {console.log("PROPSSSSSSSSSSSSSSSS:")}
-          {console.log(this.props.track.type.toUpperCase())}
-          {console.log(this.props.track.endPoint.latitude)}
-          {console.log("PROPSSSSSSSSSSSSSSSS!")}
           </div>
         </LoadScript>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
