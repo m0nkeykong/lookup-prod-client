@@ -1,6 +1,7 @@
 // // import React, { Component } from 'react';
 // // import './style//StartNavigate.css';
 // // import SomePage from './SomePage';
+// // import {getGoogleApiKey} from '../globalVariables';
 
 // // class StartNavigate extends Component {
 // //   constructor(props) {
@@ -94,7 +95,7 @@
 
 //       <LoadScript
 //         id="script-loader"
-//         googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
+//         googleMapsApiKey={getGoogleApiKey()}
 //         onError={() => { "Error" }}
 //         onLoad={() => { "Success" }}
 //         language="English"
