@@ -7,15 +7,11 @@ import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
 import { NavLink , Link} from "react-router-dom";
 import ReactDOM from 'react-dom';
 
-
-
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: []
-
-      
     }
 
     this.addTracks = this.addTracks.bind(this)
@@ -48,32 +44,16 @@ class ChooseExistingTrack extends Component {
     .then((res) => {        
       return res.json();      
     }).then((data) => {        
-      var self=this;        
+      var self=this; 
+      this.state.tracks = [];
       data.map(element => {    
         element.map(json=>{
           console.log(JSON.stringify(json) ); 
-          self.addTracksAfterFiltering(json._id,json.title, json.type, json.comment);        
+          self.addTracks(json._id,json.title, json.type, json.comment);        
         })
       })    // endOf data.map((data)
-      // TODO: how to render react?
-      // ReactDOM.render(this.viewTracks(), document.getElementById('root')); 
-      // document.getElementById("response").innerHTML = ""
- 
     })
 
-  }
-
-  addTracksAfterFiltering(_id,_title,_type, _comment) {
-    this.setState(prevState => ({
-      tracks: [
-      {
-          id: this.state.tracks.length + 1,
-          idOfTrack: _id,
-          title: _title,
-          type: _type,
-          comment: _comment
-      }]
-    }))
   }
 
   onChange(e){
@@ -84,7 +64,7 @@ class ChooseExistingTrack extends Component {
   addTracks(_id,_title,_type, _comment) {
     this.setState(prevState => ({
       tracks: [
-      ...prevState.tracks,
+        ...prevState.tracks,      
       {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
@@ -170,7 +150,6 @@ class ChooseExistingTrack extends Component {
           <form onSubmit={this.onSubmit}>
             <div className="row">
               
-
             <div className="col bg-white rounded">
               <label>City:
               <input className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.city}/>
@@ -190,7 +169,7 @@ class ChooseExistingTrack extends Component {
         
           <div className="w-100 mb-md-4"></div>
           <div className="col-12 mx-auto">
-            <button type="submit" className="mt-2 tn-block btnGreen rounded-0 w-100 btn border-0">search tracks</button>
+            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0">search tracks</button>
           </div>
 
             </div>
