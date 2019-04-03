@@ -167,15 +167,3 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
-
-
-
-
-// <p>comment: </p>
-// <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
-// <p>start point: </p>
-// <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-// <p>end point: </p>
-// <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-// <p>middle points: </p>
-// <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>

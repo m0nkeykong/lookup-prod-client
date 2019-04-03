@@ -238,14 +238,6 @@ render() {
 											// region: String
                       origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
                       destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                      // waypoints: [
-                      //   {
-                      //     location: { lat: 31.67864841, lng: 34.58581388 }
-                      //   },
-                      //   {
-                      //     location: { lat: 31.67870319, lng: 34.584741 }
-                      //   }
-                      // ],
                       waypoints: this.getMiddlePoints(this.props.track.middlePoints),
                       travelMode: this.props.track.type.toUpperCase() }}
                       callback={this.directionsCallback}
