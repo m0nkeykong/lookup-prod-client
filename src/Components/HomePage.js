@@ -13,7 +13,7 @@ class HomePage extends Component {
     
     this.state = {
         userDetails: null,
-        loading: false,
+        loading: true,
         CurrentPosition: {lat: 0, lng: 0},
         UpdatedPosition: {lat: 0, lng: 0},
 				response: null,
@@ -48,7 +48,7 @@ class HomePage extends Component {
   }
 
   // Remember to replace this method because UNSAFE
-  componentWillMount() {
+  componentDidMount() {
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
 		console.log(userid);
 		this.onLoadPosition();
@@ -56,9 +56,9 @@ class HomePage extends Component {
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
-        this.setState({ loading: true });
-        this.setState({userDetails: response.data});
+				this.setState({userDetails: response.data});
         this.onLoadPosition();
+        this.setState({ loading: true });
 
         console.log(response.data);
       })
@@ -160,7 +160,7 @@ render() {
           // border: '2px solid red',
           height: "400px",
           maxWidth: "90%"}}>
-        {loading ? 
+        {this.state.loading ? 
           (<div className="load-container">
           <LoadScript
           id="script-loader"
