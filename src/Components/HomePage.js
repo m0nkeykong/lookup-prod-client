@@ -13,7 +13,7 @@ class HomePage extends Component {
     
     this.state = {
         userDetails: null,
-        loading: true,
+        loading: false,
         CurrentPosition: {lat: 0, lng: 0},
         UpdatedPosition: {lat: 0, lng: 0},
 				response: null,
@@ -232,7 +232,7 @@ render() {
             </GoogleMap>
           </div>
         </LoadScript>
-      </div>) : <div> Roni </div>}
+      </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
     );
   }
