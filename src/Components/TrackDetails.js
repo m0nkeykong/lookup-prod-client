@@ -28,7 +28,7 @@ class TrackDetails extends Component {
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
-    this.getTrackById('5c7bca6ef318fa537c9c6dbe');
+    this.getTrackById(idOfTrack);
     // this.doPostData(subName,'followSubject/');
     // this.doGetData(subName,'getSubjectByName/');  
   }
