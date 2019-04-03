@@ -154,10 +154,6 @@ class TrackDetails extends Component {
     )
   }
 
-  getData(track,i){
-    return track.startPoint.latitude;
-  }
-
   render() {
     return (
       <div className="container">
@@ -173,7 +169,6 @@ class TrackDetails extends Component {
 export default TrackDetails;
 
 
-// <HomePage task={this.state.tracks.map(this.getData)}></HomePage>
 
 
 // <p>comment: </p>

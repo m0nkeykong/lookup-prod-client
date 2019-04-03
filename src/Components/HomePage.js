@@ -29,6 +29,7 @@ class HomePage extends Component {
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
     this.directionsCallback = this.directionsCallback.bind(this);
+    this.getMiddlePoints = this.getMiddlePoints.bind(this);
 
     this.newLocation = document.getElementById('root');
   }
@@ -151,7 +152,27 @@ class HomePage extends Component {
 
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
+getMiddlePoints(middlePoints){
+  let html=[];
+  console.log(`middlePoints: ${middlePoints}`);
 
+  if(middlePoints.length != 0){
+    for (let i = 0; i < middlePoints.length; i++) {
+      html.push({location: { lat: middlePoints[i].latitude, lng: middlePoints[i].longtitude }});
+    }
+  }
+  return html;
+}
+
+getMiddle()
+{
+  let html = [];
+  html.push({location: { lat: 31.67864841, lng: 34.58581388 }});
+  html.push({location: { lat: 31.67870319, lng: 34.584741 }});
+
+  return html;
+  
+}
 
 render() {
   const {loading} = this.state;
@@ -217,6 +238,15 @@ render() {
 											// region: String
                       origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
                       destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                      // waypoints: [
+                      //   {
+                      //     location: { lat: 31.67864841, lng: 34.58581388 }
+                      //   },
+                      //   {
+                      //     location: { lat: 31.67870319, lng: 34.584741 }
+                      //   }
+                      // ],
+                      waypoints: this.getMiddlePoints(this.props.track.middlePoints),
                       travelMode: this.props.track.type.toUpperCase() }}
                       callback={this.directionsCallback}
                     />
