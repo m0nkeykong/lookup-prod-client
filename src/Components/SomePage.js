@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {geolocated} from 'react-geolocated';
-import './style/SomePage.css';
 
 class SomePage extends Component {
   constructor(props) {
