@@ -7,14 +7,11 @@ import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
 import { NavLink , Link} from "react-router-dom";
 import ReactDOM from 'react-dom';
 
-
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: []
-
-      
     }
 
     this.addTracks = this.addTracks.bind(this)
@@ -55,10 +52,6 @@ class ChooseExistingTrack extends Component {
           self.addTracks(json._id,json.title, json.type, json.comment);        
         })
       })    // endOf data.map((data)
-      // TODO: how to render react?
-      // ReactDOM.render(this.viewTracks(), document.getElementById('root')); 
-      // document.getElementById("response").innerHTML = ""
- 
     })
 
   }
@@ -157,7 +150,6 @@ class ChooseExistingTrack extends Component {
           <form onSubmit={this.onSubmit}>
             <div className="row">
               
-
             <div className="col bg-white rounded">
               <label>City:
               <input className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.city}/>

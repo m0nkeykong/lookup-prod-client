@@ -14,7 +14,6 @@ class TrackDetails extends Component {
       startPoint: [],
       endPoint: [],
       middlePoints: []
-
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -22,7 +21,6 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getComments = this.getComments.bind(this)
-
   }
   
   componentDidMount() {
@@ -30,8 +28,6 @@ class TrackDetails extends Component {
     console.log(idOfTrack);
 
     this.getTrackById(idOfTrack);
-    // this.doPostData(subName,'followSubject/');
-    // this.doGetData(subName,'getSubjectByName/');  
   }
 
   getTrackById(trackId){
@@ -123,8 +119,6 @@ class TrackDetails extends Component {
     return (          
       <div key={'container'+i}>
            
-     
-
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
@@ -138,7 +132,6 @@ class TrackDetails extends Component {
           idOfTrack: track.idOfTrack}}
           activeStyle={this.active}>
           <TiBackspace size={29}/> </NavLink>
-
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
@@ -158,11 +151,7 @@ class TrackDetails extends Component {
           <div>
             <HomePage track={track}></HomePage>
           </div>
-
-        
-
         </div>
-        
       </div>
     )
   }
