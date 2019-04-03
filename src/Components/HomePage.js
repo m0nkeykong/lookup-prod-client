@@ -6,6 +6,8 @@ import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import '../Components/style/HomePage.css';
+import {getGoogleApiKey} from '../globalVariables';
+
 
 class HomePage extends Component {
   constructor(props) {
@@ -165,7 +167,7 @@ render() {
           (<div className="load-container">
           <LoadScript
           id="script-loader"
-          googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
+          googleMapsApiKey={getGoogleApiKey()}
           onError={this.onLoadScriptError}
           onLoad={this.onLoadScriptSuccess}
           language="English"

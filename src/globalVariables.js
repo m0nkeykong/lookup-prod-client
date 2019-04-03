@@ -1,3 +1,5 @@
+import * as consts from './consts';
+
 const trackOriginURL = 'http://localhost:3000/track/';
 
 export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
@@ -16,4 +18,7 @@ export function getTracksByCityURL(city){
     return `${trackOriginURL}getTracksByCity/${city}`;
 }
 
+export function getGoogleApiKey(){
+    return consts.GOOGLE_API_KEY;
+}
 
