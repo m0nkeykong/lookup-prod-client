@@ -1,6 +1,6 @@
 const trackOriginURL = 'http://localhost:3000/track/';
 
-export function getTrackByIdURL(trackId){
+export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
     return `${trackOriginURL}getTrackById/${trackId}`;
 }
 
