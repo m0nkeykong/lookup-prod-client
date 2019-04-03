@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
+import TiBackspace from 'react-icons/lib/ti/backspace';
 import HomePage from './HomePage';
 
 
@@ -122,12 +123,21 @@ class TrackDetails extends Component {
     return (          
       <div key={'container'+i}>
            
+     
+
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
         idOfTrack: track.idOfTrack}}
         activeStyle={this.active} 
         className="btn btn-primary float-right" >Start Navigator</NavLink>
+
+        <NavLink to=
+        //navigate to TrackDetails via TemplateComponent with the params
+        {{pathname: `${process.env.PUBLIC_URL}/choose`, 
+          idOfTrack: track.idOfTrack}}
+          activeStyle={this.active}>
+          <TiBackspace size={29}/> </NavLink>
 
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
@@ -149,13 +159,7 @@ class TrackDetails extends Component {
             <HomePage track={track}></HomePage>
           </div>
 
-          <NavLink to=
-      //navigate to TrackDetails via TemplateComponent with the params
-      {{pathname: `${process.env.PUBLIC_URL}/choose`, 
-        idOfTrack: track.idOfTrack}}
-        activeStyle={this.active} 
-        style={{margin: '0 auto', marginTop: '15px'}}
-        className="btn btn-primary" >Choose another track</NavLink>
+        
 
         </div>
         
