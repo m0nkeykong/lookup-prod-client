@@ -108,7 +108,7 @@ class TrackDetails extends Component {
 
     if(middlePoints.length != 0){
       for (let i = 0; i < middlePoints.length; i++) {
-        html.push(<p>	&#8227; &#9; point number: {i}</p>)
+        html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
         html.push(<p>	&#8227; &#9;latitude: {middlePoints[i].latitude}</p>)
         html.push(<p>	&#8227; &#9;longitude: {middlePoints[i].longtitude}</p>)
       }
@@ -134,13 +134,13 @@ class TrackDetails extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
             <p style={{ textAlign:`center`}}>type: {track.type}</p>
-              <p>comment: </p>
+              <p className="titles">comments: </p>
              <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
-             <p>start point: </p>
+             <p className="titles">start point: </p>
              <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-             <p>end point: </p>
+             <p className="titles">end point: </p>
              <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-             <p>middle points: </p>
+             <p className="titles">middle points: </p>
                 <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
             <div>
             </div>
@@ -155,7 +155,7 @@ class TrackDetails extends Component {
         idOfTrack: track.idOfTrack}}
         activeStyle={this.active} 
         style={{margin: '0 auto', marginTop: '15px'}}
-        className="btn btn-primary " >Choose another track</NavLink>
+        className="btn btn-primary" >Choose another track</NavLink>
 
         </div>
         
