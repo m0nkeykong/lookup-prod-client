@@ -11,10 +11,30 @@ class AutoGenerateTrack extends Component {
   render() {
     return (
       <div className="container">
-        <div className ="row">
-          <p> hello AutoGenerateTrack! </p>
+      <div className ="row">
+      <div className="col-12 p-md-4 border">
+        <from onSubmit={this.onSubmit}>
+          <div className="row">
+            
+
+          <div className="col bg-white border rounded  float-left">
+            <label>from:
+            <input className="form-control float-left" type="text" name="from" value={this.state.from} onChange={this.onChange}/>
+        </label>
         </div>
+        <div className="col bg-white border rounded  float-left">
+            <label>To
+            <input className="d-block form-control  float-left" type="text" name="to" value={this.state.to} onChange={this.onChange}/>
+            </label>
+        </div> 
+      
+
+          </div>
+        </from>
       </div>
+      
+      </div>
+    </div>
     );
   }
 }

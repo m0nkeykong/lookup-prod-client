@@ -6,6 +6,8 @@ import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import '../Components/style/HomePage.css';
+import {getGoogleApiKey} from '../globalVariables';
+
 
 class HomePage extends Component {
   constructor(props) {
@@ -149,10 +151,21 @@ class HomePage extends Component {
 
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
+getMiddlePoints(middlePoints){
+  let html=[];
+  console.log(`middlePoints: ${middlePoints}`);
 
+  if(middlePoints.length != 0){
+    for (let i = 0; i < middlePoints.length; i++) {
+      html.push({location: { lat: middlePoints[i].latitude, lng: middlePoints[i].longtitude }});
+    }
+  }
+  return html;
+}
 
 render() {
   const {loading} = this.state;
+  // const {loading} = true;
 
     return (
      <div style={{   
@@ -164,7 +177,7 @@ render() {
           (<div className="load-container">
           <LoadScript
           id="script-loader"
-          googleMapsApiKey="AIzaSyAHjuSuRkHIU84dbtT8c1iDRUCIxqRLhRc"
+          googleMapsApiKey={getGoogleApiKey()}
           onError={this.onLoadScriptError}
           onLoad={this.onLoadScriptSuccess}
           language="English"
@@ -212,9 +225,10 @@ render() {
 											// avoidHighways: Boolean,
 											// avoidTolls: Boolean,
 											// region: String
-                      origin: { lat: 32.4411626, lng: 34.9153988 },
-                      destination: { lat: 32.439980, lng: 34.912760 },
-                      travelMode: 'WALKING' }}
+                      origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                      destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                      waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                      travelMode: this.props.track.type.toUpperCase() }}
                       callback={this.directionsCallback}
                     />
                   )
