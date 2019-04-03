@@ -148,6 +148,15 @@ class TrackDetails extends Component {
           <div>
             <HomePage track={track}></HomePage>
           </div>
+
+          <NavLink to=
+      //navigate to TrackDetails via TemplateComponent with the params
+      {{pathname: `${process.env.PUBLIC_URL}/choose`, 
+        idOfTrack: track.idOfTrack}}
+        activeStyle={this.active} 
+        style={{margin: '0 auto', marginTop: '15px'}}
+        className="btn btn-primary " >Choose another track</NavLink>
+
         </div>
         
       </div>
