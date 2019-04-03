@@ -21,7 +21,7 @@ class Login extends Component {
     
     fetchUserData() {
         // console.log('Fetching Docs', param);
-        let user = JSON.parse(sessionStorage.getItem('userDetails'));
+        let user = this.state.userDetails;
         console.log(user);
         console.log('for user: ' + user.email);
         const url = `http://localhost:3000/user/getAccountDetailsByEmail/${user.email}`;
@@ -29,10 +29,12 @@ class Login extends Component {
         axios.post(url, {email: user.email, name: user.name, imageUrl: user.imageUrl})
         .then(response => {
             // NotificationManager.success(`${this.state.projectToAdd.title} has been created successfully`, '', 3000)
-            console.log(`User ${response.data.email} successfully looged in.`);
-            console.log(response);
-            sessionStorage.setItem('userDetails', JSON.stringify(response));
-            this.props.history.push('/homePage');
+            if(response.status == 200){
+                console.log(`User ${response.data.email} successfully looged in.`);
+                // console.log(response);
+                sessionStorage.setItem('userDetails', JSON.stringify(response.data._id));
+                this.props.history.push('/homePage');
+            }
         })
         .catch(error => {
             console.log(error);
@@ -43,8 +45,8 @@ class Login extends Component {
 
     loginSuccess(response) {
         console.log("Entered onSuccess={this.loginSuccess}")
-        this.setState({ userDetails: response })
-        sessionStorage.setItem('userDetails', JSON.stringify(this.state.userDetails.profileObj));
+        this.setState({ userDetails: response.profileObj })
+        // sessionStorage.setItem('userDetails', JSON.stringify(response.profileObj));
 
         this.fetchUserData();
     }
