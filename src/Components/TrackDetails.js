@@ -6,7 +6,7 @@ import TiBackspace from 'react-icons/lib/ti/backspace';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import HomePage from './HomePage';
-import $ from 'jquery';
+// import $ from 'jquery';
 import './style/TrackDetails.css'
 
 
