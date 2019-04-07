@@ -14,7 +14,7 @@ class TrackDetails extends Component {
       tracks: [],
       startPoint: [],
       endPoint: [],
-      middlePoints: []
+      wayPoints: []
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -39,13 +39,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;        
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment,
-        data.startPoint, data.endPoint, data.middlePoints);        
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comments,
+        data.startPoint, data.endPoint, data.wayPoints);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comment,_startPoint, _endPoint, _middlePoints) {
+  addTrack(_id,_title,_type, _comments,_startPoint, _endPoint, _wayPoints) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -54,10 +54,10 @@ class TrackDetails extends Component {
           idOfTrack: _id,
           title: _title,
           type: _type,
-          comment: _comment,
+          comments: _comments,
           startPoint:_startPoint,
           endPoint:_endPoint,
-          middlePoints:_middlePoints,
+          wayPoints:_wayPoints,
       }]
     }))
   }
@@ -86,7 +86,7 @@ class TrackDetails extends Component {
     console.log(startPoint);
 
       html.push(<p>	&#8227; &#9; latitude: {startPoint.latitude}</p>)
-      html.push(<p>	&#8227; &#9; longitude: {startPoint.longtitude}</p>)
+      html.push(<p>	&#8227; &#9; longitude: {startPoint.longitude}</p>)
     return html;
   }
 
@@ -96,19 +96,19 @@ class TrackDetails extends Component {
     console.log(endPoint);
 
     html.push(<p>	&#8227; &#9; latitude: {endPoint.latitude}</p>)
-    html.push(<p>	&#8227; &#9; longitude: {endPoint.longtitude}</p>)
+    html.push(<p>	&#8227; &#9; longitude: {endPoint.longitude}</p>)
     return html;
   }
 
-  getMiddlePoints(middlePoints){
+  getWayPoints(wayPoints){
     let html=[];
-    console.log(`middlePoints: ${middlePoints}`);
+    console.log(`wayPoints: ${wayPoints}`);
 
-    if(middlePoints.length != 0){
-      for (let i = 0; i < middlePoints.length; i++) {
+    if(wayPoints.length != 0){
+      for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
-        html.push(<p>	&#8227; &#9;latitude: {middlePoints[i].latitude}</p>)
-        html.push(<p>	&#8227; &#9;longitude: {middlePoints[i].longtitude}</p>)
+        html.push(<p>	&#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
+        html.push(<p>	&#8227; &#9;longitude: {wayPoints[i].longitude}</p>)
       }
     }
     return html;
@@ -140,13 +140,13 @@ class TrackDetails extends Component {
             <h1 className="card-title" style={{ textAlign:`center`, color: 'white'}}>{track.title} </h1>
             <p style={{ textAlign:`center`, color: 'white'}}>type: {track.type}</p>
               <p className="titles">comments: </p>
-             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
              <p className="titles">start point: </p>
              <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
              <p className="titles">end point: </p>
              <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
              <p className="titles">middle points: </p>
-                <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
+                <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
             <div>
             </div>
           </TamplateComponent>

@@ -69,7 +69,7 @@ class ChooseExistingTrack extends Component {
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
-          self.addTracks(json._id,json.title, json.type, json.comment); 
+          self.addTracks(json._id,json.title, json.type, json.comments); 
         })  
       } 
     })
@@ -90,7 +90,7 @@ class ChooseExistingTrack extends Component {
     // });
   }
 
-  addTracks(_id,_title,_type, _comment) {
+  addTracks(_id,_title,_type, _comments) {
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -99,7 +99,7 @@ class ChooseExistingTrack extends Component {
           idOfTrack: _id,
           title: _title,
           type: _type,
-          comment: _comment
+          comments: _comments
       }]
     }))
   }
@@ -123,7 +123,12 @@ class ChooseExistingTrack extends Component {
 
   viewTracks(track,i) {
     if(track.title == ''){
-      console.log("there are not tracks to display !");
+      console.log("there are no tracks to display !");
+      return (
+        <div>
+          <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
+        </div>
+      )
     }
     else{
       return (          
@@ -142,8 +147,8 @@ class ChooseExistingTrack extends Component {
               </NavLink>
   
               <div>
-                <p>comment: </p>
-                <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+                <p>comments: </p>
+                <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
               </div>
               
               </TamplateComponent>
@@ -162,7 +167,7 @@ class ChooseExistingTrack extends Component {
       var self=this;        
       data.map((json) => {   
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json._id,json.title, json.type, json.comment);        
+        self.addTracks(json._id,json.title, json.type, json.comments);        
           console.log(json);  
       })    // endOf data.map((data)  
     })

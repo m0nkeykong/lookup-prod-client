@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {geolocated} from 'react-geolocated';
-import './SomePage.css';
 
 class SomePage extends Component {
   constructor(props) {
@@ -17,7 +16,7 @@ class SomePage extends Component {
         Longitude: null
       }
     }
-    
+     
     this.i = 1;
 
     // this.getCurrentPosition = this.getCurrentPosition.bind(this);

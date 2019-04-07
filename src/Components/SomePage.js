@@ -137,7 +137,7 @@ export default SomePage;
   UserProfile   (User Details + Track Records (Total KM, Navigated tracks, Shared tracks, etc..))
   BuildTrack:
                 AutoGenerate(StartPoint, EndPoint)
-                CustomBuild(StartPoint, MiddlePoint[], EndPoint)
+                CustomBuild(StartPoint, wayPoints[], EndPoint)
   BrowseTrack:
                 FilterBy
                 Favorites

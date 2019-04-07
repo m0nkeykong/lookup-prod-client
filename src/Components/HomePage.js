@@ -151,13 +151,13 @@ class HomePage extends Component {
 
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
-getMiddlePoints(middlePoints){
+getWayPoints(wayPoints){
   let html=[];
-  console.log(`middlePoints: ${middlePoints}`);
+  console.log(`wayPoints: ${wayPoints}`);
 
-  if(middlePoints.length != 0){
-    for (let i = 0; i < middlePoints.length; i++) {
-      html.push({location: { lat: middlePoints[i].latitude, lng: middlePoints[i].longtitude }});
+  if(wayPoints.length != 0){
+    for (let i = 0; i < wayPoints.length; i++) {
+      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longitude }});
     }
   }
   return html;
@@ -225,9 +225,9 @@ render() {
 											// avoidHighways: Boolean,
 											// avoidTolls: Boolean,
 											// region: String
-                      origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                      destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                      waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                      origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
+                      destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
+                      waypoints: this.getWayPoints(this.props.track.wayPoints),
                       travelMode: this.props.track.type.toUpperCase() }}
                       callback={this.directionsCallback}
                     />
