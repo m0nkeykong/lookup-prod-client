@@ -9,21 +9,31 @@ class Header extends Component {
     active = {
         color: "white",
         fontWeight: "bold",
+
     };
     header = {
         listStyle: "none",
         display: "flex",
         justifyContent: "space-evenly"  
     };
+    logo = {
+        width: '40%',
+        height: '33px',
+        display: 'block',
+        margin: '0 auto',
+        marginTop: '8px'
+
+    }
 
     render() {
         return (
             <div className="container">
-                <div className="col-xs-12 col-md-6 offset-md-3">
-                    <NavLink to={`/homePage`} activeStyle={this.active} className="col-xs-12 col-md-6 offset-md-3 svgHover">
-                        <MdFace size={35} />
-                    </NavLink>
-                </div>
+                <NavLink to={`/homePage`} activeStyle={this.active} 
+                >
+                <img style={this.logo} src="/images/logo.PNG"></img>
+                </NavLink>
             </div>
 );}}
 export default Header;
+
+// <div style={{ backgroundImage: `url(./images/logo.PNG)`, margin: '0 auto', width: '100px', height: '100px', marginTop: '5px' }}></div>
