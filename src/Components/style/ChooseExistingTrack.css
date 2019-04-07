@@ -1,3 +1,7 @@
 body, html{
     padding: 2em;
 }
+
+.padding20px {
+    padding: 20px;
+}

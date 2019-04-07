@@ -35,11 +35,11 @@ class ChooseExistingTrack extends Component {
     // });
 
     e.preventDefault();
-    let city = this.state.city;
-    console.log("CITY:");
-    console.log(city);
+    let fromCity = this.state.from;
+    console.log("FROM:");
+    console.log(fromCity);
     // TODO: parse city to upper case and lower case:
-    fetch(getTracksByCityURL(city))
+    fetch(getTracksByCityURL(fromCity))
     .then((res) => {        
       return res.json();      
     }).then((data) => {        
@@ -138,21 +138,24 @@ class ChooseExistingTrack extends Component {
   }
 
   handleChange(event){
-    this.setState({city: event.target.value})
+    this.setState({ [event.target.name]: event.target.value})
   }
 
   render() {
     return (
-      <div className="container">
+      <div className="container padding20px">
         <div className ="row">
         <div className="col-12 p-md-4">
           <form onSubmit={this.onSubmit}>
             <div className="row">
               
             <div className="col bg-white rounded">
-              <label>City:
-              <input className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.city}/>
-          </label>
+              <label>From city:
+              <input className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
+            </label>
+            <label>To city:
+              <input className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
+            </label>
           </div>
           <div className="col bg-white rounded">
               <label>Type:</label>
