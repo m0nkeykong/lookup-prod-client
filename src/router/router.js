@@ -1,5 +1,6 @@
 import React from "react";
 import {Route} from "react-router-dom";
+import Header from "../Header";
 import SomePage from "../Components/SomePage";
 import AutoGenerateTrack from "../Components/AutoGenerateTrack";
 import ChooseExistingTrack from "../Components/ChooseExistingTrack";
@@ -20,6 +21,7 @@ import DirectionsPoint from "../Components/DirectionsPoints";
 const AppRouter = () =>{
   return(
     <React.Fragment>
+    <Header />
       <Route exact path="/" component={SomePage} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/homePage" component={HomePage} />
