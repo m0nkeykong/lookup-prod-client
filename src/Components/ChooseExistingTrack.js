@@ -69,7 +69,7 @@ class ChooseExistingTrack extends Component {
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
-          self.addTracks(json._id,json.title, json.type, json.comments); 
+          self.addTracks(json._id,json.title, json.type, json.comments, json.description); 
         })  
       } 
     })
@@ -90,7 +90,7 @@ class ChooseExistingTrack extends Component {
     // });
   }
 
-  addTracks(_id,_title,_type, _comments) {
+  addTracks(_id,_title,_type, _comments, _description) {
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -99,7 +99,8 @@ class ChooseExistingTrack extends Component {
           idOfTrack: _id,
           title: _title,
           type: _type,
-          comments: _comments
+          comments: _comments,
+          description: _description
       }]
     }))
   }
@@ -121,6 +122,14 @@ class ChooseExistingTrack extends Component {
     return html;
   }
 
+  getIconType(type){
+    if(type == 'Walking')
+      return <MdDirectionsWalk size={20} color="black" />;
+    else
+      return <IoAndroidBicycle size={20} color="black" />;
+     
+  }
+
   viewTracks(track,i) {
     if(track.title == ''){
       console.log("there are no tracks to display !");
@@ -131,19 +140,20 @@ class ChooseExistingTrack extends Component {
       )
     }
     else{
+     
       return (          
         <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-  
+              
               <NavLink to=
               //navigate to TrackDetails via TemplateComponent with the params
               {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} </h1>
-                <p style={{ textAlign:`center`}}>type: {track.type}</p>
+                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
+                <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
               </NavLink>
   
               <div>
@@ -167,7 +177,7 @@ class ChooseExistingTrack extends Component {
       var self=this;        
       data.map((json) => {   
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json._id,json.title, json.type, json.comments);        
+        self.addTracks(json._id,json.title, json.type, json.comments, json.description);        
           console.log(json);  
       })    // endOf data.map((data)  
     })

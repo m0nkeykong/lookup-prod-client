@@ -3,6 +3,8 @@ import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiBackspace from 'react-icons/lib/ti/backspace';
+import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
+import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import HomePage from './HomePage';
 import './style/TrackDetails.css'
 
@@ -38,14 +40,15 @@ class TrackDetails extends Component {
     }).then((data) => { 
       console.log("DATA:");
       console.log(data);       
-      var self=this;        
+      var self=this;      
+      console.log(`DESCRIPTIONL: ${data.track.description}`)  
       self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comments,
-        data.startPoint, data.endPoint, data.wayPoints);        
+        data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_startPoint, _endPoint, _wayPoints) {
+  addTrack(_id,_title,_type, _comments,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -58,6 +61,7 @@ class TrackDetails extends Component {
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
+          description: _description
       }]
     }))
   }
@@ -114,6 +118,14 @@ class TrackDetails extends Component {
     return html;
   }
 
+  getIconType(type){
+    if(type == 'Walking')
+      return <MdDirectionsWalk size={20} color="black" />;
+    else
+      return <IoAndroidBicycle size={20} color="black" />;
+     
+  }
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -137,16 +149,11 @@ class TrackDetails extends Component {
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title" style={{ textAlign:`center`, color: 'white'}}>{track.title} </h1>
-            <p style={{ textAlign:`center`, color: 'white'}}>type: {track.type}</p>
+            <h1 className="card-title" style={{ textAlign:`center`, color: 'white', marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
+            <p style={{ textAlign:`center`, color: 'white'}}>Description: <br></br>{track.description}</p>
               <p className="titles">comments: </p>
              <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
-             <p className="titles">start point: </p>
-             <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-             <p className="titles">end point: </p>
-             <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-             <p className="titles">middle points: </p>
-                <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
+             
             <div>
             </div>
           </TamplateComponent>
@@ -171,3 +178,11 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
+
+
+            // <p className="titles">start point: </p>
+            //  <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
+            //  <p className="titles">end point: </p>
+            //  <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
+            //  <p className="titles">middle points: </p>
+            //     <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
