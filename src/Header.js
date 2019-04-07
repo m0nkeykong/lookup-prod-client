@@ -18,7 +18,7 @@ class Header extends Component {
     };
     logo = {
         width: '40%',
-        height: '33px',
+        height: '40px',
         display: 'block',
         margin: '0 auto',
         marginTop: '8px'
