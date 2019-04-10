@@ -142,8 +142,8 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
-            <div className="row">
+        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
+            <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
               <NavLink to=
@@ -153,41 +153,14 @@ class ChooseExistingTrack extends Component {
                 activeStyle={this.active} 
                 className="" >
                 <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
-                <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
+                <p style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
-  
-
-              <div class="card text-center">
-                <img class="card-img-top" src="https://picsum.photos/1900/1080?image=231" alt="Card image cap"></img>
-                <div class="card-body">
-                  <h5 class="card-title">Title</h5>
-                 
-                  <a href="https://goo.gl/maps/drPW7JdCdy62"><address class="font-italic">Piazza del Colosseo, 1, 00184 Roma RM</address></a>
-                </div>
-                <div class="card-footer text-muted">
-                  <div class="row">
-                    <div class="col">
-                      <a href=""><i class="fas fa-map"></i></a>
-                    </div>
-                    <div class="col">
-                      <a href="mailto:test@test.com"><i class="fas fa-envelope"></i></a>
-                    </div>
-                    <div class="col">
-                      <a href="tel:+123456789"><i class="fas fa-phone"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-
-
-
 
               <div>
                 <p>comments: </p>
                 <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
               </div>
-              
+
               </TamplateComponent>
           </div>
           
@@ -251,7 +224,7 @@ class ChooseExistingTrack extends Component {
         
           <div className="w-100 mb-md-4"></div>
           <div className="col-12 mx-auto">
-            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0">search tracks</button>
+            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0" style={{backgroundColor:'black', color:'#68e8db'}}>search tracks</button>
           </div>
 
             </div>

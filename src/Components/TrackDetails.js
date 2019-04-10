@@ -195,7 +195,7 @@ class TrackDetails extends Component {
       {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
         idOfTrack: track.idOfTrack}}
         activeStyle={this.active} 
-        style={{backgroundColor:'black'}}
+        style={{backgroundColor:'black', color:'#68e8db'}}
         className="btn float-right" >Start Navigator</NavLink>
 
         <NavLink to=
