@@ -28,7 +28,7 @@ class Header extends Component {
     render() {
         return (
             <div className="container">
-                <NavLink to={`/homePage`} activeStyle={this.active} 
+                <NavLink to={`/login`} activeStyle={this.active} 
                 >
                 <img style={this.logo} src="/images/logo.PNG"></img>
                 </NavLink>
