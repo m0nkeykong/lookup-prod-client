@@ -62,7 +62,8 @@ class Login extends Component {
             <div >
             <NotificationContainer />
                 <div style={{ backgroundImage: `url(./images/logo.PNG)`, backgroundSize: 'cover', margin: '0 auto', width: '382px', height: '133px', marginTop: '130px' }}>
-                </div><p style={{ marginTop: '50px' }}></p>
+                </div>
+                <p style={{ marginTop: '50px' }}></p>
                 <div className="d-flex justify-content-center">
                     <GoogleLogin
                         render={renderProps => (

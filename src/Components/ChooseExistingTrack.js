@@ -142,7 +142,7 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
+        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
@@ -153,14 +153,14 @@ class ChooseExistingTrack extends Component {
                 activeStyle={this.active} 
                 className="" >
                 <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
-                <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
+                <p style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
-  
+
               <div>
                 <p>comments: </p>
                 <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
               </div>
-              
+
               </TamplateComponent>
           </div>
           
@@ -224,7 +224,7 @@ class ChooseExistingTrack extends Component {
         
           <div className="w-100 mb-md-4"></div>
           <div className="col-12 mx-auto">
-            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0">search tracks</button>
+            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0" style={{backgroundColor:'black', color:'#68e8db'}}>search tracks</button>
           </div>
 
             </div>
@@ -256,3 +256,46 @@ export default ChooseExistingTrack;
 
 // <input className="float-left" type="radio" ref="walking" name="walking" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.walking} /> 
 // <input className="float-left" type="radio" ref="bicycling" name="bicycling" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.bicycling} /> 
+
+
+
+
+
+// viewTracks(track,i) {
+//   if(track.title == ''){
+//     console.log("there are no tracks to display !");
+//     return (
+//       <div>
+//         <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
+//       </div>
+//     )
+//   }
+//   else{
+   
+//     return (          
+//       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
+//           <div className="">
+//             <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
+            
+//             <NavLink to=
+//             //navigate to TrackDetails via TemplateComponent with the params
+//             {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+//               idOfTrack: track.idOfTrack}}
+//               activeStyle={this.active} 
+//               className="" >
+//               <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
+//               <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
+//             </NavLink>
+
+//             <div>
+//               <p>comments: </p>
+//               <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
+//             </div>
+            
+//             </TamplateComponent>
+//         </div>
+        
+//       </div>
+//     )
+//   }
+// }
