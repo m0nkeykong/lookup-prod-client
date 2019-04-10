@@ -5,11 +5,11 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-import '../Components/style/HomePage.css';
+import './css/Map.css';
 import {getGoogleApiKey} from '../globalVariables';
 
 
-class HomePage extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     
@@ -30,7 +30,7 @@ class HomePage extends Component {
 
     this.directionsCallback = this.directionsCallback.bind(this);
 
-    this.newLocation = document.getElementById('root');
+    this.newLocation = document.getElementById('locationUpdate');
   }
 
   onLoadScriptSuccess(){
@@ -50,22 +50,22 @@ class HomePage extends Component {
   }
 
   // Remember to replace this method because UNSAFE
-  componentWillMount() {
+  componentDidMount() {
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
-		console.log(userid);
+		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
 		this.onLoadPosition();
 
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
       .then(response => {
-        this.setState({ loading: true });
-        this.setState({userDetails: response.data});
+				this.setState({userDetails: response.data});
         this.onLoadPosition();
+        this.setState({ loading: true });
 
         console.log(response.data);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
     // NotificationManager.info(message, title, timeOut, callback, priority);
     // NotificationManager.success(message, title, timeOut, callback, priority);
@@ -83,8 +83,16 @@ class HomePage extends Component {
 		if (this.state.response === null) {
 			if (response !== null) {
 				if (response.status === 'OK') {
+          this.newElement2 = document.createElement('p');
 					console.log(response.routes[0]);
 					response.routes[0].legs.forEach(leg => {
+            this.newElement2.innerHTML = `<b>Route Segment: </b><br> 
+                                            From: ${leg.start_address},<br>
+                                            To: ${leg.end_address}.<br> 
+                                            Total Distance: ${leg.distance.value}m,<br>
+                                            Estimated Duration: ${leg.duration.text},<br>
+                                            Travel Mode: ${this.props.track.travelMode}.`;
+            this.newLocation.appendChild(this.newElement2);
             console.log(leg);
           })
 					this.setState(
@@ -93,7 +101,7 @@ class HomePage extends Component {
 						})
 					)
 				} else {
-					console.log('response === null');
+					console.error('response === null');
 				}
 			}
 		}
@@ -113,6 +121,7 @@ class HomePage extends Component {
         let lng = parseFloat(pos.coords.longitude);
         
         this.setState({ CurrentPosition: { lat: lat, lng: lng } });
+        console.log(`Current Position: `);
         console.log(this.state.CurrentPosition);
 
         // Check Position Update 
@@ -120,25 +129,26 @@ class HomePage extends Component {
           let lat = parseFloat(pos.coords.latitude);
           let lng = parseFloat(pos.coords.longitude);
 					if (lat === this.state.UpdatedPosition.lat && lng === this.state.UpdatedPosition.lng) return;
-					if (pos.timestamp === this.state.timestamp ) return;
+          if (pos.timestamp === this.state.timestamp ) return;
+          
 					// if (pos.coords.accuracy < 100) navigator.geolocation.clearWatch(this.watchID);
 					this.setState({ timestamp: pos.timestamp});
           this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
 
           // Create new 'p' elemnt to print updated location
-          let newElement = document.createElement('p');
-					newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${ pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          this.newLocation.appendChild(newElement);
+          this.newElement = document.createElement('p');
+          this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          
+          this.newLocation.appendChild(this.newElement);
           console.log("watching");
         }, (err) => {
-          console.warn(`ERROR(${err.code}): ${err.message}`);
+          console.error(`ERROR(${err.code}): ${err.message}`);
         }, options);
       }, (err) => {
-        console.log(this.state.CurrentPosition.lat);
-        console.warn(`ERROR(${err.code}): ${err.message}`);
+        console.error(`ERROR(${err.code}): ${err.message}`);
       }, options);
     }
     else {
-      console.log("Geolocation API not supported.")
+      console.warn("Geolocation API not supported.")
     }
   }
 
@@ -173,7 +183,7 @@ render() {
           // border: '2px solid red',
           height: "400px",
           maxWidth: "90%"}}>
-        {loading ? 
+        {this.state.loading ? 
           (<div className="load-container">
           <LoadScript
           id="script-loader"
@@ -201,10 +211,12 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-						zoom={18}>
+						zoom={10}>
 						
               <Marker
-                  position={this.state.UpdatedPosition}>
+                  position={this.state.UpdatedPosition}
+                  icon={'/images/map-marker-icon3.png'}
+                  >
               </Marker>
                 {
 									(
@@ -225,10 +237,23 @@ render() {
 											// avoidHighways: Boolean,
 											// avoidTolls: Boolean,
 											// region: String
-                      origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                      destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                      waypoints: this.getWayPoints(this.props.track.wayPoints),
-                      travelMode: this.props.track.type.toUpperCase() }}
+                      // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
+                      // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
+                      // waypoints: this.getWayPoints(this.props.track.wayPoints),
+                      // travelMode: this.props.track.type.toUpperCase() }}
+                      // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                      // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                      origin: this.props.track.startPoint,
+                      destination: this.props.track.endPoint,
+                      // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                      // travelMode: this.props.track.type.toUpperCase() }}
+                      travelMode: this.props.track.travelMode,
+                      drivingOptions: {
+                        departureTime: new Date(Date.now()),
+                        trafficModel: 'bestguess' 
+                      },
+                      optimizeWaypoints: true
+                    }}
                       callback={this.directionsCallback}
                     />
                   )
@@ -253,4 +278,4 @@ render() {
 }
 
 
-export default HomePage;
+export default Map;

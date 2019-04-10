@@ -5,8 +5,9 @@ import { NavLink , Link} from "react-router-dom";
 import TiBackspace from 'react-icons/lib/ti/backspace';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import HomePage from './HomePage';
+// import HomePage from './HomePage';
 // import $ from 'jquery';
+import Map from './Map';
 import './style/TrackDetails.css'
 
 
@@ -218,7 +219,7 @@ class TrackDetails extends Component {
             </div>
           </TamplateComponent>
           <div>
-            <HomePage track={track}></HomePage>
+            <Map track={track}></Map>
           </div>
         </div>
       </div>
