@@ -1,6 +1,11 @@
 import * as consts from './consts';
 
-const trackOriginURL = 'http://localhost:3000/track/';
+const ENVIROMENTS = {
+    DEV: `http://localhost:3000/track/`,
+    PROD: `http://99.80.143.62:3000/track/`
+}
+
+const trackOriginURL = ENVIROMENTS.DEV;
 
 export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
     return `${trackOriginURL}getTrackById/${trackId}`;

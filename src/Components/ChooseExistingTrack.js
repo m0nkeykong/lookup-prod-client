@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import TamplateComponent from './TemplateComponent'
+import './style/AutoGenerateTrack.css';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
-import './style/ChooseExistingTrack.css'
 import { NavLink , Link} from "react-router-dom";
+import ReactDOM from 'react-dom';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiBackspace from 'react-icons/lib/ti/backspace';
-import HomePage from './HomePage';
+import Map from './Map';
 import './style/TrackDetails.css'
 
 
@@ -151,7 +151,7 @@ class TrackDetails extends Component {
             </div>
           </TamplateComponent>
           <div>
-            <HomePage track={track}></HomePage>
+            <Map track={track}></Map>
           </div>
         </div>
       </div>

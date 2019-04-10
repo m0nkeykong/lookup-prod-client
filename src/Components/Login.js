@@ -33,7 +33,7 @@ class Login extends Component {
                 console.log(`User ${response.data.email} successfully looged in.`);
                 // console.log(response);
                 sessionStorage.setItem('userDetails', JSON.stringify(response.data._id));
-                this.props.history.push('/homePage');
+                this.props.history.push('/auto');
             }
         })
         .catch(error => {

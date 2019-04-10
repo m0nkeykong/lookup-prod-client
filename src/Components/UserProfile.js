@@ -5,11 +5,11 @@
 // import 'react-notifications/lib/notifications.css';
 // import { BeatLoader } from 'react-spinners';
 // import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-// import '../Components/style/HomePage.css';
+// import '../Components/style/Map.css';
 // import {getGoogleApiKey} from '../globalVariables';
 
 
-// class HomePage extends Component {
+// class Map extends Component {
 //   constructor(props) {
 //     super(props);
     
@@ -270,7 +270,7 @@
 // }
 
 
-// export default HomePage;
+// export default Map;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
