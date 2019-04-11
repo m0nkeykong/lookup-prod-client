@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api'
-import {getGoogleApiKey} from '../globalVariables';
+import {getGoogleApiKey} from '../globalService';
 
 
 class DirectionsPoints extends Component {

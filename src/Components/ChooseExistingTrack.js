@@ -3,7 +3,7 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import {getAllTracksURL, getTracksByCityURL} from '../globalVariables'
+import {getAllTracksURL, getTracksByCityURL} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
 
 class ChooseExistingTrack extends Component {
