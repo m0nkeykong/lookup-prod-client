@@ -6,7 +6,7 @@ import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import './css/Map.css';
-import {getGoogleApiKey} from '../globalVariables';
+import {getGoogleApiKey} from '../globalService';
 
 
 class Map extends Component {

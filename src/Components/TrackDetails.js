@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL} from '../globalVariables';
+import {getTrackByIdURL} from '../globalService';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiBackspace from 'react-icons/lib/ti/backspace';
