@@ -19,7 +19,7 @@ class AutoGenerateTrack extends Component {
       track: {
         startPoint: null,
         endPoint: null,
-        middlePoints: null,
+        wayPoints: null,
         travelMode: null
       }
     }
@@ -120,13 +120,13 @@ class AutoGenerateTrack extends Component {
           // track: [...prevState, {
           //   startPoint: this.origin.value,
           //   endPoint:  this.destination.value,
-          //   middlePoints: null,
+          //   wayPoints: null,
           //   travelMode: this.state.travelMode
           // }]
           track: {
             startPoint: this.origin.value,
             endPoint:  this.destination.value,
-            middlePoints: null,
+            wayPoints: null,
             travelMode: this.state.travelMode
           }
         }), () => {
@@ -175,7 +175,7 @@ class AutoGenerateTrack extends Component {
         const trackObj = {
           startPoint: this.startPoint,
           endPoint: this.endPoint,
-          middlePoint: this.middlePoints.length > 0 ? {...this.middlePoints} : [],
+          middlePoint: this.wayPoints.length > 0 ? {...this.wayPoints} : [],
           type: this.state.travelMode,
           // @TODO: Validate unique title
           title: `User route ` + Math.random(9999999999),
@@ -300,7 +300,7 @@ class AutoGenerateTrack extends Component {
 
               <Row>
                 <Col>
-                  <Form.Group as={Row} controlId="ORIGIN">
+                  <Form.Group as={Row} controlId="DESTINATION">
                     <Form.Control type="Text" placeholder="Destination" ref={this.getDestination} />
                   </Form.Group>
                 </Col>

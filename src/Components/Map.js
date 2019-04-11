@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
 import './css/Map.css';
 import {getGoogleApiKey} from '../globalVariables';
 
@@ -161,13 +161,13 @@ class Map extends Component {
 
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
-getMiddlePoints(middlePoints){
+getWayPoints(wayPoints){
   let html=[];
-  console.log(`middlePoints: ${middlePoints}`);
+  console.log(`wayPoints: ${wayPoints}`);
 
-  if(middlePoints.length != 0){
-    for (let i = 0; i < middlePoints.length; i++) {
-      html.push({location: { lat: middlePoints[i].latitude, lng: middlePoints[i].longtitude }});
+  if(wayPoints.length != 0){
+    for (let i = 0; i < wayPoints.length; i++) {
+      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longtitude }});
     }
   }
   return html;
@@ -199,7 +199,7 @@ render() {
             id='example-map'
             onLoad={this.onGoogleMapSuccess}
             center={this.state.CurrentPosition}
-            clickableIcons={true}
+            // clickableIcons={true}
             mapContainerStyle={{
               margin: "0 auto",
               height: "400px",
@@ -211,8 +211,10 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-						zoom={10}>
-						
+            zoom={10}>
+            
+           
+
               <Marker
                   position={this.state.UpdatedPosition}
                   icon={'/images/map-marker-icon3.png'}
@@ -241,7 +243,7 @@ render() {
                       // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
                       origin: this.props.track.startPoint,
                       destination: this.props.track.endPoint,
-                      // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                      waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
                       // travelMode: this.props.track.type.toUpperCase() }}
                       travelMode: this.props.track.travelMode,
                       drivingOptions: {

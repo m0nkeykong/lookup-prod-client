@@ -14,7 +14,7 @@ class TrackDetails extends Component {
       tracks: [],
       startPoint: [],
       endPoint: [],
-      middlePoints: []
+      wayPoints: []
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -40,12 +40,12 @@ class TrackDetails extends Component {
       console.log(data);       
       var self=this;        
       self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment,
-        data.startPoint, data.endPoint, data.middlePoints);        
+        data.startPoint, data.endPoint, data.wayPoints);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comment,_startPoint, _endPoint, _middlePoints) {
+  addTrack(_id,_title,_type, _comment,_startPoint, _endPoint, _wayPoints) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -57,7 +57,7 @@ class TrackDetails extends Component {
           comment: _comment,
           startPoint:_startPoint,
           endPoint:_endPoint,
-          middlePoints:_middlePoints,
+          wayPoints:_wayPoints,
       }]
     }))
   }
@@ -100,15 +100,15 @@ class TrackDetails extends Component {
     return html;
   }
 
-  getMiddlePoints(middlePoints){
+  getWayPoints(wayPoints){
     let html=[];
-    console.log(`middlePoints: ${middlePoints}`);
+    console.log(`wayPoints: ${wayPoints}`);
 
-    if(middlePoints.length != 0){
-      for (let i = 0; i < middlePoints.length; i++) {
+    if(wayPoints.length != 0){
+      for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
-        html.push(<p>	&#8227; &#9;latitude: {middlePoints[i].latitude}</p>)
-        html.push(<p>	&#8227; &#9;longitude: {middlePoints[i].longtitude}</p>)
+        html.push(<p>	&#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
+        html.push(<p>	&#8227; &#9;longitude: {wayPoints[i].longtitude}</p>)
       }
     }
     return html;
@@ -146,7 +146,7 @@ class TrackDetails extends Component {
              <p className="titles">end point: </p>
              <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
              <p className="titles">middle points: </p>
-                <p style={{fontSize:'10px'}}>{this.getMiddlePoints(track.middlePoints)}</p>
+                <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
             <div>
             </div>
           </TamplateComponent>
