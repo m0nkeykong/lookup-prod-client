@@ -3,7 +3,7 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import {getAllTracksURL, getTracksByCityURL} from '../globalService'
+import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
 
 class ChooseExistingTrack extends Component {
@@ -185,6 +185,14 @@ class ChooseExistingTrack extends Component {
 
   componentDidMount(){
     this.getAllTracks();
+
+    let data = {city:"Kfar Saba", latitude:100, longitude:100 };
+    console.log("DATA:");
+    console.log(data);
+    console.log(JSON.stringify(data));
+    var res = PostRequest('point/insertPoint',data);
+    console.log("response:");
+    console.log(res);
   }
 
   handleChange(event){
