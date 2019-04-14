@@ -28,6 +28,7 @@ class Map extends Component {
     this.onGoogleMapSuccess = this.onGoogleMapSuccess.bind(this);
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
+    this.onPolylineComplete = this.onPolylineComplete.bind(this);
     this.directionsCallback = this.directionsCallback.bind(this);
 
     this.newLocation = document.getElementById('locationUpdate');
@@ -173,6 +174,10 @@ getWayPoints(wayPoints){
   return html;
 }
 
+onPolylineComplete = (polyline) => {
+  console.log(polyline.getPath().getArray());
+}
+
 render() {
   const {loading} = this.state;
   // const {loading} = true;
@@ -186,13 +191,14 @@ render() {
         {this.state.loading ? 
           (<div className="load-container">
           <LoadScript
-          id="script-loader"
-          googleMapsApiKey={getGoogleApiKey()}
-          onError={this.onLoadScriptError}
-          onLoad={this.onLoadScriptSuccess}
-          language="English"
-          version="3.36"
-          region="US"
+            id="script-loader"
+            googleMapsApiKey={getGoogleApiKey()}
+            onError={this.onLoadScriptError}
+            onLoad={this.onLoadScriptSuccess}
+            language="English"
+            version="3.36"
+            region="US"
+              libraries={["drawing" ]}
           >
           <div className="map-container">
             <GoogleMap
@@ -212,7 +218,12 @@ render() {
             //   options={}
 						// Max Zoom: 0 to 18
             zoom={10}>
-            
+              <DrawingManager
+                onLoad={drawingManager => {
+                  console.log(drawingManager)
+                }}
+                onPolylineComplete={this.onPolylineComplete}
+              />
            
 
               <Marker
