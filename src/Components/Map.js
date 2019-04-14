@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
 import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 
@@ -28,6 +28,7 @@ class Map extends Component {
     this.onGoogleMapSuccess = this.onGoogleMapSuccess.bind(this);
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
+    this.onPolylineComplete = this.onPolylineComplete.bind(this);
     this.directionsCallback = this.directionsCallback.bind(this);
 
     this.newLocation = document.getElementById('locationUpdate');
@@ -173,6 +174,10 @@ getWayPoints(wayPoints){
   return html;
 }
 
+onPolylineComplete = (polyline) => {
+  console.log(polyline.getPath().getArray());
+}
+
 render() {
   const {loading} = this.state;
   // const {loading} = true;
@@ -186,20 +191,21 @@ render() {
         {this.state.loading ? 
           (<div className="load-container">
           <LoadScript
-          id="script-loader"
-          googleMapsApiKey={getGoogleApiKey()}
-          onError={this.onLoadScriptError}
-          onLoad={this.onLoadScriptSuccess}
-          language="English"
-          version="3.36"
-          region="US"
+            id="script-loader"
+            googleMapsApiKey={getGoogleApiKey()}
+            onError={this.onLoadScriptError}
+            onLoad={this.onLoadScriptSuccess}
+            language="English"
+            version="3.36"
+            region="US"
+              libraries={["drawing" ]}
           >
           <div className="map-container">
             <GoogleMap
             id='example-map'
             onLoad={this.onGoogleMapSuccess}
             center={this.state.CurrentPosition}
-            clickableIcons={true}
+            // clickableIcons={true}
             mapContainerStyle={{
               margin: "0 auto",
               height: "400px",
@@ -211,8 +217,15 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-						zoom={10}>
-						
+            zoom={10}>
+              <DrawingManager
+                onLoad={drawingManager => {
+                  console.log(drawingManager)
+                }}
+                onPolylineComplete={this.onPolylineComplete}
+              />
+           
+
               <Marker
                   position={this.state.UpdatedPosition}
                   icon={'/images/map-marker-icon3.png'}
@@ -245,7 +258,7 @@ render() {
                       // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
                       origin: this.props.track.startPoint,
                       destination: this.props.track.endPoint,
-                      // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                      waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
                       // travelMode: this.props.track.type.toUpperCase() }}
                       travelMode: this.props.track.travelMode,
                       drivingOptions: {
