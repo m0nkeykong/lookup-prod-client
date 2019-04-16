@@ -17,7 +17,8 @@ class TrackDetails extends Component {
       tracks: [],
       startPoint: [],
       endPoint: [],
-      wayPoints: []
+      wayPoints: [],
+      comments: []
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -32,7 +33,7 @@ class TrackDetails extends Component {
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
-    this.getTrackById(idOfTrack);
+    this.getTrackById("5ca9d94c87d03b340f708ffd");
   }
 
   getTrackById(trackId){
@@ -43,8 +44,7 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      console.log(`DESCRIPTIONL: ${data.track.description}`)  
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comments,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
@@ -81,7 +81,41 @@ class TrackDetails extends Component {
     console.log(comments);
     // Outer loop to create parent
     for (let i = 0; i < comments.length; i++) {
-      html.push(<p>	&#8227; &#9;{comments[i]}</p>)
+      // html.push(<p>	&#8227; &#9;{comments[i].comment}</p>)
+      // html.push( 
+      //   <div>
+      //     <img class="float-left img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
+      //     <div class="float-right">
+      //       <div class="well well-lg">
+      //           <h6 class="media-heading text-uppercase reviews">Marco </h6>
+      //           <p class="media-comment">
+      //             Great snippet! Thanks for sharing.
+      //           </p>
+      //       </div>              
+      //     </div> 
+      //   </div>
+      // );
+
+      html.push(
+        // <div class="comment-tabs">           
+            // <div class="tab-content">
+                    <ul class="media-list">
+                      <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h5 class="media-heading text-uppercase reviews">Marco</h5>
+                              <p class="media-comment">
+                                Great snippet! Thanks for sharing.
+                              </p>
+                          </div>              
+                        </div>
+                      </li> 
+                    </ul> 
+                
+      );
     }
     return html;
   }
@@ -128,62 +162,6 @@ class TrackDetails extends Component {
      
   }
 
-  // rating(){
-  
-  //     /* 1. Visualizing things on Hover - See next part for action on click */
-  //     $('#stars li').on('mouseover', function(){
-  //       var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-       
-  //       // Now highlight all the stars that's not after the current hovered star
-  //       $(this).parent().children('li.star').each(function(e){
-  //         if (e < onStar) {
-  //           $(this).addClass('hover');
-  //         }
-  //         else {
-  //           $(this).removeClass('hover');
-  //         }
-  //       });
-        
-  //     }).on('mouseout', function(){
-  //       $(this).parent().children('li.star').each(function(e){
-  //         $(this).removeClass('hover');
-  //       });
-  //     });
-      
-      
-  //     /* 2. Action to perform on click */
-  //     $('#stars li').on('click', function(){
-  //       var onStar = parseInt($(this).data('value'), 10); // The star currently selected
-  //       var stars = $(this).parent().children('li.star');
-        
-  //       for (let i = 0; i < stars.length; i++) {
-  //         $(stars[i]).removeClass('selected');
-  //       }
-        
-  //       for (let i = 0; i < onStar; i++) {
-  //         $(stars[i]).addClass('selected');
-  //       }
-        
-  //       // JUST RESPONSE (Not needed)
-  //       var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
-  //       var msg = "";
-  //       if (ratingValue > 1) {
-  //           msg = "Thanks! You rated this " + ratingValue + " stars.";
-  //       }
-  //       else {
-  //           msg = "We will improve ourselves. You rated this " + ratingValue + " stars.";
-  //       }
-  //       responseMessage(msg);
-        
-  //     });
-      
-  //   function responseMessage(msg) {
-  //     $('.success-box').fadeIn(200);  
-  //     $('.success-box div.text-message').html("<span>" + msg + "</span>");
-  //   }
-
-  // }
-
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -210,12 +188,8 @@ class TrackDetails extends Component {
             <h1 className="card-title" style={{ textAlign:`center`, color: 'white', marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
             <p style={{ textAlign:`center`, color: 'white'}}>Description: <br></br>{track.description}</p>
               <p className="titles">comments: </p>
-             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
-             
-            <div>
-              <p className="titles">comments: </p>
-
-            </div>
+             <p style={{fontSize:'10px'}}>{this.getComments(track.comments)}</p>
+           
           </TamplateComponent>
           <div>
             <HomePage track={track}></HomePage>
