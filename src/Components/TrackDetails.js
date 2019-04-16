@@ -97,24 +97,21 @@ class TrackDetails extends Component {
       // );
 
       html.push(
-        // <div class="comment-tabs">           
-            // <div class="tab-content">
-                    <ul class="media-list">
-                      <li class="media">
-                        <a class="pull-left" href="#">
-                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
-                        </a>
-                        <div class="media-body">
-                          <div class="well well-lg">
-                              <h5 class="media-heading text-uppercase reviews">Marco</h5>
-                              <p class="media-comment">
-                                Great snippet! Thanks for sharing.
-                              </p>
-                          </div>              
-                        </div>
-                      </li> 
-                    </ul> 
-                
+        <ul class="media-list">
+          <li class="media">
+            <a class="pull-left" href="#">
+              <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
+            </a>
+            <div class="media-body">
+              <div class="well well-lg">
+                  <h5 class="media-heading text-uppercase reviews">Marco</h5>
+                  <p class="media-comment">
+                    Great snippet! Thanks for sharing.
+                  </p>
+              </div>              
+            </div>
+          </li> 
+        </ul> 
       );
     }
     return html;
