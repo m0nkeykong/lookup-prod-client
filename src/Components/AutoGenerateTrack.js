@@ -130,6 +130,7 @@ class AutoGenerateTrack extends Component {
             travelMode: this.state.travelMode
           }
         }), () => {
+          console.log("TRACK:");
           console.log(this.state.track);
         }
       )
