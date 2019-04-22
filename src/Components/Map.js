@@ -32,6 +32,8 @@ class Map extends Component {
     this.directionsCallback = this.directionsCallback.bind(this);
 
     this.newLocation = document.getElementById('locationUpdate');
+
+    this.mode = ["drawing"];
   }
 
   onLoadScriptSuccess(){
@@ -180,6 +182,7 @@ onPolylineComplete = (polyline) => {
 
 render() {
   const {loading} = this.state;
+
   // const {loading} = true;
 
     return (
@@ -198,7 +201,7 @@ render() {
             language="English"
             version="3.36"
             region="US"
-              libraries={["drawing" ]}
+              libraries={this.mode}
           >
           <div className="map-container">
             <GoogleMap
