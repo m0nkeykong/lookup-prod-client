@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
-// import './style/AutoGenerateTrack.css';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
-import ReactDOM from 'react-dom';
-
+import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { BeatLoader } from 'react-spinners';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: [],
+      userDetails: [],
       type: ''
     }
 
@@ -205,9 +205,9 @@ class ChooseExistingTrack extends Component {
 
   render() {
     return (
-      <div className="container padding20px">
-        <div className ="row">
-        <div className="col-12 p-md-4">
+      <div>
+
+        
           <form onSubmit={this.onSubmit}>
             <div className="row">
               
@@ -240,73 +240,14 @@ class ChooseExistingTrack extends Component {
 
             </div>
           </form>
+            <div className="w-100 mb-md-4 pt-3"></div>
+            <div className="col-12 mx-auto">
+                {this.state.tracks.map(this.viewTracks)}
+            </div>
         </div>
-        
-        <div className="w-100 mb-md-4 pt-3"></div>
-          <div className="col-12 mx-auto">
-              {this.state.tracks.map(this.viewTracks)}
-		      </div>
-        </div>
-      </div>
     );
   }
 }
 
 
 export default ChooseExistingTrack;
-
-// <input className="float-left" type="radio" name="option" id="walking" autocomplete="off" checked onChange={this.handleChange} value={this.state.type1} /> 
-// 
-
-// <input className="float-left" type="checkbox" ref="walking" name="walking" onChange={this.onChange} value={this.state.walking} aria-label="..."/>
-// <input className="float-left" type="checkbox" ref="bicycling" name="bicycling" onChange={this.onChange} value={this.state.bicycling} aria-label="..."/>
-
-// <label> Difficulty level:
-//               <input required className="mt-2 form-control float-left" type="number" name="difficulty" min="1" max="5" onChange={this.handleChange} value={this.state.difficulty}></input>
-//             </label>
-
-// <input className="float-left" type="radio" ref="walking" name="walking" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.walking} /> 
-// <input className="float-left" type="radio" ref="bicycling" name="bicycling" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.bicycling} /> 
-
-
-
-
-
-// viewTracks(track,i) {
-//   if(track.title == ''){
-//     console.log("there are no tracks to display !");
-//     return (
-//       <div>
-//         <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
-//       </div>
-//     )
-//   }
-//   else{
-   
-//     return (          
-//       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
-//           <div className="">
-//             <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-            
-//             <NavLink to=
-//             //navigate to TrackDetails via TemplateComponent with the params
-//             {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-//               idOfTrack: track.idOfTrack}}
-//               activeStyle={this.active} 
-//               className="" >
-//               <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
-//               <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
-//             </NavLink>
-
-//             <div>
-//               <p>comments: </p>
-//               <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
-//             </div>
-            
-//             </TamplateComponent>
-//         </div>
-        
-//       </div>
-//     )
-//   }
-// }
