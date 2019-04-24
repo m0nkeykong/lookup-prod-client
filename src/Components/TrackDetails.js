@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import {getTrackByIdURL} from '../globalService';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
-import TiBackspace from 'react-icons/lib/ti/backspace';
+import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import HomePage from './HomePage';
+import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { BeatLoader } from 'react-spinners';
+
 // import $ from 'jquery';
 import './style/TrackDetails.css'
 
@@ -16,6 +19,7 @@ class TrackDetails extends Component {
     this.state = {
       tracks: [],
       startPoint: [],
+      userDetails: [],
       endPoint: [],
       wayPoints: [],
       comments: []
@@ -167,23 +171,26 @@ class TrackDetails extends Component {
            
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
-      {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+      {{pathname: `${process.env.PUBLIC_URL}/choose`, 
         idOfTrack: track.idOfTrack}}
-        activeStyle={this.active} 
-        style={{backgroundColor:'black', color:'#68e8db'}}
-        className="btn float-right" >Start Navigator</NavLink>
-
+        style={{float:'left', verticalAlign:'baseline',padding:'16px'}}
+        activeStyle={this.active}>
+        <TiArrowBackOutline size={29} color='black'/> </NavLink>
+        
+      <div className="col-10 p-md-4">
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/choose`, 
+        {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
           idOfTrack: track.idOfTrack}}
-          activeStyle={this.active}>
-          <TiBackspace size={29} color='black'/> </NavLink>
+          activeStyle={this.active} 
+          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+          className="btn btn-primary" >Start Navigator</NavLink>
+      </div>
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title" style={{ textAlign:`center`, color: 'white', marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
-            <p style={{ textAlign:`center`, color: 'white'}}>Description: <br></br>{track.description}</p>
+            <h1 className="card-title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
+            <p style={{ textAlign:`center`}}>Description: <br></br>{track.description}</p>
               <p className="titles">comments: </p>
              <p style={{fontSize:'10px'}}>{this.getComments(track.comments)}</p>
            
@@ -196,12 +203,71 @@ class TrackDetails extends Component {
     )
   }
 
+  // <Card.Body>
+  //           <Card.Title>
+  //             <h6> Choose Origin and Destination </h6>
+  //          </Card.Title>
+  //         </Card.Body>
+
   render() {
+    
     return (
-      <div className="container half-black">
-        <div className ="row padding2em">
+      <div>
+        <Card className="text-center">
+
+          <Card.Header>
+            <Navbar collapseOnSelect expand="lg">
+
+              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
+                {this.state.userDetails.profilePicture ?
+                  (
+                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
+                  )
+                  :
+                  (
+                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+                  )
+                }
+              </Navbar.Brand>
+
+              <Navbar.Brand href="#name" style={{ float: 'center' }}>
+                {this.state.userDetails.name ?
+                  (
+                    <div>
+                      <p>{this.state.userDetails.name}</p>
+                    </div>
+                  )
+                  :
+                  (
+                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+                  )
+                }
+              </Navbar.Brand>
+
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link href="#profile">View Profile</Nav.Link>
+                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
+                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
+                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
+                  <Nav.Link href="#about">About</Nav.Link>
+                  <Nav.Link href="#contact">Contact us</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+
+            </Navbar>
+          </Card.Header>
           {this.state.tracks.map(this.viewTrack)}
-        </div>
+          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
+        </Card>
       </div>
     );
   }
