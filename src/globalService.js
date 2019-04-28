@@ -15,6 +15,7 @@ export function getAllTracksURL(){
 }
 
 export function getTracksByCityURL(fromCity,toCity,type){
+  console.log(`${trackOriginURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`);
     return `${trackOriginURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`;
 }
 
