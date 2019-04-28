@@ -35,8 +35,7 @@ class TrackDetails extends Component {
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
-    // this.getTrackById("5ca9d94c87d03b340f708ffd");
-    this.getTrackById(idOfTrack);
+    this.getTrackById("5ca9d94c87d03b340f708ffd");
   }
 
   getTrackById(trackId){
@@ -94,7 +93,7 @@ class TrackDetails extends Component {
             </a>
             <div class="media-body">
               <div class="well well-lg">
-                  <h5 class="media-heading text-uppercase nameTitle">Marco</h5>
+                  <h5 class="media-heading text-uppercase reviews">Marco</h5>
                   <p class="media-comment">
                     {comments[i].comment}
                   </p>
@@ -154,19 +153,16 @@ class TrackDetails extends Component {
     console.log(track);
     return (          
       <div key={'container'+i}>
-
-        <div className="col-10 p-md-4">
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-          activeStyle={this.active} 
-          style={{padding:'6px', verticalAlign:'baseline'}}
-          className="tring" >
-          <TiArrowBackOutline size={29} color='black'/></NavLink>
-      </div>
-
-
-      <div className="col-10" style={{margin:'auto'}}>
+           
+      <NavLink to=
+      //navigate to TrackDetails via TemplateComponent with the params
+      {{pathname: `${process.env.PUBLIC_URL}/choose`, 
+        idOfTrack: track.idOfTrack}}
+        style={{float:'left', verticalAlign:'baseline',padding:'16px'}}
+        activeStyle={this.active}>
+        <TiArrowBackOutline size={29} color='black'/> </NavLink>
+        
+      <div className="col-10 p-md-4">
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
@@ -179,51 +175,11 @@ class TrackDetails extends Component {
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
-            <p className="descriptionTrack"><br></br>{track.description}</p>
-
-              <div class="row">
-                <div class="col-sm-10 col-sm-offset-1" id="logout">
-                    
-                    <div class="comment-tabs">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
-                        </ul>            
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments)}
-                            </div>     
-                        </div>
-                    </div>
-              </div>
-            </div>
-
+            <h1 className="card-title description" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
+            <p style={{ textAlign:`center`}}>Description: <br></br>{track.description}</p>
+              <p className="titles">comments: </p>
+             <p style={{fontSize:'10px'}}>{this.getComments(track.comments)}</p>
           </TamplateComponent>
-
-          <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
-            </ul> 
-
-            <div class="tab-pane" id="add-comment">
-            <form action="#" method="post" class="form-horizontal" id="commentForm" role="form"> 
-                <div class="form-group">
-                    <div class="col-sm-10">
-                      <textarea className="form-control textareaSize" name="addComment" id="addComment" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">                    
-                        <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
-                    </div>
-                </div>            
-            </form>
-        </div>
-
-          </div>
-
-            
-
 
           <div style={{paddingBottom:'20px'}}>
             <HomePage track={track}></HomePage>

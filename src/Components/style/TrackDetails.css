@@ -16,6 +16,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    padding: 3px;
     cursor: pointer;
   }
 
@@ -28,16 +29,48 @@
   }
 
   ul {
-    padding: 0;
+    padding-left: 20px;
+    padding-right: 26px;
     list-style-type: none;
 }
 
+.title{
+  color: #555;
+  font-weight: bold;
+  text-align: initial;
+  margin-bottom: -1.25rem;
+}
 
+.nameTitle{
+  color: #555;    
+    font-weight: bold;
+    text-align: start;
+    padding-left: 12px;
+    font-size: medium;
+    padding-top: 5px;
+}
 
+.addComment{
+  color: #555;    
+  font-weight: bold;
+  text-align: start;
+  font-size: medium;
+}
 
+.tring{
+  position: relative;
+  left: -120px;
+}
 
+.textareaSize{
+  height: 60px !important;
+}
 
+.descriptionTrack{
+  color: #555;
+  font-family: inherit;
 
+}
   /*
     Image credits:
     uifaces.com (http://uifaces.com/authorized)
@@ -54,15 +87,21 @@
 .reviews {
     color: #555;    
     font-weight: bold;
-    margin: 10px auto 20px;
-    margin-left: 10px;
+    text-align: start;
+    padding-left: 9px;
+    font-size: medium;
 }
 .notes {
     color: #999;
     font-size: 12px;
 }
 .media .media-object { max-width: 120px; }
-.media-body { position: relative; }
+.media-body { 
+  position: relative;
+  background-color: #eae8e8;
+  border-radius: 12px;
+  margin: 5px;
+ }
 .media-date { 
     position: absolute; 
     right: 25px;
@@ -75,7 +114,12 @@
     margin-left: -2px; 
     margin-right: 2px;
 }
-.media-comment { margin-bottom: 20px; }
+.media-comment { 
+  margin-bottom: 20px;
+  text-align: initial;
+  padding-left: 5px;
+  font-size: small;
+ }
 .media-replied { margin: 0 0 20px 50px; }
 .media-replied .media-heading { padding-left: 6px; }
 
@@ -88,11 +132,9 @@
 .btn-circle span { padding-right: 6px; }
 .embed-responsive { margin-bottom: 20px; }
 .tab-content {
-    padding: 50px 15px;
-    border: 1px solid #ddd;
-    border-top: 0;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
+    padding: 3px 2px;
+    /* border: 1px solid #ddd;
+    border-radius: 10px; */
 }
 .custom-input-file {
     overflow: hidden;
@@ -114,19 +156,7 @@ input[type="file"]{
     padding:0;
     left:0;
 }
-.uploadPhoto {
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    display: none;
-    width: 50%;
-    height: 50%;
-    color: #fff;    
-    text-align: center;
-    line-height: 60px;
-    text-transform: uppercase;    
-    background-color: rgba(0,0,0,.3);
-    border-radius: 50px;
-    cursor: pointer;
+.nav-tabs {
+  border-bottom: 0px;
 }
 .custom-input-file:hover .uploadPhoto { display: block; }
