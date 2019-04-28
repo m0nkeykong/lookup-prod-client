@@ -5,7 +5,7 @@ import { NavLink , Link} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import HomePage from './HomePage';
+import Map from './Map';
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
@@ -20,7 +20,8 @@ class TrackDetails extends Component {
       userDetails: [],
       endPoint: [],
       wayPoints: [],
-      comments: []
+      comments: [],
+      userDetails: []
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -47,13 +48,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _comments,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -63,6 +64,7 @@ class TrackDetails extends Component {
           title: _title,
           type: _type,
           comments: _comments,
+          userDetails: _userDetails,
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
@@ -79,7 +81,7 @@ class TrackDetails extends Component {
     }))
   }
 
-  getComments(comments){
+  getComments(comments, userDetails){
     let html=[];
     console.log(comments);
     // Outer loop to create parent
@@ -90,11 +92,11 @@ class TrackDetails extends Component {
         <ul class="media-list">
           <li class="media">
             <a class="pull-left" href="#">
-              <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
+              <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
             </a>
             <div class="media-body">
               <div class="well well-lg">
-                  <h5 class="media-heading text-uppercase nameTitle">Marco</h5>
+                  <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
                   <p class="media-comment">
                     {comments[i].comment}
                   </p>
@@ -179,7 +181,8 @@ class TrackDetails extends Component {
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
+            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
+            <p className="typeTrack">{this.getIconType(track.type)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
 
               <div class="row">
@@ -191,7 +194,7 @@ class TrackDetails extends Component {
                         </ul>            
                         <div class="tab-content">
                             <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments)}
+                              {this.getComments(track.comments,track.userDetails)}
                             </div>     
                         </div>
                     </div>
@@ -226,7 +229,7 @@ class TrackDetails extends Component {
 
 
           <div style={{paddingBottom:'20px'}}>
-            <HomePage track={track}></HomePage>
+            <Map track={track}></Map>
           </div>
         </div>
       </div>

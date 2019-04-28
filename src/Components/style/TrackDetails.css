@@ -46,7 +46,7 @@
     font-weight: bold;
     text-align: start;
     padding-left: 12px;
-    font-size: medium;
+    font-size: small;
     padding-top: 5px;
 }
 
@@ -68,8 +68,12 @@
 
 .descriptionTrack{
   color: #555;
-  font-family: inherit;
+  font-family: initial;
+}
 
+.typeTrack{
+  margin-top: 20px;
+  margin-bottom: -15px;
 }
   /*
     Image credits:
@@ -118,7 +122,8 @@
   margin-bottom: 20px;
   text-align: initial;
   padding-left: 5px;
-  font-size: small;
+  font-size: 11px;
+  font-family: inherit;
  }
 .media-replied { margin: 0 0 20px 50px; }
 .media-replied .media-heading { padding-left: 6px; }

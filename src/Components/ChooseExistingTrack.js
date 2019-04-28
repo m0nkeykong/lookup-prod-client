@@ -155,7 +155,8 @@ class ChooseExistingTrack extends Component {
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
+                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title}</h1>
+                <p>{this.getIconType(track.type)}</p>
                 <p style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
 
