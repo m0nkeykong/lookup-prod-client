@@ -200,7 +200,6 @@ class ChooseExistingTrack extends Component {
   }
 
   handleChange(event){
-    
     this.setState({ [event.target.name]: event.target.value})
   }
 
@@ -286,12 +285,12 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                    <input className="" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
-                    <label className='labelType'>Walking</label>
+                    <input className="marginInherit" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <label className=''>Walking</label>
                   </div>
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                  <input className="" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
-                  <label className='labelType'>Bicycling</label>
+                  <input className="marginInherit" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <label className=''>Bicycling</label>
                 </div>
                 </div>
                

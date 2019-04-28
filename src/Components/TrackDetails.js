@@ -6,6 +6,7 @@ import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
+import HomePage from './HomePage'
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
@@ -20,6 +21,7 @@ class TrackDetails extends Component {
       userDetails: [],
       endPoint: [],
       wayPoints: [],
+      travelMode: [],
       comments: [],
       userDetails: []
     }
@@ -35,6 +37,7 @@ class TrackDetails extends Component {
   }
   
   componentDidMount() {
+    console.log("reut = componentDidMount");
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
@@ -64,7 +67,7 @@ class TrackDetails extends Component {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
           title: _title,
-          type: _type,
+          travelMode: _type,
           comments: _comments,
           userDetails: _userDetails,
           startPoint:_startPoint,
@@ -164,6 +167,14 @@ class TrackDetails extends Component {
      console.log("DATA2:");
      console.log(data2);
     var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
+
+    console.log("FFFF:");
+    console.log(this.props.location.idOfTrack);
+    // console.log(this.props.history);
+    this.props.history.push({
+    pathname: "/trackDetails",
+    idOfTrack: `${this.props.location.idOfTrack}`
+    });
   }
 
   handleChange(event){
@@ -201,7 +212,7 @@ class TrackDetails extends Component {
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
-            <p className="typeTrack">{this.getIconType(track.type)}</p>
+            <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
 
               <div class="row">
@@ -246,6 +257,8 @@ class TrackDetails extends Component {
           </TamplateComponent>
 
           <div style={{paddingBottom:'20px'}}>
+          {console.log("AAALLLAA:")}
+          {console.log(track)}
             <Map track={track}></Map>
           </div>
         </div>

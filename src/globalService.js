@@ -3,6 +3,7 @@ import * as consts from './consts';
 const originURL = 'http://localhost:3000/';
 
 export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
+  console.log(`${originURL}track/getTrackById/${trackId}`);
     return `${originURL}track/getTrackById/${trackId}`;
 }
 

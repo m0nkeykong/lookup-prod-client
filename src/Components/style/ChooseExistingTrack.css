@@ -47,7 +47,6 @@ address{
     margin-left: -15px;
 }
 
-.labelType{
-    /* margin-left: 10px; */
-
+.marginInherit{
+    margin: inherit;
 }
