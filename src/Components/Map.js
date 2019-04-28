@@ -229,30 +229,9 @@ render() {
                       ) && (
                         <DirectionsService
                         options={{
-                          // origin: LatLng | String | google.maps.Place,
-                          // destination: LatLng | String | google.maps.Place,
-                          // travelMode: TravelMode,
-                          // transitOptions: TransitOptions,
-                          // drivingOptions: DrivingOptions,
-                          // unitSystem: UnitSystem,
-                          // waypoints[]: DirectionsWaypoint,
-                          // optimizeWaypoints: Boolean,
-                          // provideRouteAlternatives: Boolean,
-                          // avoidFerries: Boolean,
-                          // avoidHighways: Boolean,
-                          // avoidTolls: Boolean,
-                          // region: String
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                          // waypoints: this.getWayPoints(this.props.track.wayPoints),
-                          // travelMode: this.props.track.type.toUpperCase() }}
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
                           origin: this.props.track.startPoint.city,
                           destination: this.props.track.endPoint.city,
-                          // waypoints: this.props.track.wayPoints,
                           waypoints: this.getWayPoints(this.props.track.wayPoints),
-                          // travelMode: this.props.track.type.toUpperCase() }}
                           travelMode: this.props.track.travelMode.toUpperCase(),
                           drivingOptions: {
                             departureTime: new Date(Date.now()),
@@ -263,7 +242,6 @@ render() {
                           callback={this.directionsCallback}
                         />
                       )
-
                   )
                   :
                   (
