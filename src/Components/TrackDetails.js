@@ -195,38 +195,37 @@ class TrackDetails extends Component {
                         <div class="tab-content">
                             <div class="tab-pane active" id="comments-logout">  
                               {this.getComments(track.comments,track.userDetails)}
-                            </div>     
+                            </div>  
+                            
+                            
+
+                            <div class="col-sm-10 col-sm-offset-1 pt-2"> 
+                            <ul class="nav nav-tabs" role="tablist">
+                              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
+                            </ul> 
+                
+                            <div class="tab-pane" id="add-comment">
+                              <form action="#" method="post" class="form-horizontal" id="commentForm" role="form"> 
+                                  <div class="form-group">
+                                      <div class="col-sm-10">
+                                        <textarea className="form-control textareaSize" name="addComment" id="addComment" rows="5"></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="col-sm-offset-2 col-sm-10">                    
+                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
+                                      </div>
+                                  </div>            
+                              </form>
+                            </div>
+                          </div>
+
                         </div>
                     </div>
               </div>
             </div>
 
           </TamplateComponent>
-
-          <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
-            </ul> 
-
-            <div class="tab-pane" id="add-comment">
-            <form action="#" method="post" class="form-horizontal" id="commentForm" role="form"> 
-                <div class="form-group">
-                    <div class="col-sm-10">
-                      <textarea className="form-control textareaSize" name="addComment" id="addComment" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">                    
-                        <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
-                    </div>
-                </div>            
-            </form>
-        </div>
-
-          </div>
-
-            
-
 
           <div style={{paddingBottom:'20px'}}>
             <Map track={track}></Map>

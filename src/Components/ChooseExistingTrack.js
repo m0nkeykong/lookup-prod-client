@@ -262,41 +262,51 @@ class ChooseExistingTrack extends Component {
 
           <Card.Body>
             <Card.Title>
-           </Card.Title>
+              <h6> Choose Origin and Destination </h6>
+            </Card.Title>
 
            <form onSubmit={this.onSubmit}>
-           <div className="row">
-             
-           <div className="col bg-white rounded">
-             <label>From city:
-             <input required className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
-           </label>
-           <label>To city:
-             <input required className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
-           </label>
-         </div>
+                <div className="container">
+                    <div className="row">
+                      <div className="col">
+                        <div className="rowForm">
+                          <input required placeholder="Origin" className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
+                        </div>
+                      </div>
+                    </div>
 
-         <div className="col bg-white rounded">
-             <label>Type:</label>
-             <span className="d-block">
-             <input className="float-left" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
-               <MdDirectionsWalk /> 
-             </span>
-             <span className="d-block">
-             <input className="float-left" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />
-               <IoAndroidBicycle /> 
-             </span>
-             
-         </div> 
-       
-         <div className="w-100 mb-md-4"></div>
-         <div className="col-12 mx-auto">
-            <button className='btn btn-primary' type='submit'>
-              Build Route
-            </button>
-          </div>
+                    <div className="row">
+                    <div className="col">
+                      <div className="rowForm">
+                        <input required placeholder="Destination" className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-           </div>
+                <div className="d-flex flex-wrap justify-content-md-center">
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
+                    <input className="" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <label className='labelType'>Walking</label>
+                  </div>
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
+                  <input className="" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <label className='labelType'>Bicycling</label>
+                </div>
+                </div>
+               
+
+
+              <div className="row">
+          
+                <div className="w-100 mb-md-4"></div>
+                <div className="col-12 mx-auto">
+                    <button className='btn btn-primary' type='submit'>
+                      Build Route
+                    </button>
+                </div>
+
+              </div>
          </form>
 
           </Card.Body>

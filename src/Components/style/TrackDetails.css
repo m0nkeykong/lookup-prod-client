@@ -54,7 +54,7 @@
   color: #555;    
   font-weight: bold;
   text-align: start;
-  font-size: medium;
+  font-size: small;
 }
 
 .tring{
@@ -93,7 +93,7 @@
     font-weight: bold;
     text-align: start;
     padding-left: 9px;
-    font-size: medium;
+    font-size: larger;
 }
 .notes {
     color: #999;
@@ -138,8 +138,11 @@
 .embed-responsive { margin-bottom: 20px; }
 .tab-content {
     padding: 3px 2px;
-    /* border: 1px solid #ddd;
-    border-radius: 10px; */
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    border: 1px solid #eae8e8;
+    border-top: hidden;
+    margin-bottom: 20px;
 }
 .custom-input-file {
     overflow: hidden;

@@ -37,5 +37,17 @@ address{
 #author a{
   color: #fff;
   text-decoration: none;
-    
+}
+
+.rowForm{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.labelType{
+    /* margin-left: 10px; */
+
 }
