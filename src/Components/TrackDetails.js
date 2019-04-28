@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL} from '../globalService';
+import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
@@ -29,7 +29,9 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getComments = this.getComments.bind(this)
-    // this.rating = this.rating.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.handleChange  = this.handleChange.bind(this)
+
   }
   
   componentDidMount() {
@@ -151,6 +153,23 @@ class TrackDetails extends Component {
      
   }
 
+  async onSubmit(e){
+    e.preventDefault();
+
+     // TODO: how to get user Id here
+    let data1 = {userId:"5c978235efd9d315e8d7a0d9", comment: `${this.state.addComment}` };
+    var commentId = await PostAsyncRequest('comments/insertComment', data1);
+
+     let data2 = {trackId:`${this.props.location.idOfTrack}`, commentId: `${commentId}` };
+     console.log("DATA2:");
+     console.log(data2);
+    var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
+  }
+
+  handleChange(event){
+    this.setState({ [event.target.name]: event.target.value})
+  }
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -197,7 +216,6 @@ class TrackDetails extends Component {
                               {this.getComments(track.comments,track.userDetails)}
                             </div>  
                             
-                            
 
                             <div class="col-sm-10 col-sm-offset-1 pt-2"> 
                             <ul class="nav nav-tabs" role="tablist">
@@ -205,10 +223,10 @@ class TrackDetails extends Component {
                             </ul> 
                 
                             <div class="tab-pane" id="add-comment">
-                              <form action="#" method="post" class="form-horizontal" id="commentForm" role="form"> 
+                              <form onSubmit={this.onSubmit}> 
                                   <div class="form-group">
                                       <div class="col-sm-10">
-                                        <textarea className="form-control textareaSize" name="addComment" id="addComment" rows="5"></textarea>
+                                        <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
                                       </div>
                                   </div>
                                   <div class="form-group">
@@ -234,12 +252,6 @@ class TrackDetails extends Component {
       </div>
     )
   }
-
-  // <Card.Body>
-  //           <Card.Title>
-  //             <h6> Choose Origin and Destination </h6>
-  //          </Card.Title>
-  //         </Card.Body>
 
   render() {
     

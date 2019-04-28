@@ -1,22 +1,22 @@
 import * as consts from './consts';
 
-const trackOriginURL = 'http://localhost:3000/';
+const originURL = 'http://localhost:3000/';
 
 export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
-    return `${trackOriginURL}track/getTrackById/${trackId}`;
+    return `${originURL}track/getTrackById/${trackId}`;
 }
 
 export function getTrackDetailsByIdURL(trackId){
-    return `${trackOriginURL}track/getTrackDetailsById/${trackId}`;
+    return `${originURL}track/getTrackDetailsById/${trackId}`;
 }
 
 export function getAllTracksURL(){
-    return `${trackOriginURL}track/getAllTracks`;
+    return `${originURL}track/getAllTracks`;
 }
 
 export function getTracksByCityURL(fromCity,toCity,type){
-  console.log(`${trackOriginURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`);
-    return `${trackOriginURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`;
+  console.log(`${originURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`);
+    return `${originURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`;
 }
 
 export function getGoogleApiKey(){
@@ -49,9 +49,42 @@ export function getGoogleApiKey(){
  * 
  */
 export function PostRequest(url, data) {
-    console.log(trackOriginURL+url);
+    console.log(originURL+url);
     return new Promise((resolve, reject) =>{
-      fetch(trackOriginURL+url, {
+      fetch(originURL+url, {
+        method: 'POST',
+        credentials: "same-origin", 
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(data)
+      })
+        .then((response)=>{
+          if(response.status===200){
+            response.json().then((res) => {
+              if(res){
+              console.log(res);
+                resolve(res); 
+              }
+              else
+                resolve(false);
+            })
+          .catch((error) => {
+            console.log(resolve);
+            resolve(error);
+          });
+        }
+        
+        else{
+        resolve(false);}
+    });
+    });
+  }
+
+  export function PostAsyncRequest(url, data) {
+    console.log(originURL+url);
+    return new Promise((resolve, reject) =>{
+      fetch(originURL+url, {
         method: 'POST',
         credentials: "same-origin", 
         headers: {
