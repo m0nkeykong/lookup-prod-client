@@ -83,7 +83,7 @@ class IntermediatePage extends Component {
           
           <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
           <NavLink to=
-          //navigate to TrackDetails via TemplateComponent with the params
+          // button
           {{pathname: `${process.env.PUBLIC_URL}/auto`}}
             activeStyle={this.active} 
             style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
@@ -93,7 +93,7 @@ class IntermediatePage extends Component {
 
         <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
         <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
+        // button
         {{pathname: `${process.env.PUBLIC_URL}/choose`}}
           activeStyle={this.active} 
           style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
