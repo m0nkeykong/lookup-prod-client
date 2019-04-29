@@ -6,17 +6,9 @@ import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
-import HomePage from './HomePage'
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
-
-
-// const initialState = {
-//   this.setState(prevState => ({
-//     tracks: []
-//   }))
-// };
 
 class TrackDetails extends Component {
   constructor(props) {
@@ -40,6 +32,7 @@ class TrackDetails extends Component {
     this.getComments = this.getComments.bind(this)
     this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
     this.handleChange  = this.handleChange.bind(this)
+    this.initialState = this.initialState.bind(this)
 
   }
   
@@ -163,6 +156,10 @@ class TrackDetails extends Component {
      
   }
 
+  initialState(){
+    this.setState(prevState => ({tracks: []}))
+  }
+
   async onSubmitAddComment(e){
     e.preventDefault();
 
@@ -174,29 +171,8 @@ class TrackDetails extends Component {
      console.log("DATA2:");
      console.log(data2);
     var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
-
-    // console.log("FFFF:");
-    // console.log(this.props.location.idOfTrack);
-    // // console.log(this.props.history);
-    // this.props.history.push({
-    // pathname: "/trackDetails",
-    // idOfTrack: `${this.props.location.idOfTrack}`
-    // });
-
-    // this.forceUpdate();
-
-    // this.setState(prevState => ({
-    //   tracks: [
-    //   ...prevState.tracks,
-    //   {
-    //     updated: true
-    //   }]
-    // }))
-
-    this.setState(prevState => ({
-      tracks: []
-    }))
-
+    
+    this.initialState();
     this.getTrackById(this.props.location.idOfTrack);
   }
 
