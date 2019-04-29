@@ -29,7 +29,6 @@ class IntermediatePage extends Component {
     
     return (
       <div>
-        <Card className="text-center">
 
           <Card.Header>
             <Navbar collapseOnSelect expand="lg">
@@ -82,27 +81,25 @@ class IntermediatePage extends Component {
             </Navbar>
           </Card.Header>
           
-          <div className="col-10" style={{margin:'auto'}}>
+          <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
           <NavLink to=
           //navigate to TrackDetails via TemplateComponent with the params
           {{pathname: `${process.env.PUBLIC_URL}/auto`}}
             activeStyle={this.active} 
-            style={{padding:'6px', margin:'15px',verticalAlign:'middle'}}
+            style={{padding:'6px', marginTop:'30px',verticalAlign:'middle'}}
             className="btn btn-primary" >Start Navigator</NavLink>
         </div>
 
 
-        <div className="col-10" style={{margin:'auto'}}>
+        <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/choose`}}
           activeStyle={this.active} 
-          style={{padding:'6px', margin:'15px',verticalAlign:'middle'}}
+          style={{padding:'6px', marginTop:'30px',verticalAlign:'middle'}}
           className="btn btn-primary" >Start Navigator</NavLink>
       </div>
 
-          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
-        </Card>
       </div>
     );
   }
