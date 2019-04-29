@@ -86,8 +86,8 @@ class IntermediatePage extends Component {
           //navigate to TrackDetails via TemplateComponent with the params
           {{pathname: `${process.env.PUBLIC_URL}/auto`}}
             activeStyle={this.active} 
-            style={{padding:'6px', marginTop:'30px',verticalAlign:'middle'}}
-            className="btn btn-primary" >Start Navigator</NavLink>
+            style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
+            className="btn btn-primary" >Auto Generate</NavLink>
         </div>
 
 
@@ -96,8 +96,8 @@ class IntermediatePage extends Component {
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/choose`}}
           activeStyle={this.active} 
-          style={{padding:'6px', marginTop:'30px',verticalAlign:'middle'}}
-          className="btn btn-primary" >Start Navigator</NavLink>
+          style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
+          className="btn btn-primary" >Choose Existing</NavLink>
       </div>
 
       </div>
