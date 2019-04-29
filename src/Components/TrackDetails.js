@@ -37,7 +37,6 @@ class TrackDetails extends Component {
   }
   
   componentDidMount() {
-    console.log("reut = componentDidMount");
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
