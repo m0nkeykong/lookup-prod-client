@@ -12,6 +12,12 @@ import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
 
+// const initialState = {
+//   this.setState(prevState => ({
+//     tracks: []
+//   }))
+// };
+
 class TrackDetails extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +29,8 @@ class TrackDetails extends Component {
       wayPoints: [],
       travelMode: [],
       comments: [],
-      userDetails: []
+      userDetails: [],
+      updated: false
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -31,7 +38,7 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getComments = this.getComments.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
+    this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
     this.handleChange  = this.handleChange.bind(this)
 
   }
@@ -156,7 +163,7 @@ class TrackDetails extends Component {
      
   }
 
-  async onSubmit(e){
+  async onSubmitAddComment(e){
     e.preventDefault();
 
      // TODO: how to get user Id here
@@ -168,13 +175,29 @@ class TrackDetails extends Component {
      console.log(data2);
     var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
 
-    console.log("FFFF:");
-    console.log(this.props.location.idOfTrack);
-    // console.log(this.props.history);
-    this.props.history.push({
-    pathname: "/trackDetails",
-    idOfTrack: `${this.props.location.idOfTrack}`
-    });
+    // console.log("FFFF:");
+    // console.log(this.props.location.idOfTrack);
+    // // console.log(this.props.history);
+    // this.props.history.push({
+    // pathname: "/trackDetails",
+    // idOfTrack: `${this.props.location.idOfTrack}`
+    // });
+
+    // this.forceUpdate();
+
+    // this.setState(prevState => ({
+    //   tracks: [
+    //   ...prevState.tracks,
+    //   {
+    //     updated: true
+    //   }]
+    // }))
+
+    this.setState(prevState => ({
+      tracks: []
+    }))
+
+    this.getTrackById(this.props.location.idOfTrack);
   }
 
   handleChange(event){
@@ -234,7 +257,7 @@ class TrackDetails extends Component {
                             </ul> 
                 
                             <div class="tab-pane" id="add-comment">
-                              <form onSubmit={this.onSubmit}> 
+                              <form onSubmit={this.onSubmitAddComment}> 
                                   <div class="form-group">
                                       <div class="col-sm-10">
                                         <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
