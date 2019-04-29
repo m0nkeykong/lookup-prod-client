@@ -5,12 +5,15 @@ import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
+import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { BeatLoader } from 'react-spinners';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: [],
+      userDetails: [],
       type: ''
     }
 
@@ -152,7 +155,8 @@ class ChooseExistingTrack extends Component {
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
+                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title}</h1>
+                <p>{this.getIconType(track.type)}</p>
                 <p style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
 
@@ -202,50 +206,129 @@ class ChooseExistingTrack extends Component {
 
   render() {
     return (
-      <div className="container padding20px">
-        <div className ="row">
-        <div className="col-12 p-md-4">
-          <form onSubmit={this.onSubmit}>
-            <div className="row">
-              
-            <div className="col bg-white rounded">
-              <label>From city:
-              <input required className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
-            </label>
-            <label>To city:
-              <input required className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
-            </label>
+      <div>
+        <Card className="text-center">
+
+          <Card.Header>
+            <Navbar collapseOnSelect expand="lg">
+
+              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
+                {this.state.userDetails.profilePicture ?
+                  (
+                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
+                  )
+                  :
+                  (
+                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+                  )
+                }
+              </Navbar.Brand>
+
+              <Navbar.Brand href="#name" style={{ float: 'center' }}>
+                {this.state.userDetails.name ?
+                  (
+                    <div>
+                      <p>{this.state.userDetails.name}</p>
+                    </div>
+                  )
+                  :
+                  (
+                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+                  )
+                }
+              </Navbar.Brand>
+
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                  <Nav.Link href="#profile">View Profile</Nav.Link>
+                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
+                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
+                  </NavDropdown>
+                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
+                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
+                  <Nav.Link href="#about">About</Nav.Link>
+                  <Nav.Link href="#contact">Contact us</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+
+            </Navbar>
+          </Card.Header>
+
+          <Card.Body>
+            <Card.Title>
+           </Card.Title>
+
+           <form onSubmit={this.onSubmit}>
+           <div className="row">
+             
+           <div className="col bg-white rounded">
+             <label>From city:
+             <input required className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
+           </label>
+           <label>To city:
+             <input required className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
+           </label>
+         </div>
+
+         <div className="col bg-white rounded">
+             <label>Type:</label>
+             <span className="d-block">
+             <input className="float-left" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+               <MdDirectionsWalk /> 
+             </span>
+             <span className="d-block">
+             <input className="float-left" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />
+               <IoAndroidBicycle /> 
+             </span>
+             
+         </div> 
+       
+         <div className="w-100 mb-md-4"></div>
+         <div className="col-12 mx-auto">
+            <button className='btn btn-primary' type='submit'>
+              Build Route
+            </button>
           </div>
 
-          <div className="col bg-white rounded">
-              <label>Type:</label>
-              <span className="d-block">
-              <input className="float-left" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
-                <MdDirectionsWalk /> 
-              </span>
-              <span className="d-block">
-              <input className="float-left" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />
-                <IoAndroidBicycle /> 
-              </span>
-              
-          </div> 
-        
-          <div className="w-100 mb-md-4"></div>
-          <div className="col-12 mx-auto">
-            <button type="submit" className=" btn btn-primary mt-2 tn-block rounded-0 w-100 border-0" style={{backgroundColor:'black', color:'#68e8db'}}>search tracks</button>
-          </div>
+           </div>
+         </form>
 
+          </Card.Body>
+
+          <Card.Header> 
+          </Card.Header>
+
+
+          <div className="w-100 mb-md-4 pt-3"></div>
+            <div className="col-12 mx-auto">
+                {this.state.tracks.map(this.viewTracks)}
             </div>
-          </form>
-        </div>
-        
-        <div className="w-100 mb-md-4 pt-3"></div>
-          <div className="col-12 mx-auto">
-              {this.state.tracks.map(this.viewTracks)}
-		      </div>
-        </div>
+
+            
+          <Card.Body>
+            {this.state.loading ?
+              (
+            <div className="col-12 mx-auto">
+                {this.state.tracks.map(this.viewTracks)}
+            </div>
+              )
+              :
+              (
+                <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+              )
+            }
+          </Card.Body>
+          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
+        </Card>
       </div>
     );
+
   }
 }
 

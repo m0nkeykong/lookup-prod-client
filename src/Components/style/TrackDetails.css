@@ -46,7 +46,7 @@
     font-weight: bold;
     text-align: start;
     padding-left: 12px;
-    font-size: medium;
+    font-size: small;
     padding-top: 5px;
 }
 
@@ -54,7 +54,7 @@
   color: #555;    
   font-weight: bold;
   text-align: start;
-  font-size: medium;
+  font-size: small;
 }
 
 .tring{
@@ -68,8 +68,12 @@
 
 .descriptionTrack{
   color: #555;
-  font-family: inherit;
+  font-family: initial;
+}
 
+.typeTrack{
+  margin-top: 20px;
+  margin-bottom: -15px;
 }
   /*
     Image credits:
@@ -89,7 +93,7 @@
     font-weight: bold;
     text-align: start;
     padding-left: 9px;
-    font-size: medium;
+    font-size: larger;
 }
 .notes {
     color: #999;
@@ -118,7 +122,8 @@
   margin-bottom: 20px;
   text-align: initial;
   padding-left: 5px;
-  font-size: small;
+  font-size: 11px;
+  font-family: inherit;
  }
 .media-replied { margin: 0 0 20px 50px; }
 .media-replied .media-heading { padding-left: 6px; }
@@ -133,8 +138,11 @@
 .embed-responsive { margin-bottom: 20px; }
 .tab-content {
     padding: 3px 2px;
-    /* border: 1px solid #ddd;
-    border-radius: 10px; */
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    border: 1px solid #eae8e8;
+    border-top: hidden;
+    margin-bottom: 20px;
 }
 .custom-input-file {
     overflow: hidden;

@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL} from '../globalService';
+import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
+import Map from './Map';
+import HomePage from './HomePage'
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
-import Map from './Map'
 import './style/TrackDetails.css'
 
+
+// const initialState = {
+//   this.setState(prevState => ({
+//     tracks: []
+//   }))
+// };
 
 class TrackDetails extends Component {
   constructor(props) {
@@ -20,7 +27,10 @@ class TrackDetails extends Component {
       userDetails: [],
       endPoint: [],
       wayPoints: [],
-      comments: []
+      travelMode: [],
+      comments: [],
+      userDetails: [],
+      updated: false
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -28,10 +38,13 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getComments = this.getComments.bind(this)
-    // this.rating = this.rating.bind(this)
+    this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
+    this.handleChange  = this.handleChange.bind(this)
+
   }
   
   componentDidMount() {
+    console.log("reut = componentDidMount");
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
@@ -47,13 +60,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _comments,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -61,8 +74,9 @@ class TrackDetails extends Component {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
           title: _title,
-          type: _type,
+          travelMode: _type,
           comments: _comments,
+          userDetails: _userDetails,
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
@@ -79,7 +93,7 @@ class TrackDetails extends Component {
     }))
   }
 
-  getComments(comments){
+  getComments(comments, userDetails){
     let html=[];
     console.log(comments);
     // Outer loop to create parent
@@ -90,11 +104,11 @@ class TrackDetails extends Component {
         <ul class="media-list">
           <li class="media">
             <a class="pull-left" href="#">
-              <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile"></img>
+              <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
             </a>
             <div class="media-body">
               <div class="well well-lg">
-                  <h5 class="media-heading text-uppercase nameTitle">Marco</h5>
+                  <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
                   <p class="media-comment">
                     {comments[i].comment}
                   </p>
@@ -149,6 +163,47 @@ class TrackDetails extends Component {
      
   }
 
+  async onSubmitAddComment(e){
+    e.preventDefault();
+
+     // TODO: how to get user Id here
+    let data1 = {userId:"5c978235efd9d315e8d7a0d9", comment: `${this.state.addComment}` };
+    var commentId = await PostAsyncRequest('comments/insertComment', data1);
+
+     let data2 = {trackId:`${this.props.location.idOfTrack}`, commentId: `${commentId}` };
+     console.log("DATA2:");
+     console.log(data2);
+    var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
+
+    // console.log("FFFF:");
+    // console.log(this.props.location.idOfTrack);
+    // // console.log(this.props.history);
+    // this.props.history.push({
+    // pathname: "/trackDetails",
+    // idOfTrack: `${this.props.location.idOfTrack}`
+    // });
+
+    // this.forceUpdate();
+
+    // this.setState(prevState => ({
+    //   tracks: [
+    //   ...prevState.tracks,
+    //   {
+    //     updated: true
+    //   }]
+    // }))
+
+    this.setState(prevState => ({
+      tracks: []
+    }))
+
+    this.getTrackById(this.props.location.idOfTrack);
+  }
+
+  handleChange(event){
+    this.setState({ [event.target.name]: event.target.value})
+  }
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -179,7 +234,8 @@ class TrackDetails extends Component {
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title} {this.getIconType(track.type)}</h1>
+            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
+            <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
 
               <div class="row">
@@ -191,8 +247,31 @@ class TrackDetails extends Component {
                         </ul>            
                         <div class="tab-content">
                             <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments)}
-                            </div>     
+                              {this.getComments(track.comments,track.userDetails)}
+                            </div>  
+                            
+
+                            <div class="col-sm-10 col-sm-offset-1 pt-2"> 
+                            <ul class="nav nav-tabs" role="tablist">
+                              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
+                            </ul> 
+                
+                            <div class="tab-pane" id="add-comment">
+                              <form onSubmit={this.onSubmitAddComment}> 
+                                  <div class="form-group">
+                                      <div class="col-sm-10">
+                                        <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="col-sm-offset-2 col-sm-10">                    
+                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
+                                      </div>
+                                  </div>            
+                              </form>
+                            </div>
+                          </div>
+
                         </div>
                     </div>
               </div>
@@ -200,44 +279,15 @@ class TrackDetails extends Component {
 
           </TamplateComponent>
 
-          <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
-            </ul> 
-
-            <div class="tab-pane" id="add-comment">
-            <form action="#" method="post" class="form-horizontal" id="commentForm" role="form"> 
-                <div class="form-group">
-                    <div class="col-sm-10">
-                      <textarea className="form-control textareaSize" name="addComment" id="addComment" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">                    
-                        <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
-                    </div>
-                </div>            
-            </form>
-        </div>
-
-          </div>
-
-            
-
-
           <div style={{paddingBottom:'20px'}}>
+          {console.log("AAALLLAA:")}
+          {console.log(track)}
             <Map track={track}></Map>
           </div>
         </div>
       </div>
     )
   }
-
-  // <Card.Body>
-  //           <Card.Title>
-  //             <h6> Choose Origin and Destination </h6>
-  //          </Card.Title>
-  //         </Card.Body>
 
   render() {
     

@@ -277,7 +277,9 @@ class AutoGenerateTrack extends Component {
             <h6> Live Navigation Map </h6> 
           </Card.Header>
           <Card.Body>
-            {this.state.loadLiveMap ?
+          {console.log("ALLLLLAAA:")}
+          {console.log(this.state.track)}
+            {this.state.loading ?
               (
                 <Map
                   track={this.state.track}>

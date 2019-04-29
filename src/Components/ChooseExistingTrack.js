@@ -7,14 +7,24 @@ import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService
 import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
+import Map from './Map'
+import asyncComponent from './asyncComponent';
+
+
+const AsyncMap = asyncComponent(() => {
+  return import('./Map');
+});
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: [],
+      startPoint: [],
+      endPoint: [],
+      wayPoints: [],
       userDetails: [],
-      type: ''
+      travelMode: ''
     }
 
     this.addTracks = this.addTracks.bind(this)
@@ -67,11 +77,12 @@ class ChooseExistingTrack extends Component {
       this.state.tracks = [];
 
       if( data.length == 0){
-          self.addTracks('','','',''); 
+          self.addTracks('','','','','','','',''); 
       }    
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
+          console.log("ELLLLLLSSSEEEEEEEEEE");
           self.addTracks(json._id,json.title, json.type, json.comments, json.description); 
         })  
       } 
@@ -81,19 +92,14 @@ class ChooseExistingTrack extends Component {
 
   onChange(e){
     console.log(this.props.width);
-  this.setState({[e.target.name]:e.target.value});
-    // event.preventDefault();
-    // const target = event.target;
-    // const value = target.type === 'checkbox' ? target.checked : target.value;
-    // const name = target.name;
-
-    // console.log(`Value: ${value}`)
-    // this.setState({
-    //   [name]: value
-    // });
+    this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_id,_title,_type, _comments, _description) {
+  addTracks(_id,_title,_type, _comments, _description, _startPoint, _endPoint, _wayPoints) {
+    console.log("wwwwwwwwwwwwewwwwwwwwww:");
+    console.log(_startPoint);
+    console.log(_endPoint);
+    console.log(_wayPoints);
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -101,9 +107,12 @@ class ChooseExistingTrack extends Component {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
           title: _title,
-          type: _type,
+          travelMode: _type,
           comments: _comments,
-          description: _description
+          description: _description,
+          startPoint:_startPoint,
+          endPoint:_endPoint,
+          wayPoints:_wayPoints
       }]
     }))
   }
@@ -145,7 +154,7 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
+        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
@@ -155,16 +164,19 @@ class ChooseExistingTrack extends Component {
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
-                <p style={{ textAlign:`center`}}>{track.description}</p>
+                <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
+                <p className="typeTrack" >{this.getIconType(track.type)}</p>
+                <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
 
-              <div>
-                <p>comments: </p>
-                <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
+              </TamplateComponent>
+
+              <div style={{paddingBottom:'20px'}}>
+              {console.log("AAALLLAA:")}
+              {console.log(track)}
+              
               </div>
 
-              </TamplateComponent>
           </div>
           
         </div>
@@ -179,8 +191,12 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {        
       var self=this;        
       data.map((json) => {   
+        // console.log("QQQQQQQQQQQQ:");
+        // console.log(json);  
+
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json._id,json.title, json.type, json.comments, json.description);        
+        self.addTracks(json.track._id,json.track.title, json.track.type, json.track.comments, json.track.description,
+          json.startPoint, json.endPoint, json.wayPoints);  
           console.log(json);  
       })    // endOf data.map((data)  
     })
@@ -199,7 +215,6 @@ class ChooseExistingTrack extends Component {
   }
 
   handleChange(event){
-    
     this.setState({ [event.target.name]: event.target.value})
   }
 
@@ -261,41 +276,51 @@ class ChooseExistingTrack extends Component {
 
           <Card.Body>
             <Card.Title>
-           </Card.Title>
+              <h6> Choose Origin and Destination </h6>
+            </Card.Title>
 
            <form onSubmit={this.onSubmit}>
-           <div className="row">
-             
-           <div className="col bg-white rounded">
-             <label>From city:
-             <input required className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
-           </label>
-           <label>To city:
-             <input required className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
-           </label>
-         </div>
+                <div className="container">
+                    <div className="row">
+                      <div className="col">
+                        <div className="rowForm">
+                          <input required placeholder="Origin" className="mt-2 form-control float-left" type="text" name="from" onChange={this.handleChange} value={this.state.from}/>
+                        </div>
+                      </div>
+                    </div>
 
-         <div className="col bg-white rounded">
-             <label>Type:</label>
-             <span className="d-block">
-             <input className="float-left" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
-               <MdDirectionsWalk /> 
-             </span>
-             <span className="d-block">
-             <input className="float-left" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />
-               <IoAndroidBicycle /> 
-             </span>
-             
-         </div> 
-       
-         <div className="w-100 mb-md-4"></div>
-         <div className="col-12 mx-auto">
-            <button className='btn btn-primary' type='submit'>
-              Build Route
-            </button>
-          </div>
+                    <div className="row">
+                    <div className="col">
+                      <div className="rowForm">
+                        <input required placeholder="Destination" className="mt-2 form-control float-left" type="text" name="to" onChange={this.handleChange} value={this.state.to}/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-           </div>
+                <div className="d-flex flex-wrap justify-content-md-center">
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
+                    <input className="marginInherit" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <label className=''>Walking</label>
+                  </div>
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
+                  <input className="marginInherit" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <label className=''>Bicycling</label>
+                </div>
+                </div>
+               
+
+
+              <div className="row">
+          
+                <div className="w-100 mb-md-4"></div>
+                <div className="col-12 mx-auto">
+                    <button className='btn btn-primary' type='submit'>
+                      Build Route
+                    </button>
+                </div>
+
+              </div>
          </form>
 
           </Card.Body>

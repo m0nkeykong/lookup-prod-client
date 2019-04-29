@@ -54,6 +54,9 @@ class Map extends Component {
 
   // Remember to replace this method because UNSAFE
   componentDidMount() {
+    console.log("LOCATIONNNNNNNNNNNNNNNNNNNNNNNN:");
+    console.log(this.props.track.startPoint.city);
+
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
 		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
 		this.onLoadPosition();
@@ -234,46 +237,72 @@ render() {
                   icon={'/images/map-marker-icon3.png'}
                   >
               </Marker>
-                {
-									(
-										this.state.response === null
-									) && (
-                    <DirectionsService
-                    options={{
-											// origin: LatLng | String | google.maps.Place,
-											// destination: LatLng | String | google.maps.Place,
-											// travelMode: TravelMode,
-											// transitOptions: TransitOptions,
-											// drivingOptions: DrivingOptions,
-											// unitSystem: UnitSystem,
-											// waypoints[]: DirectionsWaypoint,
-											// optimizeWaypoints: Boolean,
-											// provideRouteAlternatives: Boolean,
-											// avoidFerries: Boolean,
-											// avoidHighways: Boolean,
-											// avoidTolls: Boolean,
-											// region: String
-                      // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                      // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                      // waypoints: this.getWayPoints(this.props.track.wayPoints),
-                      // travelMode: this.props.track.type.toUpperCase() }}
-                      // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                      // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                      origin: this.props.track.startPoint,
-                      destination: this.props.track.endPoint,
-                      waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
-                      // travelMode: this.props.track.type.toUpperCase() }}
-                      travelMode: this.props.track.travelMode,
-                      drivingOptions: {
-                        departureTime: new Date(Date.now()),
-                        trafficModel: 'bestguess' 
-                      },
-                      optimizeWaypoints: true
-                    }}
-                      callback={this.directionsCallback}
-                    />
+
+              {typeof this.props.track.startPoint.city !== "undefined" ? 
+                  (
+                      (
+                        this.state.response === null
+                      ) && (
+                        <DirectionsService
+                        options={{
+                          origin: this.props.track.startPoint.city,
+                          destination: this.props.track.endPoint.city,
+                          waypoints: this.getWayPoints(this.props.track.wayPoints),
+                          travelMode: this.props.track.travelMode.toUpperCase(),
+                          drivingOptions: {
+                            departureTime: new Date(Date.now()),
+                            trafficModel: 'bestguess' 
+                          },
+                          optimizeWaypoints: true
+                        }}
+                          callback={this.directionsCallback}
+                        />
+                      )
+                  )
+                  :
+                  (
+
+                      (
+                        this.state.response === null
+                      ) && (
+                        <DirectionsService
+                        options={{
+                      		// origin: LatLng | String | google.maps.Place,
+                          // destination: LatLng | String | google.maps.Place,
+                          // travelMode: TravelMode,
+                          // transitOptions: TransitOptions,
+                          // drivingOptions: DrivingOptions,
+                          // unitSystem: UnitSystem,
+                          // waypoints[]: DirectionsWaypoint,
+                          // optimizeWaypoints: Boolean,
+                          // provideRouteAlternatives: Boolean,
+                          // avoidFerries: Boolean,
+                          // avoidHighways: Boolean,
+                          // avoidTolls: Boolean,
+                          // region: String
+                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
+                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
+                          // waypoints: this.getWayPoints(this.props.track.wayPoints),
+                          // travelMode: this.props.track.type.toUpperCase() }}
+                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                          origin: this.props.track.startPoint,
+                          destination: this.props.track.endPoint,
+                          // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                          // travelMode: this.props.track.type.toUpperCase() }}
+                          travelMode: this.props.track.travelMode.toUpperCase(),
+                          drivingOptions: {
+                            departureTime: new Date(Date.now()),
+                            trafficModel: 'bestguess' 
+                          },
+                          optimizeWaypoints: true
+                        }}
+                          callback={this.directionsCallback}
+                        />
+                      )
                   )
                 }
+                
                 {
                   this.state.response != null &&
                   (

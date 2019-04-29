@@ -37,5 +37,24 @@ address{
 #author a{
   color: #fff;
   text-decoration: none;
-    
+}
+
+.rowForm{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.marginInherit{
+    margin: inherit;
+}
+
+.marginTop18{
+    margin-top: 17px;
+}
+
+.borderBlue{
+    border-color: lightblue;
 }
