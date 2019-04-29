@@ -9,6 +9,7 @@ import CustomTrack from "../Components/CustomTrack";
 import Login from "../Components/Login";
 import Map from "../Components/Map";
 import TrackDetails from "../Components/TrackDetails";
+import IntermediatePage from '../Components/IntermediatePage'
 // import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
@@ -28,6 +29,7 @@ const AppRouter = () =>{
       <Route exact path="/choose" component={ChooseExistingTrack} />
       <Route exact path="/custom" component={CustomTrack} />
       <Route exact path="/trackDetails" component={TrackDetails} />
+      <Route exact path="/inter" component={IntermediatePage} />
 
     </React.Fragment>
   );
