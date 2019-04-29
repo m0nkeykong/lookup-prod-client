@@ -7,14 +7,24 @@ import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService
 import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
+import Map from './Map'
+import asyncComponent from './asyncComponent';
+
+
+const AsyncMap = asyncComponent(() => {
+  return import('./Map');
+});
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: [],
+      startPoint: [],
+      endPoint: [],
+      wayPoints: [],
       userDetails: [],
-      type: ''
+      travelMode: ''
     }
 
     this.addTracks = this.addTracks.bind(this)
@@ -67,11 +77,12 @@ class ChooseExistingTrack extends Component {
       this.state.tracks = [];
 
       if( data.length == 0){
-          self.addTracks('','','',''); 
+          self.addTracks('','','','','','','',''); 
       }    
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
+          console.log("ELLLLLLSSSEEEEEEEEEE");
           self.addTracks(json._id,json.title, json.type, json.comments, json.description); 
         })  
       } 
@@ -81,19 +92,14 @@ class ChooseExistingTrack extends Component {
 
   onChange(e){
     console.log(this.props.width);
-  this.setState({[e.target.name]:e.target.value});
-    // event.preventDefault();
-    // const target = event.target;
-    // const value = target.type === 'checkbox' ? target.checked : target.value;
-    // const name = target.name;
-
-    // console.log(`Value: ${value}`)
-    // this.setState({
-    //   [name]: value
-    // });
+    this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_id,_title,_type, _comments, _description) {
+  addTracks(_id,_title,_type, _comments, _description, _startPoint, _endPoint, _wayPoints) {
+    console.log("wwwwwwwwwwwwewwwwwwwwww:");
+    console.log(_startPoint);
+    console.log(_endPoint);
+    console.log(_wayPoints);
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -101,9 +107,12 @@ class ChooseExistingTrack extends Component {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
           title: _title,
-          type: _type,
+          travelMode: _type,
           comments: _comments,
-          description: _description
+          description: _description,
+          startPoint:_startPoint,
+          endPoint:_endPoint,
+          wayPoints:_wayPoints
       }]
     }))
   }
@@ -145,7 +154,7 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
+        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
@@ -155,17 +164,19 @@ class ChooseExistingTrack extends Component {
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p>{this.getIconType(track.type)}</p>
-                <p style={{ textAlign:`center`}}>{track.description}</p>
+                <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
+                <p className="typeTrack" >{this.getIconType(track.type)}</p>
+                <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
               </NavLink>
 
-              <div>
-                <p>comments: </p>
-                <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
+              </TamplateComponent>
+
+              <div style={{paddingBottom:'20px'}}>
+              {console.log("AAALLLAA:")}
+              {console.log(track)}
+              
               </div>
 
-              </TamplateComponent>
           </div>
           
         </div>
@@ -180,8 +191,12 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {        
       var self=this;        
       data.map((json) => {   
+        // console.log("QQQQQQQQQQQQ:");
+        // console.log(json);  
+
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json._id,json.title, json.type, json.comments, json.description);        
+        self.addTracks(json.track._id,json.track.title, json.track.type, json.track.comments, json.track.description,
+          json.startPoint, json.endPoint, json.wayPoints);  
           console.log(json);  
       })    // endOf data.map((data)  
     })

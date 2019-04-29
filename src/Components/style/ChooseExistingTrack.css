@@ -50,3 +50,11 @@ address{
 .marginInherit{
     margin: inherit;
 }
+
+.marginTop18{
+    margin-top: 17px;
+}
+
+.borderBlue{
+    border-color: lightblue;
+}
