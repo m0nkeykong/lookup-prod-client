@@ -60,7 +60,7 @@ class Map extends Component {
     this.onPolylineComplete = this.onPolylineComplete.bind(this);
     this.directionsCallback = this.directionsCallback.bind(this);
 
-    this.newLocation = document.getElementById('locationUpdate');
+    this.newLocation = document.getElementById('printLocation');
 
     this.mode = ["drawing"];
   }
@@ -120,7 +120,7 @@ class Map extends Component {
   }
 
   onGoogleMapClick(...args){
-    console.log(" onGoogleMapClick Success args: ",  args);  
+    console.log(" onGoogleMapClick Success args: ",  args);
   }
 
   // Remember to replace this method because UNSAFE

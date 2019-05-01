@@ -38,13 +38,7 @@ class Login extends Component {
                 sessionStorage.setItem('userDetails', JSON.stringify(response.data._id));
                 // localStorage Can be accessible from same tab and expires when tab close
                 localStorage.setItem('userDetails', JSON.stringify(response.data._id));
-                this.props.history.push('/auto');
-                // @TODO
-                // <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, idOfTrack: track.idOfTrack}}
-                //          activeStyle={this.active} 
-                //          style={{padding:'6px'}}
-                //          className="btn btn-primary" >Start
-                // </NavLink>
+                this.props.history.push('/homePage');
             }
         })
         .catch(error => {

@@ -542,7 +542,7 @@ class AutoGenerateTrack extends Component {
             {this.state.isGenerated ? this.directionsRequest() : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
           </Card.Body>
 
-          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
+          <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
       </div>
     );
