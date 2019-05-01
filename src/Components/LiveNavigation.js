@@ -93,7 +93,8 @@ class LiveNavigation extends Component {
             <h6> Live Navigation Map </h6> 
 
               <Map
-                track={this.state.generatedTrack.track}>
+                track={this.state.generatedTrack.track}
+                route={this.state.generatedTrack.directionsResponse}>
               </Map>
 
           </Card.Header>

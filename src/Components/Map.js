@@ -8,7 +8,6 @@ import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, D
 import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 
-
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -54,9 +53,6 @@ class Map extends Component {
 
   // Remember to replace this method because UNSAFE
   componentDidMount() {
-    console.log("LOCATIONNNNNNNNNNNNNNNNNNNNNNNN:");
-    console.log(this.props.track.startPoint.city);
-
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
 		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
 		this.onLoadPosition();
@@ -89,18 +85,7 @@ class Map extends Component {
 		if (this.state.response === null) {
 			if (response !== null) {
 				if (response.status === 'OK') {
-          this.newElement2 = document.createElement('p');
-					console.log(response.routes[0]);
-					response.routes[0].legs.forEach(leg => {
-            this.newElement2.innerHTML = `<b>Route Segment: </b><br> 
-                                            From: ${leg.start_address},<br>
-                                            To: ${leg.end_address}.<br> 
-                                            Total Distance: ${leg.distance.value}m,<br>
-                                            Estimated Duration: ${leg.duration.text},<br>
-                                            Travel Mode: ${this.props.track.travelMode}.`;
-            this.newLocation.appendChild(this.newElement2);
-            console.log(leg);
-          })
+
 					this.setState(
 						() => ({
 							response
@@ -237,7 +222,7 @@ render() {
                   icon={'/images/map-marker-icon3.png'}
                   >
               </Marker>
-
+              {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
               {typeof this.props.track.startPoint.city !== "undefined" ? 
                   (
                       (
@@ -276,13 +261,13 @@ render() {
                           // waypoints[]: DirectionsWaypoint,
                           // optimizeWaypoints: Boolean,
                           // provideRouteAlternatives: Boolean,
-                          // avoidFerries: Boolean,
-                          // avoidHighways: Boolean,
-                          // avoidTolls: Boolean,
+                          avoidFerries: true,
+                          avoidHighways: true,
+                          avoidTolls: true,
                           // region: String
                           // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
                           // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                          // waypoints: this.getWayPoints(this.props.track.wayPoints),
+                          waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
                           // travelMode: this.props.track.type.toUpperCase() }}
                           // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
                           // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
@@ -290,7 +275,7 @@ render() {
                           destination: this.props.track.endPoint,
                           // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
                           // travelMode: this.props.track.type.toUpperCase() }}
-                          travelMode: this.props.track.travelMode.toUpperCase(),
+                          travelMode: this.props.track.travelMode,
                           drivingOptions: {
                             departureTime: new Date(Date.now()),
                             trafficModel: 'bestguess' 
