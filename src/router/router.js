@@ -1,12 +1,16 @@
 import React from "react";
 import {Route} from "react-router-dom";
-import SomePage from "../Components/SomePage";
+import Header from "../Header";
+import LiveNavigation from "../Components/LiveNavigation";
 import AutoGenerateTrack from "../Components/AutoGenerateTrack";
 import ChooseExistingTrack from "../Components/ChooseExistingTrack";
 import CustomTrack from "../Components/CustomTrack";
-import StartNavigate from "../Components/StartNavigate";
+// import StartNavigate from "../Components/StartNavigate";
 import Login from "../Components/Login";
-import HomePage from "../Components/HomePage";
+import Map from "../Components/Map";
+import TrackDetails from "../Components/TrackDetails";
+import IntermediatePage from '../Components/IntermediatePage'
+// import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
 // import UserSettings from "../Components/UserSettings";
@@ -18,14 +22,15 @@ import HomePage from "../Components/HomePage";
 const AppRouter = () =>{
   return(
     <React.Fragment>
+      <Header />
       <Route exact path="/login" component={Login} />
-      <Route exact path="/homePage" component={HomePage} />
-
-      <Route exact path="/" component={SomePage} />
+      <Route exact path="/map" component={Map} />
       <Route exact path="/auto" component={AutoGenerateTrack} />
       <Route exact path="/choose" component={ChooseExistingTrack} />
       <Route exact path="/custom" component={CustomTrack} />
-      <Route exact path="/start" component={StartNavigate} />
+      <Route exact path="/trackDetails" component={TrackDetails} />
+      <Route exact path="/inter" component={IntermediatePage} />
+      <Route exact path="/liveNavigation" component={LiveNavigation} />
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />
@@ -35,5 +40,10 @@ const AppRouter = () =>{
 // <Route exact path="/" component={BuildTrack} />
 // <Route exact path="/" component={BrowseTrack} />
 }
+
+// <Route exact path="/" component={SomePage} />
+// <Route exact path="/custom" component={CustomTrack} />
+// <Route exact path="/start" component={StartNavigate} />      
+// <Route exact path="/directions" component={DirectionsPoint} />
 
 export default AppRouter;
