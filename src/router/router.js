@@ -1,7 +1,7 @@
 import React from "react";
 import {Route} from "react-router-dom";
 import Header from "../Header";
-import SomePage from "../Components/SomePage";
+import LiveNavigation from "../Components/LiveNavigation";
 import AutoGenerateTrack from "../Components/AutoGenerateTrack";
 import ChooseExistingTrack from "../Components/ChooseExistingTrack";
 import CustomTrack from "../Components/CustomTrack";
@@ -22,7 +22,7 @@ import IntermediatePage from '../Components/IntermediatePage'
 const AppRouter = () =>{
   return(
     <React.Fragment>
-    <Header />
+      <Header />
       <Route exact path="/login" component={Login} />
       <Route exact path="/map" component={Map} />
       <Route exact path="/auto" component={AutoGenerateTrack} />
@@ -30,7 +30,7 @@ const AppRouter = () =>{
       <Route exact path="/custom" component={CustomTrack} />
       <Route exact path="/trackDetails" component={TrackDetails} />
       <Route exact path="/inter" component={IntermediatePage} />
-
+      <Route exact path="/liveNavigation" component={LiveNavigation} />
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />
