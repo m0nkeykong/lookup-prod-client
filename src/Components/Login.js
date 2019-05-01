@@ -4,6 +4,8 @@ import axios from 'axios';
 import google from './style/Login.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import {getGoogleLoginApiKey} from '../globalService';
+
 import { BeatLoader } from 'react-spinners'; 
 
 class Login extends Component {
@@ -20,7 +22,7 @@ class Login extends Component {
     }
     
     fetchUserData() {
-        // console.log('Fetching Docs', param);
+        console.log("Entered <Login></Login> fetchUserData()")
         let user = this.state.userDetails;
         console.log(user);
         console.log('for user: ' + user.email);
@@ -29,11 +31,20 @@ class Login extends Component {
         axios.post(url, {email: user.email, name: user.name, imageUrl: user.imageUrl})
         .then(response => {
             // NotificationManager.success(`${this.state.projectToAdd.title} has been created successfully`, '', 3000)
-            if(response.status == 200){
+            if(response.status === 200){
                 console.log(`User ${response.data.email} successfully looged in.`);
                 // console.log(response);
+                // sessionStorage Can be accessible from any windows and never expires
                 sessionStorage.setItem('userDetails', JSON.stringify(response.data._id));
+                // localStorage Can be accessible from same tab and expires when tab close
+                localStorage.setItem('userDetails', JSON.stringify(response.data._id));
                 this.props.history.push('/auto');
+                // @TODO
+                // <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, idOfTrack: track.idOfTrack}}
+                //          activeStyle={this.active} 
+                //          style={{padding:'6px'}}
+                //          className="btn btn-primary" >Start
+                // </NavLink>
             }
         })
         .catch(error => {
@@ -44,16 +55,14 @@ class Login extends Component {
     }
 
     loginSuccess(response) {
-        console.log("Entered onSuccess={this.loginSuccess}")
+        console.log("Entered <Login></Login> loginSuccess()")
         this.setState({ userDetails: response.profileObj })
-        // sessionStorage.setItem('userDetails', JSON.stringify(response.profileObj));
-
         this.fetchUserData();
     }
 
     loginFail(response) {
+        console.log('Entered <Login></Login> loginFail()');
         NotificationManager.error('Login failed, try again please.', '', 3000);
-        console.log('Entered onFailure={this.loginFail}, Failed to connect');
         console.log(response);
     }
 
@@ -71,7 +80,7 @@ class Login extends Component {
                                 Login with Google
                             </button>
                         )}
-                        clientId={'442866448380-58htb784uls8qdsqafp75klhbe5g20m4.apps.googleusercontent.com'}
+                        clientId={getGoogleLoginApiKey()}
                         buttonText="Login"
                         onSuccess={this.loginSuccess}
                         onFailure={this.loginFail}>
