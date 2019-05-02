@@ -58,7 +58,7 @@ class TrackDetails extends Component {
 
   }
 
-  addTrack(_id,_title,_type, _comments,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _comments,_userDetails=[],_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
