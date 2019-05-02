@@ -432,6 +432,14 @@ render() {
             </GoogleMap>
           </div>
         </LoadScript>
+            <div className="buttons">
+              <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
+                <i className="material-icons">bluetooth_connected</i>
+              </button>
+              <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
+                <i className="material-icons">bluetooth_disabled</i>
+              </button>
+            </div>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
     );
