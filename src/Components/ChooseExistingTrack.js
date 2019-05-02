@@ -195,7 +195,7 @@ class ChooseExistingTrack extends Component {
         console.log(json);  
 
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json._id,json.title, json.type, json.comments, json.description,
+        self.addTracks(json.track._id,json.track.title, json.track.type, json.track.comments, json.track.description,
           json.startPoint, json.endPoint, json.wayPoints);  
           console.log(json);  
       })    // endOf data.map((data)  
