@@ -62,6 +62,69 @@ class AutoGenerateTrack extends Component {
 
   }
 
+  // Change to class method
+  checkBicycling = ({ target: { checked } }) => {
+    console.log(`Entered checkBicycling ${checked}`);
+    checked &&
+      this.setState(
+        () => ({
+          travelMode: 'BICYCLING'
+        })
+      )
+  }
+
+  // Change to class method
+  checkWalking = ({ target: { checked } }) => {
+    console.log(`Entered checkWalking ${checked}`);
+    checked &&
+      this.setState(
+        () => ({
+          travelMode: 'WALKING'
+        })
+      )
+  }
+
+  // Change to class method
+  getOrigin = ref => {
+    console.log(`Entered getOrigin ${ref}`);
+    this.origin = ref
+  }
+
+  // Change to class method
+  getDestination = ref => {
+    console.log(`Entered getDestination ${ref}`);
+    this.destination = ref
+  }
+
+  // Change to class method
+  onClick = () => {
+    console.log(`Entered onClick`);
+    if (this.origin.value !== '' && this.destination.value !== '') {
+      this.setState(
+        (prevState) => ({
+          // track: [...prevState, {
+          //   startPoint: this.origin.value,
+          //   endPoint:  this.destination.value,
+          //   wayPoints: null,
+          //   travelMode: this.state.travelMode
+          // }]
+          track: {
+            startPoint: this.origin.value,
+            endPoint:  this.destination.value,
+            wayPoints: null,
+            travelMode: this.state.travelMode
+          }
+        }), () => {
+          console.log("TRACK:");
+          console.log(this.state.track);
+        }
+      )
+      this.setState({ loading: true });
+    }
+    else{
+      console.log(`Entered Invalid value, ORIGIN: ${this.origin.value}, DESTINATION: ${this.origin.destination}`);
+    }
+  }
 
   // Change to class method
   directionsCallback = response => {
