@@ -3,6 +3,7 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
+import IoMap from 'react-icons/lib/io/map';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
