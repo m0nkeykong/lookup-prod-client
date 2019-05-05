@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
-import TamplateComponent from './TemplateComponent';
-import { NavLink , Link} from "react-router-dom";
-import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
-import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import Map from './Map';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { NavLink } from "react-router-dom";
+import axios from 'axios';
+
+import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -20,8 +16,19 @@ class IntermediatePage extends Component {
 
   }
   
-  componentDidMount() {
-  
+  componentDidMount(){
+    this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+
+    // Get the user details from database
+    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+      .then(userResponse => {
+        this.setState({ userDetails: userResponse.data, loading: false });
+        console.log(userResponse.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
 
