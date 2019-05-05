@@ -1,24 +1,44 @@
 import React, { Component } from 'react';
-import Map from './Map';
-import { BeatLoader } from 'react-spinners';
-import './style/AutoGenerateTrack.css';
+import { NavLink } from "react-router-dom";
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import Geocode from 'react-geocode';
+import { BeatLoader } from 'react-spinners';
+import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api';
+import { Button, Card, Form, Navbar, NavDropdown, Nav, InputGroup, Modal, ButtonToolbar, ProgressBar, Row, Col, ListGroup} from 'react-bootstrap';
+import IoIosLocation from 'react-icons/lib/io/ios-location';
+
+import LiveNavigation from './LiveNavigation';
+import {getGoogleApiKey} from '../globalService';
+import './style/AutoGenerateTrack.css';
 
 class AutoGenerateTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      userResponse: null,
+      directionsResponse: null,
       userDetails: [],
-      response: null,
-      loadLiveMap: false,
+      isGenerated: false,
+      loading: true,
+      startLiveNavigation: false,
+
+      showModal: false,
+
+      avoidTolls: true,
+      avoidFerries: true,
+      avoidHighways: true,
       track: {
-        startPoint: null,
-        endPoint: null,
-        wayPoints: null,
-        travelMode: 'WALKING'
+        startPoint: '',
+        endPoint: '',
+        wayPoints: '',
+        travelMode: 'WALKING',
+        description: '',
+        title: '',
+        estimatedDuration: '',
+        actualDuration: '',
+        difficultyLevel: '',
+        rating: '',
+        changesDuringTrack: ''
       }
     }
 
@@ -26,10 +46,18 @@ class AutoGenerateTrack extends Component {
     this.handleRadioChange = this.handleRadioChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
-    this.renderForm = this.renderForm.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleShowModal = this.handleShowModal.bind(this);
+    this.handleResetModal = this.handleResetModal.bind(this);
 
-    this.getGeneratedTrack = this.getGeneratedTrack.bind(this);
-    this.getAllTracks = this.getAllTracks.bind(this);    
+    this.showGeneratedTrackModal = this.showGeneratedTrackModal.bind(this);
+    this.showTrackForm = this.showTrackForm.bind(this);
+    this.showMenu = this.showMenu.bind(this);
+
+    this.getGeneratedTrackDetails = this.getGeneratedTrackDetails.bind(this);
+    this.getCurrentLocation = this.getCurrentLocation.bind(this);
+
+    this.startLiveNavigation = this.startLiveNavigation.bind(this);
   }
 
   componentDidMount(){
@@ -38,92 +66,99 @@ class AutoGenerateTrack extends Component {
 
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(response => {
-				this.setState({ userDetails: response.data });
-        this.setState({ loading: false });
-        console.log(response.data);
+      .then(userResponse => {
+				this.setState({ userDetails: userResponse.data, loading: false, userResponse: true});
+        console.log(userResponse.data);
       })
       .catch(error => {
         console.error(error);
       });
   }
 
-
-
-  renderForm(){
-
-  }
-
-  getGeneratedTrack(){
-
-  }
-  
-  getAllTracks(){
-
-  }
-
-  // Change to class method
-  checkBicycling = ({ target: { checked } }) => {
-    console.log(`Entered checkBicycling ${checked}`);
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'BICYCLING'
-        })
-      )
-  }
-
-  // Change to class method
-  checkWalking = ({ target: { checked } }) => {
-    console.log(`Entered checkWalking ${checked}`);
-    checked &&
-      this.setState(
-        () => ({
-          travelMode: 'WALKING'
-        })
-      )
-  }
-
-  // Change to class method
-  getOrigin = ref => {
-    console.log(`Entered getOrigin ${ref}`);
-    this.origin = ref
-  }
-
-  // Change to class method
-  getDestination = ref => {
-    console.log(`Entered getDestination ${ref}`);
-    this.destination = ref
-  }
-
-  // Change to class method
-  onClick = () => {
-    console.log(`Entered onClick`);
-    if (this.origin.value !== '' && this.destination.value !== '') {
+  handleInputChange(e){
+    e.persist();
+    console.log(e);
+    e.target.value !== '' &&
       this.setState(
         (prevState) => ({
-          // track: [...prevState, {
-          //   startPoint: this.origin.value,
-          //   endPoint:  this.destination.value,
-          //   wayPoints: null,
-          //   travelMode: this.state.travelMode
-          // }]
-          track: {
-            startPoint: this.origin.value,
-            endPoint:  this.destination.value,
-            wayPoints: null,
-            travelMode: this.state.travelMode
-          }
+          ...prevState,
+          track: {...prevState.track, [e.target.name]: e.target.value},
         }), () => {
-          console.log("TRACK:");
           console.log(this.state.track);
         }
       )
-      this.setState({ loading: true });
+  }
+
+  handleRadioChange(e){
+    e.persist();
+    e.target.checked &&
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          track: {...prevState.track, [e.target.name]: e.target.value},
+        })
+      )
+  }
+
+  getCurrentLocation(){
+    console.log("Entered <AutoGenerateTrack> getCurrentLocation()");
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 500,
+			maximumAge: 0
+      };
+      
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        Geocode.setApiKey(getGoogleApiKey());
+        Geocode.fromLatLng(pos.coords.latitude, pos.coords.longitude).then(
+          response => {
+            const address = response.results[0].formatted_address;
+            this.setState(
+              (prevState) => ({
+                ...prevState,
+                track: {...prevState.track, startPoint: address},
+              }), () => {
+                console.log(this.state.track);
+              }
+            );
+            var event = new Event('input', { bubbles: true });
+            this.myinput.dispatchEvent(event);
+          },
+          error => {
+            console.error(error);
+          }
+        );
+      }, (err) => {
+        console.error(`ERROR(${err.code}): ${err.message}`);
+      }, options);
     }
     else{
-      console.log(`Entered Invalid value, ORIGIN: ${this.origin.value}, DESTINATION: ${this.origin.destination}`);
+      console.warn("Geolocation API not supported.");
+      alert("Geolocation API not supported.");
     }
+  }
+
+  handleSubmit(e){
+    e.persist();
+    e.preventDefault();
+    // After track created, set state to load Modal
+    this.setState({ isGenerated: true });
+    this.handleShowModal();
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
+  }
+
+  handleShowModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleResetModal() {
+    this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
+    this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '' } })
   }
 
   // Change to class method
@@ -211,148 +246,303 @@ class AutoGenerateTrack extends Component {
       }
     }
   }
-  // <img alt="Profile" src={JSON.parse(sessionStorage.getItem('userDetails')).profilePicture} style={{ height: '40px', width: '40px', float: 'right', borderRadius: '50%', padding: '3px 3px 3px 3px' }}></img>
-  // <h6 style={{ fontFamily: "ABeeZee, sans-serif" }}>Hello, {JSON.parse(sessionStorage.getItem('userDetails')).name}</h6>
 
-  handleInputChange(e){
-    e.persist();
-    console.log(e);
-    e.target.value !== '' &&
-      this.setState(
-        (prevState) => ({
-          ...prevState,
-          track: {...prevState.track, [e.target.name]: e.target.value},
-        }), () => {
-          console.log(this.state.track);
-        }
-      )
+  startLiveNavigation(){
+
   }
 
-  handleRadioChange(e){
-    e.persist();
-    e.target.checked &&
-      this.setState(
-        (prevState) => ({
-          ...prevState,
-          track: {...prevState.track, [e.target.name]: e.target.value},
-        })
-      )
+  getGeneratedTrackDetails(){
+    console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getGeneratedTrackDetails()");
+    const response = this.state.directionsResponse;
+    const leg = response.routes[0].legs[0];
+		if (response !== null) {
+      if (response.status === 'OK') {
+        return(
+          <div>
+            <div>
+              <ListGroup variant="flush">
+                <ListGroup.Item> <span> Track Title: </span> {this.state.track.title} </ListGroup.Item>
+                <ListGroup.Item> <span> Description: </span> {this.state.track.description} </ListGroup.Item>
+                <ListGroup.Item> <span> Travel Mode: </span> {this.state.track.travelMode} </ListGroup.Item>
+                <ListGroup.Item> <span> From: </span> {leg.start_address} </ListGroup.Item>
+                <ListGroup.Item> <span> To: </span> {leg.end_address} </ListGroup.Item>
+                <ListGroup.Item> <span> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
+                <ListGroup.Item> <span> Estimated Duration: </span> {leg.duration.text} </ListGroup.Item>
+             </ListGroup>
+              
+              {/*
+              <ProgressBar variant="info" animated now={100} />  
+              <Button variant="outline-success">Save And Start Live Navigation</Button>
+              <Button variant="outline-primary">Start Live Navigation Without Save</Button>
+              <Button variant="outline-secondary">Save Track</Button>
+              */}
+            </div>
+          </div>
+        )
+      }
+      else {
+        console.error(`Response From Directions API Was Returned With Status ${response.status}`);
+      }
+    }
+    else{
+      console.error('Response From Directions API is null');
+    }   
   }
 
-  handleSubmit(e){
-    e.persist();
-    e.preventDefault();
-
-    this.setState({ loadLiveMap: true });
-  }
-
-  render() {
-    return (
+  showGeneratedTrackModal(){
+    return(
       <div>
-        <Card className="text-center">
+        <ButtonToolbar>
+        <Modal
+          size="lg"
+          show={this.state.showModal}
+          onHide={this.handleCloseModal}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Generated Track Details
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
 
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
+          {/* Show Generated Track Details ONLY If We Have Track Details Response */}
+          {this.state.directionsResponse !== null ?
+            (
+                this.getGeneratedTrackDetails()
+            )
+            :
+            (
+              <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+            )
+          }
+          
+          </Modal.Body>
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                  <Nav.Link href="#profile">View Profile</Nav.Link>
-                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                  <Nav.Link href="#about">About</Nav.Link>
-                  <Nav.Link href="#contact">Contact us</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
-
-          <Card.Body>
-            <Form onSubmit={e => this.handleSubmit(e)}>
-              <Card.Title>
-                <h6> Choose Origin and Destination </h6>
-              </Card.Title>
-
-              <Form.Group controlId="formOrigin">
-                <Form.Label>Origin</Form.Label>
-                <Form.Control type="text" placeholder="Enter Origin" name="startPoint" onChange={this.handleInputChange}/>
-                <Form.Text className="text-muted">
-                  Click here to user your current location.
-                </Form.Text>
-              </Form.Group>
+          <Modal.Footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Row>
+            <Col>
+        <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
+          <Button variant="primary" onClick={this.startLiveNavigation}>Save & Navigate</Button>
+        </NavLink>            
+             
+            </Col>
+            <Col>
+              <Button variant="secondary" onClick={this.handleResetModal}>Reset</Button>
+            </Col>
+            <Col xs lg="2">
+              <Button variant="dark" onClick={this.handleCloseModal}>Close</Button>
+            </Col>
+          </Row>
             
-              <Form.Group controlId="formDestination">
-                <Form.Label>Destination</Form.Label>
-                <Form.Control type="text" placeholder="Enter Destination" name="endPoint" onChange={this.handleInputChange}/>
-              </Form.Group>
+            
+            
+          </Modal.Footer>
+        </Modal>
+       </ButtonToolbar>      
+      </div>
+    )
+  }
 
-              <Card.Title>
-                <h6> Choose Travel Mode </h6>
-              </Card.Title>
+  showTrackForm(){
+    return(
+      <Card.Body>
+      <Form onSubmit={e => this.handleSubmit(e)}>
+        <Card.Title>
+          <h6> Choose Origin and Destination </h6>
+        </Card.Title>
 
-              <Form.Group>
-                <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange}/>
-                <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange}/>
-              </Form.Group>
+        <InputGroup className="mb-3">
+          {/*<Form.Label>Origin</Form.Label>*/}
+          <InputGroup.Prepend>
+            <Button title="Get current location" onClick={ this.getCurrentLocation }> <IoIosLocation/> </Button>
+          </InputGroup.Prepend>
+          <Form.Control required type="text" placeholder="Enter Origin" value={this.state.track.startPoint} name="startPoint" onChange={e => {this.handleInputChange(e)}} ref={(input)=> this.myinput = input}/>
+        </InputGroup>
+      
+        <Form.Group controlId="formDestination">
+          {/*<Form.Label>Destination</Form.Label>*/}
+          <Form.Control required type="text" placeholder="Enter Destination" value={this.state.track.endPoint} name="endPoint" onChange={this.handleInputChange}/>
+        </Form.Group>
 
-              <Button variant="primary" type="submit">
-                Generate Route
-              </Button>
-            </Form>
-          </Card.Body>
+        <Card.Title>
+          <h6> Travel Mode </h6>
+        </Card.Title>
 
-          <Card.Header> 
-            <h6> Live Navigation Map </h6> 
-          </Card.Header>
-          <Card.Body>
-            {this.state.loading ?
+        <Form.Group>
+          <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange}/>
+          <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange}/>
+        </Form.Group>
+
+        <Card.Title>
+          <h6> Description and Title </h6>
+        </Card.Title>
+
+        <Form.Group controlId="formDescription">
+          <Form.Control as="textarea" required type="text" placeholder="Description" value={this.state.track.description} name="description" onChange={this.handleInputChange}/>
+        </Form.Group>
+
+        <Form.Group controlId="formTitle">
+          <Form.Control required type="text" placeholder="Track Title" name="title" value={this.state.track.title} onChange={this.handleInputChange}/>
+          <Form.Text className="text-muted" style={{float: 'left'}}>
+            This is a unique name.
+          </Form.Text>
+        </Form.Group>
+        <br/>
+
+        <Card.Title>
+          <h6> Additional settings </h6>
+        </Card.Title>
+
+        <Form.Group>
+          <Form.Check disabled custom inline id="formTolls" type="radio" checked={true} label="Avoid Tolls" name="avoidTolls" value="true"/>
+          <Form.Check disabled custom inline id="formSafeWays" type="radio" checked={true} label="Safe Ways" name="safeWays" value="true"/>
+          <Form.Check disabled custom inline id="formHighway" type="radio" checked={true} label="Avoid Highways" name="avoidHighways" value="true"/>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Generate Route
+        </Button>
+      </Form>
+    </Card.Body>
+    )
+  }
+
+  showMenu(){
+    return(
+      <div>
+        <Card.Header>
+        <Navbar collapseOnSelect expand="lg">
+
+          <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
+            {this.state.userDetails.profilePicture ?
               (
-                <Map
-                  track={this.state.track}>
-                </Map>
+                <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
               )
               :
               (
                 <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
               )
             }
+          </Navbar.Brand>
+
+          <Navbar.Brand href="#name" style={{ float: 'center' }}>
+            {this.state.userDetails.name ?
+              (
+                <div>
+                  <p>{this.state.userDetails.name}</p>
+                </div>
+              )
+              :
+              (
+                <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
+              )
+            }
+          </Navbar.Brand>
+
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="#profile">View Profile</Nav.Link>
+                <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
+                <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
+                </NavDropdown>
+                <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
+                <Nav.Link href="#vibrations">Vibrations</Nav.Link>
+                <Nav.Link href="#about">About</Nav.Link>
+                <Nav.Link href="#contact">Contact us</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+
+        </Card.Header>
+      </div>
+    )
+  }
+
+  directionsRequest(){
+    return(
+      <div>
+        <LoadScript
+        id="script-loader"
+        googleMapsApiKey={getGoogleApiKey()}
+        onError={this.onLoadScriptError}
+        onLoad={this.onLoadScriptSuccess}
+        language="English"
+        version="3.36"
+        region="US"
+        >
+
+          <div className="map-container">
+
+            <GoogleMap>
+            {/* Directions API Request */}
+            {this.state.directionsResponse === null &&
+              <DirectionsService
+                options={{
+                  origin: this.state.track.startPoint,
+                  destination: this.state.track.endPoint,
+                  waypoints: this.state.track.wayPoints ? this.state.track.wayPoints : null,
+                  avoidTolls: this.state.avoidFerries,
+                  avoidFerries: this.state.avoidFerries,
+                  avoidHighways: this.state.avoidHighways,
+                  travelMode: this.state.track.travelMode,
+                  drivingOptions: {
+                    departureTime: new Date(Date.now()),
+                    trafficModel: 'bestguess' 
+                  },
+                  optimizeWaypoints: true
+                }}
+                callback={(response) => {this.setState({ directionsResponse: response })}}
+              >
+              </DirectionsService>
+              }
+            </GoogleMap>
+
+          </div>
+
+        </LoadScript>      
+      
+      </div>
+    )
+  }
+
+
+  render() {    
+    return (
+      <div>
+        <Card className="text-center">
+
+          {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
+          {!this.state.loading && this.showMenu()}
+
+          {/* Show Generate Track Form When Page Stop Loading sessionStorage */}
+          {this.state.userResponse && this.showTrackForm()}
+
+          {/* Generated Track Modal */}
+          {this.state.isGenerated && this.showGeneratedTrackModal()}
+          
+          <Card.Header> 
+            <h6> Live Navigation Map </h6> 
+            {/*
+              <Map
+              track={this.state.track}>
+              </Map>
+            */}
+          </Card.Header>
+
+          <Card.Body>
+            {/* Send Directions API Request Only When The User Send The Required Track Details Form */}
+            {this.state.isGenerated ? this.directionsRequest() : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
           </Card.Body>
-          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
+
+          <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
       </div>
     );

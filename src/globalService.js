@@ -24,6 +24,9 @@ export function getGoogleApiKey(){
     return consts.GOOGLE_API_KEY;
 }
 
+export function getGoogleLoginApiKey(){
+  return consts.GOOGLE_LOGIN_API_KEY;
+}
 
 /**
  * 

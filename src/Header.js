@@ -21,8 +21,8 @@ class Header extends Component {
         height: '40px',
         display: 'block',
         margin: '0 auto',
-        marginTop: '8px'
-
+        marginTop: '4px',
+        marginBottom: '4px'
     }
 
     render() {
