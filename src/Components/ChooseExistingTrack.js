@@ -91,7 +91,7 @@ class ChooseExistingTrack extends Component {
     this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints) {
+  addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel) {
     console.log("wwwwwwwwwwwwewwwwwwwwww:");
     console.log(_startPoint);
     console.log(_endPoint);
@@ -108,7 +108,8 @@ class ChooseExistingTrack extends Component {
           description: _description,
           startPoint:_startPoint,
           endPoint:_endPoint,
-          wayPoints:_wayPoints
+          wayPoints:_wayPoints,
+          difficultyLevel: _difficultyLevel
       }]
     }))
   }
@@ -138,6 +139,22 @@ class ChooseExistingTrack extends Component {
      
   }
 
+  getStarsForDifficultyLevel(diffLever){
+    let html=[];
+    let diffNumber = Math.round(diffLever);
+    let limitOfStars = 5;
+
+    for (let i = 0; i < limitOfStars; i++) {
+      if(i < diffNumber)
+        html.push(<span class="fa fa-star colorStar"></span>)
+      else
+        html.push(<span class="fa fa-star"></span>)
+
+    }
+    return html;
+  } 
+
+
   viewTracks(track,i) {
     if(track.title == ''){
       console.log("there are no tracks to display !");
@@ -163,6 +180,7 @@ class ChooseExistingTrack extends Component {
                 <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
                 <p className="typeTrack" >{this.getIconType(track.type)}</p>
                 <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
+                <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
               </NavLink>
 
               </TamplateComponent>
@@ -192,7 +210,8 @@ class ChooseExistingTrack extends Component {
 
         // console.log(JSON.stringify(json) );          
         self.addTracks(json.track._id,json.track.title, json.track.type, json.track.reports, json.track.description,
-          json.startPoint, json.endPoint, json.wayPoints);  
+          json.startPoint, json.endPoint, json.wayPoints, json.track.difficultyLevel);  
+          console.log("JSON:");
           console.log(json);  
       })    // endOf data.map((data)  
     })
