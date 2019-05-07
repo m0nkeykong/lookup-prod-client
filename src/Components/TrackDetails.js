@@ -20,7 +20,7 @@ class TrackDetails extends Component {
       endPoint: [],
       wayPoints: [],
       travelMode: [],
-      comments: [],
+      reports: [],
       userDetails: [],
       updated: false
     }
@@ -29,8 +29,8 @@ class TrackDetails extends Component {
     this.addTrack = this.addTrack.bind(this)
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
-    this.getComments = this.getComments.bind(this)
-    this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
+    this.getReports = this.getReports.bind(this)
+    this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.initialState = this.initialState.bind(this)
 
@@ -52,13 +52,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments, data.userDetails,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.reports, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_userDetails=[],_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -67,7 +67,7 @@ class TrackDetails extends Component {
           idOfTrack: _id,
           title: _title,
           travelMode: _type,
-          comments: _comments,
+          reports: _reports,
           userDetails: _userDetails,
           startPoint:_startPoint,
           endPoint:_endPoint,
@@ -85,12 +85,12 @@ class TrackDetails extends Component {
     }))
   }
 
-  getComments(comments, userDetails){
+  getReports(reports, userDetails){
     let html=[];
-    console.log(comments);
+    console.log(reports);
     // Outer loop to create parent
-    for (let i = 0; i < comments.length; i++) {
-      // html.push(<p>	&#8227; &#9;{comments[i].comment}</p>)
+    for (let i = 0; i < reports.length; i++) {
+      // html.push(<p>	&#8227; &#9;{reports[i].report}</p>)
 
       html.push(
         <ul class="media-list">
@@ -101,8 +101,8 @@ class TrackDetails extends Component {
             <div class="media-body">
               <div class="well well-lg">
                   <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
-                  <p class="media-comment">
-                    {comments[i].comment}
+                  <p class="media-report">
+                    {reports[i].report}
                   </p>
               </div>              
             </div>
@@ -159,17 +159,17 @@ class TrackDetails extends Component {
     this.setState(prevState => ({tracks: []}))
   }
 
-  async onSubmitAddComment(e){
+  async onSubmitAddReport(e){
     e.preventDefault();
 
      // TODO: how to get user Id here
-    let data1 = {userId:"5c978235efd9d315e8d7a0d9", comment: `${this.state.addComment}` };
-    var commentId = await PostAsyncRequest('comments/insertComment', data1);
+    let data1 = {userId:"5c978235efd9d315e8d7a0d9", report: `${this.state.addReport}` };
+    var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
-     let data2 = {trackId:`${this.props.location.idOfTrack}`, commentId: `${commentId}` };
+     let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
      console.log("DATA2:");
      console.log(data2);
-    var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
+    var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
     
     this.initialState();
     this.getTrackById(this.props.location.idOfTrack);
@@ -216,31 +216,31 @@ class TrackDetails extends Component {
               <div class="row">
                 <div class="col-sm-10 col-sm-offset-1" id="logout">
                     
-                    <div class="comment-tabs">
+                    <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
+                            <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Reports</h4></a></li>
                         </ul>            
                         <div class="tab-content">
-                            <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments,track.userDetails)}
+                            <div class="tab-pane active" id="reports-logout">  
+                              {this.getReports(track.reports,track.userDetails)}
                             </div>  
                             
 
                             <div class="col-sm-10 col-sm-offset-1 pt-2"> 
                             <ul class="nav nav-tabs" role="tablist">
-                              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
+                              <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="addReport text-capitalize">Add report</h4></a></li>
                             </ul> 
                 
-                            <div class="tab-pane" id="add-comment">
-                              <form onSubmit={this.onSubmitAddComment}> 
+                            <div class="tab-pane" id="add-report">
+                              <form onSubmit={this.onSubmitAddReport}> 
                                   <div class="form-group">
                                       <div class="col-sm-10">
-                                        <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
+                                        <textarea className="form-control textareaSize" name="addReport" onChange={this.handleChange}  value={this.state.addReport} rows="5"></textarea>
                                       </div>
                                   </div>
                                   <div class="form-group">
                                       <div class="col-sm-offset-2 col-sm-10">                    
-                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
+                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitReport"><span class="glyphicon glyphicon-send"></span> Submit report</button>
                                       </div>
                                   </div>            
                               </form>
