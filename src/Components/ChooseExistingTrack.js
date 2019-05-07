@@ -8,12 +8,6 @@ import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
-import asyncComponent from './asyncComponent';
-
-
-const AsyncMap = asyncComponent(() => {
-  return import('./Map');
-});
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
