@@ -67,13 +67,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.reports, data.userDetails,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel, data.reports, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -87,7 +87,8 @@ class TrackDetails extends Component {
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
-          description: _description
+          description: _description,
+          difficultyLevel: _difficultyLevel
       }]
     }))
   }
@@ -194,6 +195,21 @@ class TrackDetails extends Component {
     this.setState({ [event.target.name]: event.target.value})
   }
 
+  getStarsForDifficultyLevel(diffLever){
+    let html=[];
+    let diffNumber = Math.round(diffLever);
+    let limitOfStars = 5;
+
+    for (let i = 0; i < limitOfStars; i++) {
+      if(i < diffNumber)
+        html.push(<span class="fa fa-star colorStar"></span>)
+      else
+        html.push(<span class="fa fa-star"></span>)
+
+    }
+    return html;
+  } 
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -227,6 +243,8 @@ class TrackDetails extends Component {
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
+            <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+
 
               <div class="row">
                 <div class="col-sm-10 col-sm-offset-1" id="logout">
