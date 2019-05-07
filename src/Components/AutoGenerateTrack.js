@@ -201,7 +201,7 @@ class AutoGenerateTrack extends Component {
           // @TODO: Validate unique title
           title: `User route ` + Math.random(9999999999),
           // @TODO: Let the user insert this value from form
-          comment: `First auto generated track`,
+          report: `First auto generated track`,
           // @TODO: Let the user insert this value from form
           rating: Math.random(10),
           // @TODO: Let the user insert this value from form

@@ -20,7 +20,7 @@ difficultyLevel
 actualDuration
 rating
 ובכללי להציג את הנתונים האלה:
-actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, comments, travelMode, startPoint-endPoint
+actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, reports, travelMode, startPoint-endPoint
 */
 
 class Map extends Component {
