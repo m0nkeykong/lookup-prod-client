@@ -9,6 +9,8 @@ import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
+import axios from 'axios';
+
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -200,13 +202,27 @@ class ChooseExistingTrack extends Component {
   componentDidMount(){
     this.getAllTracks();
 
-    let data = {city:"Kfar Saba", latitude:100, longitude:100 };
-    console.log("DATA:");
-    console.log(data);
-    console.log(JSON.stringify(data));
-    var res = PostRequest('point/insertPoint',data);
-    console.log("response:");
-    console.log(res);
+    // let data = {city:"Kfar Saba", latitude:100, longitude:100 };
+    // console.log("DATA:");
+    // console.log(data);
+    // console.log(JSON.stringify(data));
+    // var res = PostRequest('point/insertPoint',data);
+    // console.log("response:");
+    // console.log(res);
+
+    // user session
+    this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+
+    // Get the user details from database
+    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+      .then(userResponse => {
+        this.setState({ userDetails: userResponse.data, loading: false });
+        console.log(userResponse.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   handleChange(event){
