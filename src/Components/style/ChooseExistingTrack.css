@@ -84,7 +84,7 @@ address{
     padding-top: 3px;
 }
          
-input[type="radio"] {
+/* input[type="radio"] {
     padding-right: 4px;
     position: absolute;
     left: 340px;
@@ -95,7 +95,7 @@ input[type="radio"], .rating label.stars {
     float: right;
     line-height: 30px;
     height: 30px;
-}
+} */
  
 span + input[type=radio] + label, legend + input[type=radio] + label {
     clear: right;
