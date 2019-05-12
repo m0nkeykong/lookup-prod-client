@@ -15,9 +15,9 @@ export function getAllTracksURL(){
     return `${originURL}track/getAllTracks`;
 }
 
-export function getTracksByCityURL(fromCity,toCity,type){
-  console.log(`${originURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`);
-    return `${originURL}track/getTracksByCity/${fromCity}/${toCity}/${type}`;
+export function getTracksByCityURL(fromCity,toCity,travelmode,Star){
+  console.log(`${originURL}track/getTracksByCity/${fromCity}/${toCity}/${travelmode}`);
+    return `${originURL}track/getTracksByCity/${fromCity}/${toCity}/${travelmode}/${Star}`;
 }
 
 export function getGoogleApiKey(){

@@ -61,26 +61,39 @@ class ChooseExistingTrack extends Component {
     console.log("TYPE:");
     console.log(this.refs.walking.checked);
     console.log(this.refs.bicycling.checked);
-    var checked = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
+    var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
+    var checkedStar = "";
+    if(this.refs.star1.checked)
+      checkedStar = "1";
+    if(this.refs.star2.checked)
+      checkedStar = "2";
+    if(this.refs.star3.checked)
+      checkedStar = "3";
+    if(this.refs.star4.checked)
+      checkedStar = "4";
+    if(this.refs.star5.checked)
+      checkedStar = "5";
 
     // TODO: parse city to upper case and lower case:
-    fetch(getTracksByCityURL(this.state.from,this.state.to,checked))
+    fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar))
     .then((res) => { 
-      // console.log(`RES::::::::::`);
-      // console.log(res.status);       
       return res.json();      
     }).then((data) => {
       var self=this; 
       this.state.tracks = [];
-
+      console.log("DATA LENGTHHHHHH");
+      console.log(data);
       if( data.length == 0){
           self.addTracks('','','','','','','',''); 
-      }    
+      }  
+      if( data.message == "No tracks found"){
+        self.addTracks('','','','','','','',''); 
+    }    
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
           console.log("ELLLLLLSSSEEEEEEEEEE");
-          self.addTracks(json._id,json.title, json.type, json.reports, json.description); 
+          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel); 
         })  
       } 
     })
@@ -330,15 +343,28 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                    <input className="marginInherit" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
                     <label className=''>Walking</label>
                   </div>
-                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                  <input className="marginInherit" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode"> 
+                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
                
+                <h6>Choose Difficulty Level</h6>
+                <div className="row rating">     
+                    <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="4_stars">4 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="3_stars">3 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="2_stars">2 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="1_stars">1 star</label>
+                    <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="0_stars">0 star</label>
+                </div>
 
 
               <div className="row">

@@ -65,57 +65,23 @@ address{
 .colorStar{
     color: orange;
 }
+
 .rating {
-    width: 300px;
-    height: 34px;
-    background-color: #f6f3f3;
+    direction: rtl;
+    display: -webkit-inline-box;
+    margin-bottom: .5rem;
+    margin-left: 6px;
 }
  
 .rating label {
     text-indent: -100px;
-    width: 40px !important;
-    height: 30px;
     overflow: hidden;
-    cursor: pointer;
-}
- 
-.label {
-    float: left;
-    padding-top: 3px;
 }
          
-/* input[type="radio"] {
-    padding-right: 4px;
-    position: absolute;
-    left: 340px;
-    margin-top: 10px;
+.inputStarts {
+    visibility:hidden;
 }
-                 
-input[type="radio"], .rating label.stars {
-    float: right;
-    line-height: 30px;
-    height: 30px;
-} */
- 
-span + input[type=radio] + label, legend + input[type=radio] + label {
-    clear: right;
-    margin-right: 80px;
-    counter-reset: checkbox;
-}
- 
-.rating input[type="radio"]:required + label:after {
-    content: '';
-    position: absolute;
-    left: 340px; 
-    min-height: 10px;
-    margin-top: -36px;
-    text-align: right;
-    background: #6cbf00;
-    padding: 10px 10px;
-    display: block;
-    width: 50px;
-}
- 
+
 .rating label.stars {
     background: transparent url('http://www.findsourcecode.com/wp-content/uploads/2014/04/star_off.png') no-repeat center center;
 }
@@ -124,7 +90,6 @@ span + input[type=radio] + label, legend + input[type=radio] + label {
 .rating label.stars:hover, 
 .rating input[type=radio][name=stars]:checked ~ label.stars {
     background-image: url('http://www.findsourcecode.com/wp-content/uploads/2014/04/star.png');
-    counter-increment: checkbox;
 }
  
 .rating input[type=radio][name=stars]:required + label.stars:after {
