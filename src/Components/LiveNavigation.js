@@ -25,7 +25,7 @@ class LiveNavigation extends Component {
     console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    axios.get(`https://db.lookup.band/user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
         this.setState({ userDetails: userResponse.data, loading: false });
         console.log(userResponse.data);

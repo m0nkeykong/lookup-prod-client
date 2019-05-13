@@ -8,7 +8,8 @@ import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, D
 import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
-import BluetoothTerminal from './BLEController';
+import BLEController from './BLEController';
+import BLE from './BLE';
 
 
 /*
@@ -39,7 +40,7 @@ class Map extends Component {
     }
 
     // ****** bluetooth variables ******
-    this.terminal = new BluetoothTerminal();
+    this.terminal = new BLEController();
 
     this.receive = this.receive.bind(this);
     this._log = this._log.bind(this);
@@ -130,7 +131,7 @@ class Map extends Component {
 		this.onLoadPosition();
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
+    axios.get(`https://db.lookup.band/user/getAccountDetails/${userid}`)
       .then(response => {
 				this.setState({userDetails: response.data});
         this.onLoadPosition();
@@ -204,7 +205,7 @@ class Map extends Component {
           this.newLocation.appendChild(this.newElement);
           console.log("watching");
 
-
+          // *** BLE ***
           // indicate the route (for all steps)
           if (this.state.response !== null){
             this.state.response.routes[0].legs.forEach(leg => {
@@ -261,7 +262,8 @@ class Map extends Component {
               }
             });
           }
-
+          // *** BLE ***
+          
         }, (err) => {
           console.error(`ERROR(${err.code}): ${err.message}`);
         }, options);

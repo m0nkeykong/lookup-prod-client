@@ -26,7 +26,7 @@ class Login extends Component {
         let user = this.state.userDetails;
         console.log(user);
         console.log('for user: ' + user.email);
-        const url = `http://localhost:3000/user/getAccountDetailsByEmail/${user.email}`;
+        const url = `https://db.lookup.band/user/getAccountDetailsByEmail/${user.email}`;
 
         axios.post(url, {email: user.email, name: user.name, imageUrl: user.imageUrl})
         .then(response => {

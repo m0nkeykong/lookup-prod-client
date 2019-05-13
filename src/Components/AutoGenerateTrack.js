@@ -65,7 +65,7 @@ class AutoGenerateTrack extends Component {
 		console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    axios.get(`https://db.lookup.band/user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
 				this.setState({ userDetails: userResponse.data, loading: false, userResponse: true});
         console.log(userResponse.data);
@@ -170,7 +170,7 @@ class AutoGenerateTrack extends Component {
         const {leg} = response.routes[0].legs[0];
         
         // Set startPoint to Point Object and get its _id
-        axios.post(`http://localhost:3000/point/insertPoint`, {
+        axios.post(`https://db.lookup.band/point/insertPoint`, {
           ...leg.start_location
         })
         .then(startPointResponse => {
@@ -182,7 +182,7 @@ class AutoGenerateTrack extends Component {
         });
         
         // Set endPoint to Point Object and get its _id
-        axios.post(`http://localhost:3000/point/insertPoint`, {
+        axios.post(`https://db.lookup.band/point/insertPoint`, {
           ...leg.end_location
         })
         .then(endPointResponse => {
@@ -210,7 +210,7 @@ class AutoGenerateTrack extends Component {
           diffucultyLevel: Math.random(10)
         }
 
-        axios.post(`http://localhost:3000/track/insertTrack`, {
+        axios.post(`https://db.lookup.band/track/insertTrack`, {
           trackObj
         })
         .then(createdTrackResponse => {
@@ -223,7 +223,7 @@ class AutoGenerateTrack extends Component {
           console.error(error);
         });
         
-        axios.put(`http://localhost:3000/addTrackRecord/${this.userid}`, 
+        axios.put(`https://db.lookup.band/addTrackRecord/${this.userid}`, 
         {trackid: this.createdTrack._id})
         .then(addedTrackRecord => {
           if(addedTrackRecord.data.status === 200){
