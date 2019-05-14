@@ -67,7 +67,7 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel, data.reports, data.userDetails,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
@@ -236,6 +236,16 @@ class TrackDetails extends Component {
           style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
           className="btn btn-primary" >Start Navigator</NavLink>
       </div>
+
+      <div className="col-10" style={{margin:'auto'}}>
+      <NavLink to=
+      //navigate to TrackDetails via TemplateComponent with the params
+      {{pathname: `${process.env.PUBLIC_URL}/post`, 
+        idOfTrack: track.idOfTrack}}
+        activeStyle={this.active} 
+        style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+        className="btn btn-primary" >Post Navigator</NavLink>
+    </div>
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
 

@@ -93,7 +93,7 @@ class ChooseExistingTrack extends Component {
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
           console.log("ELLLLLLSSSEEEEEEEEEE");
-          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel); 
+          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star); 
         })  
       } 
     })
@@ -224,7 +224,7 @@ class ChooseExistingTrack extends Component {
 
         // console.log(JSON.stringify(json) );          
         self.addTracks(json.track._id,json.track.title, json.track.type, json.track.reports, json.track.description,
-          json.startPoint, json.endPoint, json.wayPoints, json.track.difficultyLevel);  
+          json.startPoint, json.endPoint, json.wayPoints, json.track.difficultyLevel.star);  
           console.log("JSON:");
           console.log(json);  
       })    // endOf data.map((data)  
@@ -368,15 +368,14 @@ class ChooseExistingTrack extends Component {
 
 
               <div className="row">
-          
                 <div className="w-100 mb-md-4"></div>
                 <div className="col-12 mx-auto">
                     <button className='btn btn-primary' type='submit'>
                       Build Route
                     </button>
                 </div>
-
               </div>
+              
          </form>
 
           </Card.Body>

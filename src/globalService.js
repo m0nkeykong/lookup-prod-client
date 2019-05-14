@@ -20,6 +20,11 @@ export function getTracksByCityURL(fromCity,toCity,travelmode,Star){
     return `${originURL}track/getTracksByCity/${fromCity}/${toCity}/${travelmode}/${Star}`;
 }
 
+export function getUpdateTrackStarsURL(trackId,Star){
+  console.log(`${originURL}track/updateTrackStars/${trackId}/${Star}`);
+    return `${originURL}track/updateTrackStars/${trackId}/${Star}`;
+}
+
 export function getGoogleApiKey(){
     return consts.GOOGLE_API_KEY;
 }
