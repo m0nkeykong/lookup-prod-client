@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import './style/ChooseExistingTrack.css'
+import './style/PostNavigation.css'
+import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import {getUpdateTrackStarsURL} from '../globalService'
+import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
+
 
 
 import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
@@ -14,10 +18,12 @@ class PostNavigation extends Component {
     super(props);
     this.state = {
       tracks: [],
-      userDetails: []
+      userDetails: [],
+      addReport: []
     }
 
     this.onSubmit = this.onSubmit.bind(this)
+    this.handleChange  = this.handleChange.bind(this)
   }
   
   componentDidMount(){
@@ -41,9 +47,18 @@ class PostNavigation extends Component {
       // TODO: call route for update actual time
   }
 
+  initialState(){
+    this.setState(prevState => ({tracks: []}))
+  }
 
-  onSubmit(e){
+  handleChange(event){
+    this.setState({ [event.target.name]: event.target.value})
+  }
+
+  async onSubmit(e){
     e.preventDefault();
+
+    // add stars:
     var checkedStar = "";
     if(this.refs.star1.checked)
       checkedStar = "1";
@@ -64,6 +79,24 @@ class PostNavigation extends Component {
     .catch(error => {
       console.error(error);
     });
+
+    console.log("USER :");
+    console.log(this.state.userDetails._id);
+    console.log("REPORT:");
+    console.log(this.state.addReport);
+    // add report if exist
+    if(typeof this.state.addReport !== "undefined"){
+        console.log("INNNN");
+        let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
+        var reportId = await PostAsyncRequest('reports/insertReport', data1);
+
+        let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
+        console.log("DATA2:");
+        console.log(data2);
+        var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
+        
+        this.initialState();
+    }
   }
 
   render() {
@@ -122,8 +155,19 @@ class PostNavigation extends Component {
             </Navbar>
           </Card.Header>
 
+          <div className="col-10 p-md-4">
+            <NavLink to=
+            //navigate to TrackDetails via TemplateComponent with the params
+            // TODO: dont forgot to send the id of track 
+            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', verticalAlign:'baseline'}}
+                className="tring" >
+                <TiArrowBackOutline size={29} color='black'/></NavLink>
+            </div>
 
-          <form onSubmit={this.onSubmit}>
+
+          <form className="paddingTop20" onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
                 <div className="row rating">     
@@ -139,11 +183,24 @@ class PostNavigation extends Component {
                     <label className="stars" for="0_stars">0 star</label>
                 </div>
 
+                <div className="row pt-3">     
+                    <div class="col-sm-10 col-sm-offset-1 pt-2"> 
+                    <h6>Have you encountered a report <br></br>during the track?</h6>
+                        <div class="tab-pane" id="add-report">
+                            <div class="form-group">
+                                <div class="col-sm-10 pt-1">
+                                    <textarea className="form-control textareaSize" placeholder="Tell us!" name="addReport" onChange={this.handleChange}  value={this.state.addReport} rows="5"></textarea>
+                                </div>
+                            </div>           
+                        </div>
+                    </div>
+                </div>
+
                 <div className="row">
                     <div className="w-100 mb-md-4"></div>
                     <div className="col-12 mx-auto">
                         <button className='btn btn-primary' type='submit'>
-                        Vote
+                        Submit
                         </button>
                     </div>
                 </div>
