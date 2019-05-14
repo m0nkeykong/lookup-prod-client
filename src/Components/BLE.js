@@ -6,11 +6,10 @@ import BLEController from './BLEController';
 // UI elements.
 // const deviceNameLabel = document.getElementById('device-name');
 
-class BLE extends Component {
+class BLE {
   constructor(props) {
-    super(props);
     
-    this.terminal = new BLEController();
+    this.BLEController = new BLEController();
     
     this.receive = this.receive.bind(this);
     this._log = this._log.bind(this);
@@ -18,8 +17,7 @@ class BLE extends Component {
     this.connectButton = this.connectButton.bind(this);
     this.disconnectButton = this.disconnectButton.bind(this);
     this.submited = this.submited.bind(this);
-  
-    this.defaultDeviceName = 'LookUP';
+
   }
 
   submited = () => {
@@ -31,14 +29,14 @@ class BLE extends Component {
 
   // log to console received data from component
   receive = () => {
-    this.terminal.receive = (data) => {
-      this.terminal._log(data);
+    this.BLEController.receive = (data) => {
+      this.BLEController._log(data);
     };
   }
 
   // log to console function
   _log = () => {
-    this.terminal._log = (...messages) => {
+    this.BLEController._log = (...messages) => {
       messages.forEach((message) => {
         console.log(message);
       });
@@ -47,39 +45,20 @@ class BLE extends Component {
 
   // send data to component and log it in the console
   send = (data) => {
-    this.terminal.send(data).
-      then(() => this.terminal._log(data)).
-      catch((error) => this.terminal._log(error));
+    this.BLEController.send(data).
+      then(() => this.BLEController._log(data)).
+      catch((error) => this.BLEController._log(error));
   };
 
-  // connect button functionallity (open device browser)                  ------need to handle the device name------
+  // connect button functionallity (open available bluetooth device list)                  
   connectButton = () => {
-    this.terminal.connect().
-      then(() => {
-        //this.refs.deviceNameLabel.textContent = this.terminal.getDeviceName() ? this.terminal.getDeviceName() : this.defaultDeviceName;
-      });
+    this.BLEController.connect();
   };
 
-  // disconnect button functionallity (disconnet component)               ------need to handle the device name------
+  // disconnect button functionallity (disconnet component)               
   disconnectButton = () => {
-    this.terminal.disconnect();
-    // this.refs.deviceNameLabel.textContent = this.defaultDeviceName;
+    this.BLEController.disconnect();  
   };
-  
-  render() {
-    return (
-      <div className="app">
-        <div className="buttons">
-          <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-            <i className="material-icons">bluetooth_connected</i>
-          </button>
-          <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-            <i className="material-icons">bluetooth_disabled</i>
-          </button>
-        </div>
-      </div>
-    );
-  }
 }
 
 export default BLE;

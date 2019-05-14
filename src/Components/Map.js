@@ -8,7 +8,6 @@ import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, D
 import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
-import BLEController from './BLEController';
 import BLE from './BLE';
 
 
@@ -40,15 +39,7 @@ class Map extends Component {
     }
 
     // ****** bluetooth variables ******
-    this.terminal = new BLEController();
-
-    this.receive = this.receive.bind(this);
-    this._log = this._log.bind(this);
-    this.send = this.send.bind(this);
-    this.connectButton = this.connectButton.bind(this);
-    this.disconnectButton = this.disconnectButton.bind(this);
-
-    this.defaultDeviceName = 'LookUP';
+    this.BLE = new BLE();
     // ****** bluetooth variables ******
 
     this.onLoadPosition = this.onLoadPosition.bind(this);
@@ -65,48 +56,6 @@ class Map extends Component {
 
     this.mode = ["drawing"];
   }
-
-
-  // ****** bluetooth functions ******
-
-  // log to console received data from component
-  receive = () => {
-    this.terminal.receive = (data) => {
-      this.terminal._log(data);
-    };
-  }
-
-  // log to console function
-  _log = () => {
-    this.terminal._log = (...messages) => {
-      messages.forEach((message) => {
-        console.log(message);
-      });
-    }
-  }
-
-  // send data to component and log it in the console
-  send = (data) => {
-    this.terminal.send(data).
-      then(() => this.terminal._log(data)).
-      catch((error) => this.terminal._log(error));
-  };
-
-  // connect button functionallity (open device browser)                  ------need to handle the device name------
-  connectButton = () => {
-    this.terminal.connect().
-      then(() => {
-        //this.refs.deviceNameLabel.textContent = this.terminal.getDeviceName() ? this.terminal.getDeviceName() : this.defaultDeviceName;
-      });
-  };
-
-  // disconnect button functionallity (disconnet component)               ------need to handle the device name------
-  disconnectButton = () => {
-    this.terminal.disconnect();
-    // this.refs.deviceNameLabel.textContent = this.defaultDeviceName;
-  };
-
-  // ****** bluetooth functions ******
 
   onLoadScriptSuccess(){
     console.log(" <LoadScript/> Success ");
@@ -245,13 +194,13 @@ class Map extends Component {
                 // handle only specific meters before the turn - in order to not overload the component
                 if (distance >= 50.0 && distance <= 51.0) {       // if 50m from turn
                   console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
+                  this.BLE.send(directions + "," + distance);
                 } else if (distance >= 20 && distance <= 21) {    // if 20m from turn
                   console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
+                  this.BLE.send(directions + "," + distance);
                 } else if (distance >= 0 && distance <= 2) {      // if need to turn now
                   console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
+                  this.BLE.send(directions + "," + distance);
                   console.log(this.state.currStep);
                   if (!(leg.steps[this.state.currStep] == (leg.steps.length - 1))) {
                     this.state.currStep = this.state.currStep + 1
@@ -259,11 +208,11 @@ class Map extends Component {
                 }
               } else {
                 console.log("You have reached your destination");
-                this.send('destination-reached,0');
+                this.BLE.send('destination-reached,0');
               }
             });
           }
-          
+
           // *** Bluetooth ***
           
         }, (err) => {
@@ -326,6 +275,16 @@ render() {
             region="US"
               libraries={this.mode}
           >
+          <div className="app">
+            <div className="buttons">
+              <button id="connect" onClick={this.BLE.connectButton} type="button" aria-label="Connect" ref="device-name">
+                <i className="material-icons">bluetooth_connected</i>
+              </button>
+              <button id="disconnect" onClick={this.BLE.disconnectButton} type="button" aria-label="Disconnect">
+                <i className="material-icons">bluetooth_disabled</i>
+              </button>
+            </div>
+          </div>
           <div className="map-container">
             <GoogleMap
             id='example-map'
@@ -436,14 +395,6 @@ render() {
             </GoogleMap>
           </div>
         </LoadScript>
-            <div className="buttons">
-              <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-                <i className="material-icons">bluetooth_connected</i>
-              </button>
-              <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-                <i className="material-icons">bluetooth_disabled</i>
-              </button>
-            </div>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
     );
