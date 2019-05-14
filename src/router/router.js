@@ -10,6 +10,7 @@ import Login from "../Components/Login";
 import Map from "../Components/Map";
 import TrackDetails from "../Components/TrackDetails";
 import HomePage from '../Components/HomePage';
+import PostNavigation from '../Components/PostNavigation'
 // import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 // import UserProfile from "../Components/UserProfile";
@@ -31,6 +32,7 @@ const AppRouter = () =>{
       <Route exact path="/trackDetails" component={TrackDetails} />
       <Route exact path="/homePage" component={HomePage} />
       <Route exact path="/liveNavigation" component={LiveNavigation} />
+      <Route exact path="/post" component={PostNavigation} />
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />
