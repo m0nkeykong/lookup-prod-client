@@ -167,7 +167,7 @@ class PostNavigation extends Component {
             </div>
 
 
-          <form className="paddingTop20" onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
                 <div className="row rating">     
