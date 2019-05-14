@@ -205,7 +205,8 @@ class Map extends Component {
           this.newLocation.appendChild(this.newElement);
           console.log("watching");
 
-          // *** BLE ***
+          // *** Bluetooth ***
+
           // indicate the route (for all steps)
           if (this.state.response !== null){
             this.state.response.routes[0].legs.forEach(leg => {
@@ -262,7 +263,8 @@ class Map extends Component {
               }
             });
           }
-          // *** BLE ***
+          
+          // *** Bluetooth ***
           
         }, (err) => {
           console.error(`ERROR(${err.code}): ${err.message}`);

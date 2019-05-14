@@ -69,22 +69,14 @@ class BLE extends Component {
   render() {
     return (
       <div className="app">
-        <div className="toolbar">
-          <div id="device-name" className="name" ref="deviceNameLabel">Terminal</div>
-          <div className="buttons">
-            <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-              <i className="material-icons">bluetooth_connected</i>
-            </button>
-            <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-              <i className="material-icons">bluetooth_disabled</i>
-            </button>
-          </div>
-        </div>
-        <div id="terminal" ref="terminalContainer" className="terminal"></div>
-          <input id="input" ref="inputField" type="text" aria-label="Input" autoComplete="off" placeholder="Type something to send..." />
-          <button onClick={this.submited} aria-label="Send">
-            <i className="material-icons">send</i>
+        <div className="buttons">
+          <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
+            <i className="material-icons">bluetooth_connected</i>
           </button>
+          <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
+            <i className="material-icons">bluetooth_disabled</i>
+          </button>
+        </div>
       </div>
     );
   }
