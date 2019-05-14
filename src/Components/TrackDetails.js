@@ -22,7 +22,6 @@ class TrackDetails extends Component {
       wayPoints: [],
       travelMode: [],
       reports: [],
-      userDetails: [],
       updated: false
     }
 
@@ -31,7 +30,7 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getReports = this.getReports.bind(this)
-    this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
+    // this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.initialState = this.initialState.bind(this)
 
@@ -175,21 +174,21 @@ class TrackDetails extends Component {
     this.setState(prevState => ({tracks: []}))
   }
 
-  async onSubmitAddReport(e){
-    e.preventDefault();
+  // async onSubmitAddReport(e){
+  //   e.preventDefault();
 
-     // TODO: how to get user Id here
-    let data1 = {userId:"5c978235efd9d315e8d7a0d9", report: `${this.state.addReport}` };
-    var reportId = await PostAsyncRequest('reports/insertReport', data1);
+  //    // TODO: how to get user Id here
+  //   let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
+  //   var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
-     let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-     console.log("DATA2:");
-     console.log(data2);
-    var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
+  //    let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
+  //    console.log("DATA2:");
+  //    console.log(data2);
+  //   var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
     
-    this.initialState();
-    this.getTrackById(this.props.location.idOfTrack);
-  }
+  //   this.initialState();
+  //   this.getTrackById(this.props.location.idOfTrack);
+  // }
 
   handleChange(event){
     this.setState({ [event.target.name]: event.target.value})
@@ -197,8 +196,8 @@ class TrackDetails extends Component {
 
   getStarsForDifficultyLevel(diffLever){
     let html=[];
-    let diffNumber = Math.round(diffLever);
     let limitOfStars = 5;
+    let diffNumber = Math.round(diffLever);
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
@@ -267,28 +266,6 @@ class TrackDetails extends Component {
                             <div class="tab-pane active" id="reports-logout">  
                               {this.getReports(track.reports,track.userDetails)}
                             </div>  
-                            
-
-                            <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-                            <ul class="nav nav-tabs" role="tablist">
-                              <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="addReport text-capitalize">Add report</h4></a></li>
-                            </ul> 
-                
-                            <div class="tab-pane" id="add-report">
-                              <form onSubmit={this.onSubmitAddReport}> 
-                                  <div class="form-group">
-                                      <div class="col-sm-10">
-                                        <textarea className="form-control textareaSize" name="addReport" onChange={this.handleChange}  value={this.state.addReport} rows="5"></textarea>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <div class="col-sm-offset-2 col-sm-10">                    
-                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitReport"><span class="glyphicon glyphicon-send"></span> Submit report</button>
-                                      </div>
-                                  </div>            
-                              </form>
-                            </div>
-                          </div>
 
                         </div>
                     </div>

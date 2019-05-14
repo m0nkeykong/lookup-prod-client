@@ -95,8 +95,3 @@ address{
 .rating input[type=radio][name=stars]:required + label.stars:after {
     content: counter(checkbox) " stars!";
 }
-
-.postContainer{
-    text-align: center!important;
-    padding: 1.25rem;
-}
