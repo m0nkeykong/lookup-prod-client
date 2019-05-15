@@ -181,7 +181,7 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
+        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               

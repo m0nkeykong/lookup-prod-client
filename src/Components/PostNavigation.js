@@ -85,7 +85,10 @@ class PostNavigation extends Component {
     console.log("REPORT:");
     console.log(this.state.addReport);
     // add report if exist
-    if(typeof this.state.addReport !== "undefined"){
+
+    if(this.state.addReport.length != 0 ||
+        typeof this.state.addReport !== "undefined")
+    {
         console.log("INNNN");
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
@@ -184,11 +187,11 @@ class PostNavigation extends Component {
                 </div>
 
                 <div className="row pt-3">     
-                    <div class="col-sm-10 col-sm-offset-1 pt-2"> 
+                    <div class="col-10" style={{ margin:`20px auto`}}> 
                     <h6>Have you encountered a report <br></br>during the track?</h6>
-                        <div class="tab-pane" id="add-report">
+                        <div class="col-12" id="add-report">
                             <div class="form-group">
-                                <div class="col-sm-10 pt-1">
+                                <div class="col-12 pt-1">
                                     <textarea className="form-control textareaSize" placeholder="Tell us!" name="addReport" onChange={this.handleChange}  value={this.state.addReport} rows="5"></textarea>
                                 </div>
                             </div>           
