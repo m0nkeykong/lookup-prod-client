@@ -226,7 +226,7 @@ class TrackDetails extends Component {
       </div>
 
 
-      <div className="col-10" style={{margin:'auto'}}>
+      <div className="col-12" style={{margin:'auto'}}>
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
@@ -236,7 +236,7 @@ class TrackDetails extends Component {
           className="btn btn-primary" >Start Navigator</NavLink>
       </div>
 
-      <div className="col-10" style={{margin:'auto'}}>
+      <div className="col-12" style={{margin:'auto'}}>
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/post`, 
@@ -246,7 +246,7 @@ class TrackDetails extends Component {
         className="btn btn-primary" >Post Navigator</NavLink>
     </div>
 
-          <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
+          <div className="col-12 px-4">
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
@@ -256,7 +256,7 @@ class TrackDetails extends Component {
 
 
               <div class="row">
-                <div class="col-sm-10 col-sm-offset-1" id="logout">
+                <div class="col-sm-12 col-md-5" id="logout" style={{ margin:`20px auto`}}>
                     
                     <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
