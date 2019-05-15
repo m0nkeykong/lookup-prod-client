@@ -85,7 +85,10 @@ class PostNavigation extends Component {
     console.log("REPORT:");
     console.log(this.state.addReport);
     // add report if exist
-    if(typeof this.state.addReport !== "undefined"){
+
+    if(this.state.addReport.length != 0 ||
+        typeof this.state.addReport !== "undefined")
+    {
         console.log("INNNN");
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
