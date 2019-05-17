@@ -20,9 +20,9 @@ export function getTracksByCityURL(fromCity,toCity,travelmode,Star){
     return `${originURL}track/getTracksByCity/${fromCity}/${toCity}/${travelmode}/${Star}`;
 }
 
-export function getUpdateTrackStarsURL(trackId,Star){
-  console.log(`${originURL}track/updateTrackStars/${trackId}/${Star}`);
-    return `${originURL}track/updateTrackStars/${trackId}/${Star}`;
+export function getUpdateDefficultyLevelURL(trackId,Star){
+  console.log(`${originURL}track/updateDefficultyLevel/${trackId}/${Star}`);
+    return `${originURL}track/updateDefficultyLevel/${trackId}/${Star}`;
 }
 
 export function getGoogleApiKey(){

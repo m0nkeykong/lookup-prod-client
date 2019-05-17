@@ -4,7 +4,7 @@ import axios from 'axios';
 import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import {getUpdateTrackStarsURL} from '../globalService'
+import {getUpdateDefficultyLevelURL} from '../globalService'
 import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
 
 
@@ -71,7 +71,7 @@ class PostNavigation extends Component {
     if(this.refs.star5.checked)
       checkedStar = "5";
 
-    axios.put(`http://localhost:3000/track/updateTrackStars/${this.props.location.idOfTrack}/${checkedStar}`)
+    axios.put(`http://localhost:3000/track/updateDefficultyLevel/${this.props.location.idOfTrack}/${checkedStar}`)
     .then(res => {
         console.log("RES:");
         console.log(res);
