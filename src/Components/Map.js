@@ -155,9 +155,11 @@ class Map extends Component {
           console.log("watching");
 
           // *** Bluetooth ***
-
+          
           // indicate the route (for all steps)
           if (this.state.response !== null){
+            console.log("response is printed ");
+            console.log(this.state.response);
             this.state.response.routes[0].legs.forEach(leg => {
               // calculate the meters from current location to the next turn
               //while (this.state.UpdatedPosition.lat != leg.steps[leg.steps.length].end_location.lat() && this.state.UpdatedPosition.lng != leg.steps[leg.steps.length].end_location.lng()) { 
@@ -275,16 +277,8 @@ render() {
             region="US"
               libraries={this.mode}
           >
-          <div className="app">
-            <div className="buttons">
-              <button id="connect" onClick={this.BLE.connectButton} type="button" aria-label="Connect" ref="device-name">
-                <i className="material-icons">bluetooth_connected</i>
-              </button>
-              <button id="disconnect" onClick={this.BLE.disconnectButton} type="button" aria-label="Disconnect">
-                <i className="material-icons">bluetooth_disabled</i>
-              </button>
-            </div>
-          </div>
+          <BLE>
+          </BLE>
           <div className="map-container">
             <GoogleMap
             id='example-map'

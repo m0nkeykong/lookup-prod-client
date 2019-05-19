@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './style/BLE.css';
-import './style/normalize.css';
+//import './style/BLE.css';
+//import './style/normalize.css';
 import BLEController from './BLEController';
 
 // UI elements.
 // const deviceNameLabel = document.getElementById('device-name');
 
-class BLE {
+class BLE extends Component {
   constructor(props) {
-    
+    super(props);
     this.BLEController = new BLEController();
     
     this.receive = this.receive.bind(this);
@@ -59,6 +59,23 @@ class BLE {
   disconnectButton = () => {
     this.BLEController.disconnect();  
   };
+
+  render() {
+    return (
+      <div className="app">
+        <div className="toolbar">
+          <div className="buttons">
+            <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
+              <i className="material-icons">bluetooth_connected</i>
+            </button>
+            <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
+              <i className="material-icons">bluetooth_disabled</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default BLE;
