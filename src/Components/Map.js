@@ -158,8 +158,6 @@ class Map extends Component {
           
           // indicate the route (for all steps)
           if (this.state.response !== null){
-            console.log("response is printed ");
-            console.log(this.state.response);
             this.state.response.routes[0].legs.forEach(leg => {
               // calculate the meters from current location to the next turn
               //while (this.state.UpdatedPosition.lat != leg.steps[leg.steps.length].end_location.lat() && this.state.UpdatedPosition.lng != leg.steps[leg.steps.length].end_location.lng()) { 
@@ -181,8 +179,9 @@ class Map extends Component {
                 console.log("distance: " + distance + ",direction: " + directions);
 
                 if (!this.state.startedNavigation &&
-                  (this.state.UpdatedPosition.lat === leg.steps[0].end_location.lat()) && (this.state.UpdatedPosition.lng === leg.steps[0].start_location.lng())) {
-                  this.send('navigation-start,0');
+                  (this.state.UpdatedPosition.lat === leg.steps[0].start_location.lat()) && (this.state.UpdatedPosition.lng === leg.steps[0].start_location.lng())) {
+                  this.BLE.send('navigation-start,0');
+                  console.log("User reached starting point - Starting navigation");
                   this.setState({
                     startedNavigation: true
                   });

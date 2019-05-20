@@ -67,23 +67,19 @@ class IntermediatePage extends Component {
               </Navbar.Brand>
 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                  <Nav.Link href="#profile">View Profile</Nav.Link>
-                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                  <Nav.Link href="#about">About</Nav.Link>
-                  <Nav.Link href="#contact">Contact us</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="mr-auto">
+                    <Nav.Link href="/profile">Profile</Nav.Link>
+                    <Nav.Link href="/homePage">Home</Nav.Link>
+                    <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
+                    <Nav.Link href="/choose">Search Track</Nav.Link>
+                    <Nav.Link href="/auto">Fast Travel</Nav.Link>
+                    <Nav.Link href="/custom">Create Custom Track</Nav.Link>
+                    <Nav.Link href="/about">About</Nav.Link>
+                    <Nav.Link href="/contact">Contact us</Nav.Link>
+                    <Nav.Link href="/">Disconnect</Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
 
             </Navbar>
           </Card.Header>

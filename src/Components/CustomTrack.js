@@ -287,7 +287,7 @@ class CustomTrack extends Component {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                  <Nav.Link href="#profile">View Profile</Nav.Link>
+                  <Nav.Link href="#profile">Profile</Nav.Link>
                   <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
                   <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
