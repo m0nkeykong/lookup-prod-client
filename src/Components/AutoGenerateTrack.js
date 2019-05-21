@@ -11,6 +11,9 @@ import LiveNavigation from './LiveNavigation';
 import {getGoogleApiKey} from '../globalService';
 import './style/AutoGenerateTrack.css';
 
+var EventEmitter = require('events');
+var ee = new EventEmitter();
+
 class AutoGenerateTrack extends Component {
   constructor(props) {
     super(props);
@@ -28,17 +31,22 @@ class AutoGenerateTrack extends Component {
       avoidFerries: true,
       avoidHighways: true,
       track: {
+        startPointObj: {},
+        endPointObj: {},
+
         startPoint: '',
         endPoint: '',
         wayPoints: '',
         travelMode: 'WALKING',
         description: '',
         title: '',
-        estimatedDuration: '',
-        actualDuration: '',
-        difficultyLevel: '',
+        distance: '',
         rating: '',
-        changesDuringTrack: ''
+        disabledTime: '',
+        nonDisabledTime: '',
+
+        estimatedDuration: '',
+        difficultyLevel: '',
       }
     }
 
@@ -54,10 +62,10 @@ class AutoGenerateTrack extends Component {
     this.showTrackForm = this.showTrackForm.bind(this);
     this.showMenu = this.showMenu.bind(this);
 
+    this.setPoints = this.setPoints.bind(this);
+
     this.getGeneratedTrackDetails = this.getGeneratedTrackDetails.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
-
-    this.startLiveNavigation = this.startLiveNavigation.bind(this);
   }
 
   componentDidMount(){
@@ -114,7 +122,9 @@ class AutoGenerateTrack extends Component {
         Geocode.setApiKey(getGoogleApiKey());
         Geocode.fromLatLng(pos.coords.latitude, pos.coords.longitude).then(
           response => {
+
             const address = response.results[0].formatted_address;
+            console.log(address);
             this.setState(
               (prevState) => ({
                 ...prevState,
@@ -161,102 +171,17 @@ class AutoGenerateTrack extends Component {
     this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '' } })
   }
 
-  // Change to class method
-  directionsCallback = response => {
-    console.log(`Entered directionsCallback, RESPONSE: `);
-    console.log(response);
-    if (response !== null) {
-      if (response.status === 'OK') {
-        const {leg} = response.routes[0].legs[0];
-        
-        // Set startPoint to Point Object and get its _id
-        axios.post(`http://localhost:3000/point/insertPoint`, {
-          ...leg.start_location
-        })
-        .then(startPointResponse => {
-          console.log("startPoint fetched: " + startPointResponse.data);
-          this.startPointId = startPointResponse.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-        
-        // Set endPoint to Point Object and get its _id
-        axios.post(`http://localhost:3000/point/insertPoint`, {
-          ...leg.end_location
-        })
-        .then(endPointResponse => {
-          console.log("endPoint fetched: " + endPointResponse.data);
-          this.endPointId = endPointResponse.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-        
-        const trackObj = {
-          startPoint: this.startPoint,
-          endPoint: this.endPoint,
-          middlePoint: this.wayPoints.length > 0 ? {...this.wayPoints} : [],
-          type: this.state.travelMode,
-          // @TODO: Validate unique title
-          title: `User route ` + Math.random(9999999999),
-          // @TODO: Let the user insert this value from form
-          comment: `First auto generated track`,
-          // @TODO: Let the user insert this value from form
-          rating: Math.random(10),
-          // @TODO: Let the user insert this value from form
-          changesDuringTrack: false,
-          // @TODO: Let the user insert this value from form
-          diffucultyLevel: Math.random(10)
-        }
-
-        axios.post(`http://localhost:3000/track/insertTrack`, {
-          trackObj
-        })
-        .then(createdTrackResponse => {
-          this.createdTrack = createdTrackResponse.data;
-          // @TODO: Store in session and state
-          console.log("insertTrack fetched: " + createdTrackResponse.data);
-          
-        })
-        .catch(error => {
-          console.error(error);
-        });
-        
-        axios.put(`http://localhost:3000/addTrackRecord/${this.userid}`, 
-        {trackid: this.createdTrack._id})
-        .then(addedTrackRecord => {
-          if(addedTrackRecord.data.status === 200){
-            console.log(`Track ${this.trackid} successfully added to User ${this.userid} track records list`);
-          }
-          else{
-            console.error(`There was a problem to add ${this.trackid} to User ${this.userid} track record list`);
-          }
-
-        })
-        .catch( error => {
-          console.error(error);
-        })
-
-        this.setState( () => ({ response }));
-        
-      } else {
-        console.error(`Resnpose = null: `);
-        console.log(response);
-      }
-    }
-  }
-
-  startLiveNavigation(){
-
-  }
 
   getGeneratedTrackDetails(){
     console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getGeneratedTrackDetails()");
     const response = this.state.directionsResponse;
     const leg = response.routes[0].legs[0];
+    console.log(leg);
+
 		if (response !== null) {
       if (response.status === 'OK') {
+        // @TODO: 
+        // this.setState({ track: { estimatedDuration: parseFloat(leg.duration.value), distance: parseFloat(leg.distance.value) } })
         return(
           <div>
             <div>
@@ -282,10 +207,12 @@ class AutoGenerateTrack extends Component {
       }
       else {
         console.error(`Response From Directions API Was Returned With Status ${response.status}`);
+        return( <div/> );
       }
     }
     else{
       console.error('Response From Directions API is null');
+      return( <div/> );
     }   
   }
 
@@ -323,10 +250,9 @@ class AutoGenerateTrack extends Component {
           <Modal.Footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Row>
             <Col>
-        <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
-          <Button variant="primary" onClick={this.startLiveNavigation}>Save & Navigate</Button>
-        </NavLink>            
-             
+              <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
+                <Button variant="primary" onClick={this.startLiveNavigation}>Save & Navigate</Button>
+              </NavLink>            
             </Col>
             <Col>
               <Button variant="secondary" onClick={this.handleResetModal}>Reset</Button>
@@ -335,10 +261,8 @@ class AutoGenerateTrack extends Component {
               <Button variant="dark" onClick={this.handleCloseModal}>Close</Button>
             </Col>
           </Row>
-            
-            
-            
           </Modal.Footer>
+
         </Modal>
        </ButtonToolbar>      
       </div>
@@ -474,9 +398,9 @@ class AutoGenerateTrack extends Component {
         googleMapsApiKey={getGoogleApiKey()}
         onError={this.onLoadScriptError}
         onLoad={this.onLoadScriptSuccess}
-        language="English"
+        language="en"
         version="3.36"
-        region="US"
+        region="us"
         >
 
           <div className="map-container">
@@ -499,7 +423,11 @@ class AutoGenerateTrack extends Component {
                   },
                   optimizeWaypoints: true
                 }}
-                callback={(response) => {this.setState({ directionsResponse: response })}}
+                callback={(response) => {
+                  this.setState({ directionsResponse: response })
+                  this.setPoints();
+                }
+                }
               >
               </DirectionsService>
               }
@@ -513,6 +441,80 @@ class AutoGenerateTrack extends Component {
     )
   }
 
+  setPoints(){
+    const response = this.state.directionsResponse;
+    const leg = response.routes[0].legs[0];
+
+    let startPoint = leg.start_address;
+    let startPointArray = startPoint.split(', ', 3);
+    let endPoint = leg.end_address;
+    let endPointArray = endPoint.split(', ', 3);
+    
+    ee.on('trackObj', () => {
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          track: {...prevState.track,  distance: leg.distance.value, estimatedDuration: leg.duration.value, disabledTime: '', nonDisabledTime: '', rating: 0},
+        }));  
+    })
+
+    ee.on('pointObject', (pointDetails, address, point) => {
+      let lat;
+      let lng;
+
+      Geocode.setApiKey(getGoogleApiKey());
+      Geocode.fromAddress(address).then(
+        response => {
+          lat = response.results[0].geometry.location.lat;
+          lng = response.results[0].geometry.location.lng;
+          console.log(lat, lng);
+          
+          switch(pointDetails.length){
+            // User writed only country
+            case 1:
+              this.setState(
+                (prevState) => ({
+                  ...prevState,
+                  track: { ...prevState.track, [point]: { country: pointDetails[0], lat: lat, lng: lng }},
+                }));
+              console.log("case 1");
+              break;
+            // User writed only country, city
+            case 2:
+              this.setState(
+                (prevState) => ({
+                  ...prevState,
+                  track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], lat: lat, lng: lng }}
+                }));
+              console.log("case 2");
+              break;
+            // User writed only country, city, street
+            case 3:
+              this.setState(
+                (prevState) => ({
+                  ...prevState,
+                  track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], street: pointDetails[2], lat: lat, lng: lng }}
+                }));
+              console.log("case 3");
+              break;
+    
+            default:
+              console.log('<AutoGenerateTeack></AutoGenerateTeack> setPoints() Incorrect address');
+              break;
+          }
+        },
+        error => {
+          console.error(error);
+        }
+      );
+
+      
+    })
+
+    ee.emit('pointObject', startPointArray, startPoint,'startPointObj');
+    ee.emit('pointObject', endPointArray, endPoint,'endPointObj');
+    ee.emit('trackObj');
+  }
 
   render() {    
     return (
@@ -527,19 +529,10 @@ class AutoGenerateTrack extends Component {
 
           {/* Generated Track Modal */}
           {this.state.isGenerated && this.showGeneratedTrackModal()}
-          
-          <Card.Header> 
-            <h6> Live Navigation Map </h6> 
-            {/*
-              <Map
-              track={this.state.track}>
-              </Map>
-            */}
-          </Card.Header>
 
           <Card.Body>
             {/* Send Directions API Request Only When The User Send The Required Track Details Form */}
-            {this.state.isGenerated ? this.directionsRequest() : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
+            {this.state.isGenerated && this.directionsRequest()}
           </Card.Body>
 
           <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
@@ -548,8 +541,5 @@ class AutoGenerateTrack extends Component {
     );
   }
 }
-// Save - Save (DB) track without navigating
-// Fast Travel - Navigate without saving ::: Warning Modal
-// Save and Navigate - Save (DB) and Immidiatly start Navigation
 
 export default AutoGenerateTrack;

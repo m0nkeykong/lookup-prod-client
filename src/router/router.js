@@ -23,7 +23,7 @@ const AppRouter = () =>{
   return(
     <React.Fragment>
       <Header />
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/" component={Login} />
       <Route exact path="/map" component={Map} />
       <Route exact path="/auto" component={AutoGenerateTrack} />
       <Route exact path="/choose" component={ChooseExistingTrack} />

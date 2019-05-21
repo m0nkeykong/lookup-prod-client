@@ -317,9 +317,9 @@ render() {
             googleMapsApiKey={getGoogleApiKey()}
             onError={this.onLoadScriptError}
             onLoad={this.onLoadScriptSuccess}
-            language="English"
+            language="en"
             version="3.36"
-            region="US"
+            region="en"
               libraries={this.mode}
           >
           <div className="map-container">
