@@ -3,7 +3,8 @@ import Map from './Map';
 import { BeatLoader } from 'react-spinners';
 import './style/AutoGenerateTrack.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
+import { getGoogleApiKey } from '../globalService';
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 
 class CustomTrack extends Component {
@@ -28,9 +29,9 @@ class CustomTrack extends Component {
     this.onChange = this.onSubmit.bind(this);
     this.renderForm = this.renderForm.bind(this);
 
-    this.addWayPoints = this.addWayPoint.bind(this);
     this.getGeneratedTrack = this.getGeneratedTrack.bind(this);
     this.getAllTracks = this.getAllTracks.bind(this);    
+    this.mode = ["drawing"];
   }
 
   componentDidMount(){
@@ -51,7 +52,6 @@ class CustomTrack extends Component {
 
   onSubmit(e){
     e.preventDefault();
-    
   }
 
   onChange(e){
@@ -112,16 +112,10 @@ class CustomTrack extends Component {
     this.destination = ref
   }
 
-
+// Change to class method
     getWayPoints = ref => {
         console.log(`Entered getWayPoints ${ref}`);
         this.wayPoints = ref
-    }
-
-
-
-    addWayPoint = () => {
-
     }
 
   // Change to class method
@@ -258,7 +252,7 @@ class CustomTrack extends Component {
           <Card.Header>
             <Navbar collapseOnSelect expand="lg">
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
+              <Navbar.Brand href="/profile" style={{ float: 'left' }}>
                 {this.state.userDetails.profilePicture ?
                   (
                     <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
@@ -270,7 +264,7 @@ class CustomTrack extends Component {
                 }
               </Navbar.Brand>
 
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
+              <Navbar.Brand href="/profile" style={{ float: 'center' }}>
                 {this.state.userDetails.name ?
                   (
                     <div>
@@ -285,21 +279,18 @@ class CustomTrack extends Component {
               </Navbar.Brand>
 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
+              <Navbar.Collapse id="responsive-navbar-nav" >
                 <Nav className="mr-auto">
-                  <Nav.Link href="#profile">Profile</Nav.Link>
-                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
+                  <Nav.Link href="/homePage">Home</Nav.Link>
+                  <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
+                  <NavDropdown title="Create Track" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
+                    <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                  <Nav.Link href="#about">About</Nav.Link>
-                  <Nav.Link href="#contact">Contact us</Nav.Link>
+                  <Nav.Link href="/choose">Search Track</Nav.Link>
+                  <Nav.Link href="/about">About</Nav.Link>
+                  <Nav.Link href="/contactUs">Contact us</Nav.Link>
+                  <Nav.Link href="/">Disconnect</Nav.Link>
                 </Nav>
               </Navbar.Collapse>
 
@@ -319,15 +310,6 @@ class CustomTrack extends Component {
                   </Form.Group>
                 </Col>
               </Row>
-            
-                <Row>
-                    <Col>
-                    <Form.Group as={Row} controlId="WAYPOINT">
-                        <Form.Control type="Text" placeholder="Way Point" ref={this.getWayPoints} />
-                    </Form.Group>
-                    </Col>
-                </Row>
-                
               <Row>
                 <Col>
                   <Form.Group as={Row} controlId="DESTINATION">
@@ -362,12 +344,6 @@ class CustomTrack extends Component {
                 <label className='custom-control-label' htmlFor='BICYCLING'>Bicycling</label>
               </div>
             </div>
-            <button type="button" className="btn btn-secondry" onClick={this.addWayPoint}>
-                Add Way Point
-            </button>
-            <button className='btn btn-primary' type='button' onClick={this.onClick}>
-                Build Route
-            </button>
 
           </Card.Body>
 
@@ -375,19 +351,55 @@ class CustomTrack extends Component {
             <h6> Live Navigation Map </h6> 
           </Card.Header>
           <Card.Body>
-            {this.state.loading ?
-              (
-                <Map
-                  track={this.state.track}>
-                </Map>
-              )
-              :
-              (
-                <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-              )
-            }
+            <div style={{
+              margin: "0 auto",
+              height: "400px",
+              maxWidth: "90%"
+            }}>
+            <LoadScript
+              id="script-loader"
+              googleMapsApiKey={getGoogleApiKey()}
+              onError={this.onLoadScriptError}
+              onLoad={this.onLoadScriptSuccess}
+              language="English"
+              version="3.36"
+              region="US"
+              libraries={this.mode}
+            >
+              <GoogleMap
+                id="circle-example"
+                mapContainerStyle={{
+                  margin: "0 auto",
+                  height: "400px",
+                  width: "100%"
+                }}
+                //   onBoundsChanged={}
+                //   onCenterChanged={}
+                // onClick={this.onGoogleMapClick}
+                //   onDblClick={}
+                //   options={}
+                // Max Zoom: 0 to 18
+                zoom={10}
+                center={{
+                  lat: -3.745,
+                  lng: -38.523
+                }}
+              >
+              <DrawingManager
+                onLoad={drawingManager => {
+                  console.log(drawingManager)
+                }}
+                onPolygonComplete={(polygon) => console.log({ polygon })}
+              />
+            </GoogleMap>
+      </LoadScript>
+      </div>
           </Card.Body>
-          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
+          <Card.Footer id="locationUpdate" className="text-muted">
+            <button className='btn btn-primary' type='button' onClick={this.onClick}>
+              Build Route
+            </button>
+          </Card.Footer>
         </Card>
       </div>
     );

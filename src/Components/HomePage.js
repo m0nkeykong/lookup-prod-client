@@ -40,7 +40,7 @@ class IntermediatePage extends Component {
           <Card.Header>
             <Navbar collapseOnSelect expand="lg">
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
+            <Navbar.Brand href="/profile" style={{ float: 'left' }}>
                 {this.state.userDetails.profilePicture ?
                   (
                     <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
@@ -52,7 +52,7 @@ class IntermediatePage extends Component {
                 }
               </Navbar.Brand>
 
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
+            <Navbar.Brand href="/profile" style={{ float: 'center' }}>
                 {this.state.userDetails.name ?
                   (
                     <div>
@@ -66,20 +66,21 @@ class IntermediatePage extends Component {
                 }
               </Navbar.Brand>
 
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                  <Nav className="mr-auto">
-                    <Nav.Link href="/profile">Profile</Nav.Link>
-                    <Nav.Link href="/homePage">Home</Nav.Link>
-                    <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
-                    <Nav.Link href="/choose">Search Track</Nav.Link>
-                    <Nav.Link href="/auto">Fast Travel</Nav.Link>
-                    <Nav.Link href="/custom">Create Custom Track</Nav.Link>
-                    <Nav.Link href="/about">About</Nav.Link>
-                    <Nav.Link href="/contact">Contact us</Nav.Link>
-                    <Nav.Link href="/">Disconnect</Nav.Link>
-                  </Nav>
-                </Navbar.Collapse>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav" >
+              <Nav className="mr-auto">
+                <Nav.Link href="/homePage">Home</Nav.Link>
+                <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
+                <NavDropdown title="Create Track" id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
+                  <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
+                </NavDropdown>
+                <Nav.Link href="/choose">Search Track</Nav.Link>
+                <Nav.Link href="/about">About</Nav.Link>
+                <Nav.Link href="/contactUs">Contact us</Nav.Link>
+                <Nav.Link href="/">Disconnect</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
 
             </Navbar>
           </Card.Header>

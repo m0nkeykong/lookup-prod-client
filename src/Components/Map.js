@@ -274,7 +274,7 @@ render() {
             language="English"
             version="3.36"
             region="US"
-              libraries={this.mode}
+            libraries={this.mode}
           >
           <BLE>
           </BLE>
@@ -295,7 +295,8 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-            zoom={10}>
+            zoom={10}
+            >
               <DrawingManager
                 onLoad={drawingManager => {
                   console.log(drawingManager)
