@@ -3,17 +3,14 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
+import IoMap from 'react-icons/lib/io/map';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
-import asyncComponent from './asyncComponent';
+import axios from 'axios';
 
-
-const AsyncMap = asyncComponent(() => {
-  return import('./Map');
-});
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -31,7 +28,7 @@ class ChooseExistingTrack extends Component {
     this.viewTracks = this.viewTracks.bind(this)
     this.updateTracks = this.updateTracks.bind(this)
     this.getAllTracks = this.getAllTracks.bind(this)
-    this.getComments = this.getComments.bind(this)
+    this.getReports = this.getReports.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
     this.handleChange  = this.handleChange.bind(this)
@@ -39,23 +36,8 @@ class ChooseExistingTrack extends Component {
   }
   
   onSubmit(e){
-
     // e.preventDefault();
-    // console.log("VALUES: " + this.state.from + ", " + this.state.to + ", " + this.state.travelers );
-
-    //   this.props.history.push({
-    // pathname: "/results",
-    // state: this.state
-    // });
-
     e.preventDefault();
-  //   const target = event.target;
-  // const value = target.type === 'checkbox' ? target.checked : target.value;
-  // const name = target.name;
-
-  // this.setState({
-  //   [name]: value
-  // });
 
     console.log("FROM:");
     console.log(this.state.from);
@@ -64,26 +46,40 @@ class ChooseExistingTrack extends Component {
     console.log("TYPE:");
     console.log(this.refs.walking.checked);
     console.log(this.refs.bicycling.checked);
-    var checked = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
+    var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
+
+    var checkedStar = "NO";
+    if(this.refs.star1.checked)
+      checkedStar = "1";
+    if(this.refs.star2.checked)
+      checkedStar = "2";
+    if(this.refs.star3.checked)
+      checkedStar = "3";
+    if(this.refs.star4.checked)
+      checkedStar = "4";
+    if(this.refs.star5.checked)
+      checkedStar = "5";
 
     // TODO: parse city to upper case and lower case:
-    fetch(getTracksByCityURL(this.state.from,this.state.to,checked))
+    fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar))
     .then((res) => { 
-      // console.log(`RES::::::::::`);
-      // console.log(res.status);       
       return res.json();      
     }).then((data) => {
       var self=this; 
       this.state.tracks = [];
-
+      console.log("DATA LENGTHHHHHH");
+      console.log(data);
       if( data.length == 0){
           self.addTracks('','','','','','','',''); 
-      }    
+      }  
+      if( data.message == "No tracks found"){
+        self.addTracks('','','','','','','',''); 
+    }    
       else{
         data.map(json => { 
           console.log(JSON.stringify(json) ); 
           console.log("ELLLLLLSSSEEEEEEEEEE");
-          self.addTracks(json._id,json.title, json.type, json.comments, json.description); 
+          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star); 
         })  
       } 
     })
@@ -95,11 +91,7 @@ class ChooseExistingTrack extends Component {
     this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_id,_title,_type, _comments, _description, _startPoint, _endPoint, _wayPoints) {
-    console.log("wwwwwwwwwwwwewwwwwwwwww:");
-    console.log(_startPoint);
-    console.log(_endPoint);
-    console.log(_wayPoints);
+  addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel) {
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -108,11 +100,12 @@ class ChooseExistingTrack extends Component {
           idOfTrack: _id,
           title: _title,
           travelMode: _type,
-          comments: _comments,
+          reports: _reports,
           description: _description,
           startPoint:_startPoint,
           endPoint:_endPoint,
-          wayPoints:_wayPoints
+          wayPoints:_wayPoints,
+          difficultyLevel: _difficultyLevel
       }]
     }))
   }
@@ -125,11 +118,11 @@ class ChooseExistingTrack extends Component {
     }))
   }
   
-  getComments(comments){
+  getReports(reports){
     let html=[];
     // Outer loop to create parent
-    for (let i = 0; i < comments.length; i++) {
-      html.push(<p>	&#8227; &#9;{comments[i]}</p>)
+    for (let i = 0; i < reports.length; i++) {
+      html.push(<p>	&#8227; &#9;{reports[i]}</p>)
     }
     return html;
   }
@@ -141,6 +134,22 @@ class ChooseExistingTrack extends Component {
       return <IoAndroidBicycle size={20} color="black" />;
      
   }
+
+  getStarsForDifficultyLevel(diffLever){
+    let html=[];
+    let diffNumber = Math.round(diffLever);
+    let limitOfStars = 5;
+
+    for (let i = 0; i < limitOfStars; i++) {
+      if(i < diffNumber)
+        html.push(<span class="fa fa-star colorStar"></span>)
+      else
+        html.push(<span class="fa fa-star"></span>)
+
+    }
+    return html;
+  } 
+
 
   viewTracks(track,i) {
     if(track.title == ''){
@@ -154,7 +163,7 @@ class ChooseExistingTrack extends Component {
     else{
      
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`,width: 18 + 'rem'}}>
+        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`}}>
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
@@ -165,8 +174,9 @@ class ChooseExistingTrack extends Component {
                 activeStyle={this.active} 
                 className="" >
                 <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p className="typeTrack" >{this.getIconType(track.type)}</p>
+                <p className="typeTrack" >{this.getIconType(track.travelMode)}</p>
                 <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
+                <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
               </NavLink>
 
               </TamplateComponent>
@@ -191,12 +201,13 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {        
       var self=this;        
       data.map((json) => {   
-        // console.log("QQQQQQQQQQQQ:");
-        // console.log(json);  
+        console.log("QQQQQQQQQQQQ:");
+        console.log(json);  
 
         // console.log(JSON.stringify(json) );          
-        self.addTracks(json.track._id,json.track.title, json.track.type, json.track.comments, json.track.description,
-          json.startPoint, json.endPoint, json.wayPoints);  
+        self.addTracks(json.track._id,json.track.title, json.track.type, json.track.reports, json.track.description,
+          json.startPoint, json.endPoint, json.wayPoints, json.track.difficultyLevel.star);  
+          console.log("JSON:");
           console.log(json);  
       })    // endOf data.map((data)  
     })
@@ -205,13 +216,27 @@ class ChooseExistingTrack extends Component {
   componentDidMount(){
     this.getAllTracks();
 
-    let data = {city:"Kfar Saba", latitude:100, longitude:100 };
-    console.log("DATA:");
-    console.log(data);
-    console.log(JSON.stringify(data));
-    var res = PostRequest('point/insertPoint',data);
-    console.log("response:");
-    console.log(res);
+    // let data = {city:"Kfar Saba", latitude:100, longitude:100 };
+    // console.log("DATA:");
+    // console.log(data);
+    // console.log(JSON.stringify(data));
+    // var res = PostRequest('point/insertPoint',data);
+    // console.log("response:");
+    // console.log(res);
+
+    // user session
+    this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+
+    // Get the user details from database
+    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+      .then(userResponse => {
+        this.setState({ userDetails: userResponse.data, loading: false });
+        console.log(userResponse.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   handleChange(event){
@@ -300,27 +325,39 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                    <input className="marginInherit" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
                     <label className=''>Walking</label>
                   </div>
-                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                  <input className="marginInherit" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode"> 
+                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
                
+                <h6>Choose Difficulty Level</h6>
+                <div className="row rating">     
+                    <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="4_stars">4 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="3_stars">3 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="2_stars">2 stars</label>
+                    <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="1_stars">1 star</label>
+                    <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
+                    <label className="stars" for="0_stars">0 star</label>
+                </div>
 
 
               <div className="row">
-          
                 <div className="w-100 mb-md-4"></div>
                 <div className="col-12 mx-auto">
                     <button className='btn btn-primary' type='submit'>
                       Build Route
                     </button>
                 </div>
-
               </div>
+              
          </form>
 
           </Card.Body>
@@ -358,59 +395,3 @@ class ChooseExistingTrack extends Component {
 
 
 export default ChooseExistingTrack;
-
-// <input className="float-left" type="radio" name="option" id="walking" autocomplete="off" checked onChange={this.handleChange} value={this.state.type1} /> 
-// 
-
-// <input className="float-left" type="checkbox" ref="walking" name="walking" onChange={this.onChange} value={this.state.walking} aria-label="..."/>
-// <input className="float-left" type="checkbox" ref="bicycling" name="bicycling" onChange={this.onChange} value={this.state.bicycling} aria-label="..."/>
-
-// <label> Difficulty level:
-//               <input required className="mt-2 form-control float-left" type="number" name="difficulty" min="1" max="5" onChange={this.handleChange} value={this.state.difficulty}></input>
-//             </label>
-
-// <input className="float-left" type="radio" ref="walking" name="walking" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.walking} /> 
-// <input className="float-left" type="radio" ref="bicycling" name="bicycling" autocomplete="off" onChange={this.handleChangeRadio} value={this.state.bicycling} /> 
-
-
-
-
-
-// viewTracks(track,i) {
-//   if(track.title == ''){
-//     console.log("there are no tracks to display !");
-//     return (
-//       <div>
-//         <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
-//       </div>
-//     )
-//   }
-//   else{
-   
-//     return (          
-//       <div key={'container'+i} className="col-10 p-md-4 card" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
-//           <div className="">
-//             <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-            
-//             <NavLink to=
-//             //navigate to TrackDetails via TemplateComponent with the params
-//             {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-//               idOfTrack: track.idOfTrack}}
-//               activeStyle={this.active} 
-//               className="" >
-//               <h1 className="card-title" style={{ textAlign:`center`}}>{track.title} {this.getIconType(track.type)}</h1>
-//               <p style={{ textAlign:`center`}}>Desription: <br></br>{track.description}</p>
-//             </NavLink>
-
-//             <div>
-//               <p>comments: </p>
-//               <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comments)}</p>
-//             </div>
-            
-//             </TamplateComponent>
-//         </div>
-        
-//       </div>
-//     )
-//   }
-// }

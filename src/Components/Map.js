@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './style/CustomTrack.css';
 import axios from 'axios';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
@@ -20,7 +19,7 @@ difficultyLevel
 actualDuration
 rating
 ובכללי להציג את הנתונים האלה:
-actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, comments, travelMode, startPoint-endPoint
+actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, reports, travelMode, startPoint-endPoint
 */
 
 class Map extends Component {

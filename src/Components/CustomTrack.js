@@ -3,8 +3,7 @@ import Map from './Map';
 import { BeatLoader } from 'react-spinners';
 import './style/AutoGenerateTrack.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Form, Col, Row, Container, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
 class CustomTrack extends Component {
   constructor(props) {
@@ -202,7 +201,7 @@ class CustomTrack extends Component {
           // @TODO: Validate unique title
           title: `User route ` + Math.random(9999999999),
           // @TODO: Let the user insert this value from form
-          comment: `First auto generated track`,
+          report: `First auto generated track`,
           // @TODO: Let the user insert this value from form
           rating: Math.random(10),
           // @TODO: Let the user insert this value from form

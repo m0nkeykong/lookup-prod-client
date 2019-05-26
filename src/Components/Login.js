@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import axios from 'axios';
-import google from './style/Login.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import {getGoogleLoginApiKey} from '../globalService';
-
-import { BeatLoader } from 'react-spinners'; 
+import google from './style/Login.css'
 
 class Login extends Component {
     constructor(props) {
