@@ -255,8 +255,9 @@ class AutoGenerateTrack extends Component {
               </NavLink>            
             </Col>
             <Col>
-              <Button variant="secondary" onClick={this.handleResetModal}>Reset</Button>
+              <Button variant="secondary" onClick={this.handleResetModal}>Discard</Button>
             </Col>
+        {/* SET SAVE BUTTON ONLY */}
             <Col xs lg="2">
               <Button variant="dark" onClick={this.handleCloseModal}>Close</Button>
             </Col>

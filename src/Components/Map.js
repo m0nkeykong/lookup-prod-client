@@ -312,6 +312,7 @@ render() {
           maxWidth: "90%"}}>
         {this.state.loading ? 
           (<div className="load-container">
+          
           <LoadScript
             id="script-loader"
             googleMapsApiKey={getGoogleApiKey()}
