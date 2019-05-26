@@ -92,10 +92,6 @@ class ChooseExistingTrack extends Component {
   }
 
   addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel) {
-    console.log("wwwwwwwwwwwwewwwwwwwwww:");
-    console.log(_startPoint);
-    console.log(_endPoint);
-    console.log(_wayPoints);
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
