@@ -1,3 +1,53 @@
 body, html{
     padding: 2em;
 }
+
+.padding20px {
+    padding: 20px;
+}
+
+
+hr {
+    border-top: 1px solid #007bff;
+    width:70%;
+}
+
+a {color: #000;}
+
+
+.card{
+    background-color: #FFFFFF;
+    padding:0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius:4px;
+}
+
+address{
+  margin-bottom: 0px;
+}
+
+#author a{
+  color: #fff;
+  text-decoration: none;
+}
+
+.rowForm{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.marginInherit{
+    margin: inherit;
+}
+
+.marginTop18{
+    margin-top: 17px;
+}
+
+.borderBlue{
+    border-color: lightblue;
+}

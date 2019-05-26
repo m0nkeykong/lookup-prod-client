@@ -1,6 +1,5 @@
 // // import React, { Component } from 'react';
 // // import './style//StartNavigate.css';
-// // import SomePage from './SomePage';
 // // import {getGoogleApiKey} from '../globalVariables';
 
 // // class StartNavigate extends Component {
