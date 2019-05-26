@@ -167,9 +167,7 @@ class BLEController {
                 }
 
                 // Write chunk to the characteristic and resolve the promise.
-                this._writeToCharacteristic(this._characteristic, chunks[i]).
-                    then(resolve).
-                    catch(reject);
+                this._writeToCharacteristic(this._characteristic, chunks[i]).then(resolve).catch(reject);
             }));
         }
         return promise;

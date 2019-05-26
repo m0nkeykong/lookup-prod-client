@@ -36,23 +36,8 @@ class ChooseExistingTrack extends Component {
   }
   
   onSubmit(e){
-
     // e.preventDefault();
-    // console.log("VALUES: " + this.state.from + ", " + this.state.to + ", " + this.state.travelers );
-
-    //   this.props.history.push({
-    // pathname: "/results",
-    // state: this.state
-    // });
-
     e.preventDefault();
-  //   const target = event.target;
-  // const value = target.type === 'checkbox' ? target.checked : target.value;
-  // const name = target.name;
-
-  // this.setState({
-  //   [name]: value
-  // });
 
     console.log("FROM:");
     console.log(this.state.from);
@@ -62,7 +47,8 @@ class ChooseExistingTrack extends Component {
     console.log(this.refs.walking.checked);
     console.log(this.refs.bicycling.checked);
     var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
-    var checkedStar = "";
+
+    var checkedStar = "NO";
     if(this.refs.star1.checked)
       checkedStar = "1";
     if(this.refs.star2.checked)
@@ -192,7 +178,7 @@ class ChooseExistingTrack extends Component {
                 activeStyle={this.active} 
                 className="" >
                 <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p className="typeTrack" >{this.getIconType(track.type)}</p>
+                <p className="typeTrack" >{this.getIconType(track.travelMode)}</p>
                 <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
                 <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
               </NavLink>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
+import {getTrackByIdURL} from '../globalService';
 import TamplateComponent from './TemplateComponent';
-import { NavLink , Link} from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
 import axios from 'axios';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -152,7 +152,7 @@ class TrackDetails extends Component {
     let html=[];
     console.log(`wayPoints: ${wayPoints}`);
 
-    if(wayPoints.length != 0){
+    if(wayPoints.length !== 0){
       for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
         html.push(<p>	&#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
@@ -163,7 +163,7 @@ class TrackDetails extends Component {
   }
 
   getIconType(type){
-    if(type == 'Walking')
+    if(type === 'Walking')
       return <MdDirectionsWalk size={20} color="black" />;
     else
       return <IoAndroidBicycle size={20} color="black" />;

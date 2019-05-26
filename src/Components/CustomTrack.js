@@ -3,8 +3,7 @@ import Map from './Map';
 import { BeatLoader } from 'react-spinners';
 import './style/AutoGenerateTrack.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Form, Col, Row, Container, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
 class CustomTrack extends Component {
   constructor(props) {

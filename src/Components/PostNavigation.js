@@ -4,8 +4,7 @@ import axios from 'axios';
 import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import {getUpdateDefficultyLevelURL} from '../globalService'
-import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
+import {PostAsyncRequest} from '../globalService';
 
 
 
