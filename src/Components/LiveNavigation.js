@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
+import { NavLink } from "react-router-dom";
 
 import './style//LiveNavigation.css';
 import Map from './Map';
@@ -153,13 +154,43 @@ class LiveNavigation extends Component {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                <Nav.Link href="#profile">View Profile</Nav.Link>
-                <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                <Nav.Link href="#action/2.1">Choose Existing Tracks</Nav.Link>
-                <Nav.Link href="#action/2.2">Generate Auto Track</Nav.Link>
-                <Nav.Link href="#action/2.3">Custom Made Track</Nav.Link>
-              </Nav>
+            <Nav className="mr-auto">
+            <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/profile`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >View Profile</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Favorite Tracks</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/auto`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Generate Auto Track</NavLink>
+                
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/choose`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Choose Existing Tracks</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/custom`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Custom Made Track</NavLink>
+
+            </Nav>
             </Navbar.Collapse>
           </Navbar>
 
@@ -204,13 +235,43 @@ class LiveNavigation extends Component {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-                  <Nav.Link href="#profile">View Profile</Nav.Link>
-                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                  <Nav.Link href="#action/2.1">Choose Existing Tracks</Nav.Link>
-                  <Nav.Link href="#action/2.2">Generate Auto Track</Nav.Link>
-                  <Nav.Link href="#action/2.3">Custom Made Track</Nav.Link>
-                </Nav>
+            <Nav className="mr-auto">
+            <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/profile`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >View Profile</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Favorite Tracks</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/auto`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Generate Auto Track</NavLink>
+                
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/choose`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Choose Existing Tracks</NavLink>
+
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/custom`}}
+                activeStyle={this.active} 
+                style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                >Custom Made Track</NavLink>
+
+            </Nav>
             </Navbar.Collapse>
           </Navbar>
 
