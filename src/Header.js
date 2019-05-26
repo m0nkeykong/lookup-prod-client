@@ -9,16 +9,11 @@ class Header extends Component {
     active = {
         color: "white",
         fontWeight: "bold",
+    };
 
-    };
-    header = {
-        listStyle: "none",
-        display: "flex",
-        justifyContent: "space-evenly"  
-    };
     logo = {
-        width: '40%',
-        height: '40px',
+        width: '153px',
+        height: '54px',
         display: 'block',
         margin: '0 auto',
         marginTop: '4px',
@@ -28,10 +23,9 @@ class Header extends Component {
     render() {
         return (
             <div className="container">
-                <NavLink to={`/login`} activeStyle={this.active} 
-                >
-                <img style={this.logo} src="/images/logo.PNG"></img>
-                </NavLink>
+                {/* <NavLink to={`/login`} activeStyle={this.active} > */}
+                <img alt="HeaderLogo" style={this.logo} src='./images/logoSmall.png'></img>
+                {/* </NavLink> */}
             </div>
 );}}
 export default Header;

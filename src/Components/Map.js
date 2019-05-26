@@ -311,14 +311,15 @@ render() {
           maxWidth: "90%"}}>
         {this.state.loading ? 
           (<div className="load-container">
+          
           <LoadScript
             id="script-loader"
             googleMapsApiKey={getGoogleApiKey()}
             onError={this.onLoadScriptError}
             onLoad={this.onLoadScriptSuccess}
-            language="English"
+            language="en"
             version="3.36"
-            region="US"
+            region="en"
               libraries={this.mode}
           >
           <div className="map-container">
