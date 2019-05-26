@@ -17,3 +17,11 @@ code {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
 }
+
+.Logo {
+  background-image: url(/images/logo.PNG);
+  /* width: 100px; */
+  height: 100px;
+  display: block;
+  background-repeat: no-repeat;
+}
