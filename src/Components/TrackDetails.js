@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
+import {getTrackByIdURL} from '../globalVariables';
 import TamplateComponent from './TemplateComponent';
 import { NavLink , Link} from "react-router-dom";
-import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
-import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
+import TiBackspace from 'react-icons/lib/ti/backspace';
 import Map from './Map';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
-import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
+
 
 class TrackDetails extends Component {
   constructor(props) {
@@ -16,13 +13,8 @@ class TrackDetails extends Component {
     this.state = {
       tracks: [],
       startPoint: [],
-      userDetails: [],
       endPoint: [],
-      wayPoints: [],
-      travelMode: [],
-      comments: [],
-      userDetails: [],
-      updated: false
+      wayPoints: []
     }
 
     this.getTrackById = this.getTrackById.bind(this)
@@ -30,17 +22,12 @@ class TrackDetails extends Component {
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
     this.getComments = this.getComments.bind(this)
-    this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
-    this.handleChange  = this.handleChange.bind(this)
-    this.initialState = this.initialState.bind(this)
-
   }
   
   componentDidMount() {
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
-    // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
   }
 
@@ -51,14 +38,14 @@ class TrackDetails extends Component {
     }).then((data) => { 
       console.log("DATA:");
       console.log(data);       
-      var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments, data.userDetails,
-        data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
+      var self=this;        
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.comment,
+        data.startPoint, data.endPoint, data.wayPoints);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _comment,_startPoint, _endPoint, _wayPoints) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -66,13 +53,11 @@ class TrackDetails extends Component {
           id: this.state.tracks.length + 1,
           idOfTrack: _id,
           title: _title,
-          travelMode: _type,
-          comments: _comments,
-          userDetails: _userDetails,
+          type: _type,
+          comment: _comment,
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
-          description: _description
       }]
     }))
   }
@@ -85,30 +70,12 @@ class TrackDetails extends Component {
     }))
   }
 
-  getComments(comments, userDetails){
+  getComments(comments){
     let html=[];
     console.log(comments);
     // Outer loop to create parent
     for (let i = 0; i < comments.length; i++) {
-      // html.push(<p>	&#8227; &#9;{comments[i].comment}</p>)
-
-      html.push(
-        <ul class="media-list">
-          <li class="media">
-            <a class="pull-left" href="#">
-              <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
-            </a>
-            <div class="media-body">
-              <div class="well well-lg">
-                  <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
-                  <p class="media-comment">
-                    {comments[i].comment}
-                  </p>
-              </div>              
-            </div>
-          </li> 
-        </ul> 
-      );
+      html.push(<p>	&#8227; &#9;{comments[i]}</p>)
     }
     return html;
   }
@@ -119,7 +86,7 @@ class TrackDetails extends Component {
     console.log(startPoint);
 
       html.push(<p>	&#8227; &#9; latitude: {startPoint.latitude}</p>)
-      html.push(<p>	&#8227; &#9; longitude: {startPoint.longitude}</p>)
+      html.push(<p>	&#8227; &#9; longitude: {startPoint.longtitude}</p>)
     return html;
   }
 
@@ -129,7 +96,7 @@ class TrackDetails extends Component {
     console.log(endPoint);
 
     html.push(<p>	&#8227; &#9; latitude: {endPoint.latitude}</p>)
-    html.push(<p>	&#8227; &#9; longitude: {endPoint.longitude}</p>)
+    html.push(<p>	&#8227; &#9; longitude: {endPoint.longtitude}</p>)
     return html;
   }
 
@@ -141,42 +108,10 @@ class TrackDetails extends Component {
       for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
         html.push(<p>	&#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
-        html.push(<p>	&#8227; &#9;longitude: {wayPoints[i].longitude}</p>)
+        html.push(<p>	&#8227; &#9;longitude: {wayPoints[i].longtitude}</p>)
       }
     }
     return html;
-  }
-
-  getIconType(type){
-    if(type == 'Walking')
-      return <MdDirectionsWalk size={20} color="black" />;
-    else
-      return <IoAndroidBicycle size={20} color="black" />;
-     
-  }
-
-  initialState(){
-    this.setState(prevState => ({tracks: []}))
-  }
-
-  async onSubmitAddComment(e){
-    e.preventDefault();
-
-     // TODO: how to get user Id here
-    let data1 = {userId:"5c978235efd9d315e8d7a0d9", comment: `${this.state.addComment}` };
-    var commentId = await PostAsyncRequest('comments/insertComment', data1);
-
-     let data2 = {trackId:`${this.props.location.idOfTrack}`, commentId: `${commentId}` };
-     console.log("DATA2:");
-     console.log(data2);
-    var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
-    
-    this.initialState();
-    this.getTrackById(this.props.location.idOfTrack);
-  }
-
-  handleChange(event){
-    this.setState({ [event.target.name]: event.target.value})
   }
 
   viewTrack(track,i) {
@@ -184,79 +119,38 @@ class TrackDetails extends Component {
     console.log(track);
     return (          
       <div key={'container'+i}>
+           
+      <NavLink to=
+      //navigate to TrackDetails via TemplateComponent with the params
+      {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+        idOfTrack: track.idOfTrack}}
+        activeStyle={this.active} 
+        style={{backgroundColor:'black'}}
+        className="btn float-right" >Start Navigator</NavLink>
 
-        <div className="col-10 p-md-4">
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-          activeStyle={this.active} 
-          style={{padding:'6px', verticalAlign:'baseline'}}
-          className="tring" >
-          <TiArrowBackOutline size={29} color='black'/></NavLink>
-      </div>
-
-
-      <div className="col-10" style={{margin:'auto'}}>
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+        {{pathname: `${process.env.PUBLIC_URL}/choose`, 
           idOfTrack: track.idOfTrack}}
-          activeStyle={this.active} 
-          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-          className="btn btn-primary" >Start Navigator</NavLink>
-      </div>
+          activeStyle={this.active}>
+          <TiBackspace size={29} color='black'/> </NavLink>
 
           <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
-
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
-            <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
-            <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
-            <p className="descriptionTrack"><br></br>{track.description}</p>
-
-              <div class="row">
-                <div class="col-sm-10 col-sm-offset-1" id="logout">
-                    
-                    <div class="comment-tabs">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
-                        </ul>            
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments,track.userDetails)}
-                            </div>  
-                            
-
-                            <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-                            <ul class="nav nav-tabs" role="tablist">
-                              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
-                            </ul> 
-                
-                            <div class="tab-pane" id="add-comment">
-                              <form onSubmit={this.onSubmitAddComment}> 
-                                  <div class="form-group">
-                                      <div class="col-sm-10">
-                                        <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <div class="col-sm-offset-2 col-sm-10">                    
-                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
-                                      </div>
-                                  </div>            
-                              </form>
-                            </div>
-                          </div>
-
-                        </div>
-                    </div>
-              </div>
+            <h1 className="card-title" style={{ textAlign:`center`, color: 'white'}}>{track.title} </h1>
+            <p style={{ textAlign:`center`, color: 'white'}}>type: {track.type}</p>
+              <p className="titles">comments: </p>
+             <p style={{ border:`groove`,fontSize:'10px'}}>{this.getComments(track.comment)}</p>
+             <p className="titles">start point: </p>
+             <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
+             <p className="titles">end point: </p>
+             <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
+             <p className="titles">middle points: </p>
+                <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
+            <div>
             </div>
-
           </TamplateComponent>
-
-          <div style={{paddingBottom:'20px'}}>
-          {console.log("AAALLLAA:")}
-          {console.log(track)}
+          <div>
             <Map track={track}></Map>
           </div>
         </div>
@@ -265,64 +159,11 @@ class TrackDetails extends Component {
   }
 
   render() {
-    
     return (
-      <div>
-        <Card className="text-center">
-
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
-
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                  <Nav.Link href="#profile">View Profile</Nav.Link>
-                  <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                  <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                  <Nav.Link href="#about">About</Nav.Link>
-                  <Nav.Link href="#contact">Contact us</Nav.Link>
-                </Nav>
-              </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
+      <div className="container half-black">
+        <div className ="row padding2em">
           {this.state.tracks.map(this.viewTrack)}
-          <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -330,11 +171,3 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
-
-
-            // <p className="titles">start point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-            //  <p className="titles">end point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-            //  <p className="titles">middle points: </p>
-            //     <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>

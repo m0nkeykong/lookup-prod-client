@@ -6,22 +6,8 @@ import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
 import './css/Map.css';
-import {getGoogleApiKey} from '../globalService';
-import './style/normalize.css';
-import BluetoothTerminal from './BLEController';
+import {getGoogleApiKey} from '../globalVariables';
 
-
-/*
-TDL:
-אל תשכח להוסיף בקוד שכשמסלול מסתיים - צריך לעדכן את הדאטאבייס
-אלו הנתונים שצריך לעדכן:
-changesDuringTrack
-difficultyLevel
-actualDuration
-rating
-ובכללי להציג את הנתונים האלה:
-actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, comments, travelMode, startPoint-endPoint
-*/
 
 class Map extends Component {
   constructor(props) {
@@ -33,23 +19,8 @@ class Map extends Component {
         CurrentPosition: {lat: 0, lng: 0},
         UpdatedPosition: {lat: 0, lng: 0},
 				response: null,
-        timestamp: 0,
-        currStep: 0,
-        startedNavigation: false
+				timestamp: 0
     }
-
-    // ****** bluetooth variables ******
-    this.terminal = new BluetoothTerminal();
-
-    this.receive = this.receive.bind(this);
-    this._log = this._log.bind(this);
-    this.send = this.send.bind(this);
-    this.connectButton = this.connectButton.bind(this);
-    this.disconnectButton = this.disconnectButton.bind(this);
-
-    this.defaultDeviceName = 'LookUP';
-    // ****** bluetooth variables ******
-
     this.onLoadPosition = this.onLoadPosition.bind(this);
     this.onLoadScriptError = this.onLoadScriptError.bind(this);
     this.onLoadScriptSuccess = this.onLoadScriptSuccess.bind(this); 
@@ -60,52 +31,8 @@ class Map extends Component {
     this.onPolylineComplete = this.onPolylineComplete.bind(this);
     this.directionsCallback = this.directionsCallback.bind(this);
 
-    this.newLocation = document.getElementById('printLocation');
-
-    this.mode = ["drawing"];
+    this.newLocation = document.getElementById('locationUpdate');
   }
-
-
-  // ****** bluetooth functions ******
-
-  // log to console received data from component
-  receive = () => {
-    this.terminal.receive = (data) => {
-      this.terminal._log(data);
-    };
-  }
-
-  // log to console function
-  _log = () => {
-    this.terminal._log = (...messages) => {
-      messages.forEach((message) => {
-        console.log(message);
-      });
-    }
-  }
-
-  // send data to component and log it in the console
-  send = (data) => {
-    this.terminal.send(data).
-      then(() => this.terminal._log(data)).
-      catch((error) => this.terminal._log(error));
-  };
-
-  // connect button functionallity (open device browser)                  ------need to handle the device name------
-  connectButton = () => {
-    this.terminal.connect().
-      then(() => {
-        //this.refs.deviceNameLabel.textContent = this.terminal.getDeviceName() ? this.terminal.getDeviceName() : this.defaultDeviceName;
-      });
-  };
-
-  // disconnect button functionallity (disconnet component)               ------need to handle the device name------
-  disconnectButton = () => {
-    this.terminal.disconnect();
-    // this.refs.deviceNameLabel.textContent = this.defaultDeviceName;
-  };
-
-  // ****** bluetooth functions ******
 
   onLoadScriptSuccess(){
     console.log(" <LoadScript/> Success ");
@@ -120,7 +47,7 @@ class Map extends Component {
   }
 
   onGoogleMapClick(...args){
-    console.log(" onGoogleMapClick Success args: ",  args);
+    console.log(" onGoogleMapClick Success args: ",  args);  
   }
 
   // Remember to replace this method because UNSAFE
@@ -157,7 +84,18 @@ class Map extends Component {
 		if (this.state.response === null) {
 			if (response !== null) {
 				if (response.status === 'OK') {
-
+          this.newElement2 = document.createElement('p');
+					console.log(response.routes[0]);
+					response.routes[0].legs.forEach(leg => {
+            this.newElement2.innerHTML = `<b>Route Segment: </b><br> 
+                                            From: ${leg.start_address},<br>
+                                            To: ${leg.end_address}.<br> 
+                                            Total Distance: ${leg.distance.value}m,<br>
+                                            Estimated Duration: ${leg.duration.text},<br>
+                                            Travel Mode: ${this.props.track.travelMode}.`;
+            this.newLocation.appendChild(this.newElement2);
+            console.log(leg);
+          })
 					this.setState(
 						() => ({
 							response
@@ -203,65 +141,6 @@ class Map extends Component {
           this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          
           this.newLocation.appendChild(this.newElement);
           console.log("watching");
-
-
-          // indicate the route (for all steps)
-          if (this.state.response !== null){
-            this.state.response.routes[0].legs.forEach(leg => {
-              // calculate the meters from current location to the next turn
-              //while (this.state.UpdatedPosition.lat != leg.steps[leg.steps.length].end_location.lat() && this.state.UpdatedPosition.lng != leg.steps[leg.steps.length].end_location.lng()) { 
-              if ((this.state.UpdatedPosition.lat !== leg.steps[leg.steps.length - 1].end_location.lat()) && (this.state.UpdatedPosition.lng !== leg.steps[leg.steps.length - 1].end_location.lng())) {
-                var R = 6378.137; // Radius of earth in KM
-                var dLat = leg.steps[this.state.currStep].end_location.lat() * Math.PI / 180 - this.state.UpdatedPosition.lat * Math.PI / 180;
-                var dLon = leg.steps[this.state.currStep].end_location.lng() * Math.PI / 180 - this.state.UpdatedPosition.lng * Math.PI / 180;
-                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(this.state.UpdatedPosition.lat * Math.PI / 180) * Math.cos(leg.steps[this.state.currStep].end_location.lat() * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                var distance = R * c * 1000;
-                var directions = leg.steps[this.state.currStep].maneuver;
-
-                console.log("start lat:" + leg.steps[this.state.currStep].start_location.lat());
-                console.log("start lng:" + leg.steps[this.state.currStep].start_location.lng());
-                console.log("end lat:" + leg.steps[this.state.currStep].end_location.lat());
-                console.log("end lng:" + leg.steps[this.state.currStep].end_location.lng());
-                console.log("distance: " + distance + ",direction: " + directions);
-
-                if (!this.state.startedNavigation &&
-                  (this.state.UpdatedPosition.lat === leg.steps[0].end_location.lat()) && (this.state.UpdatedPosition.lng === leg.steps[0].start_location.lng())) {
-                  this.send('navigation-start,0');
-                  this.setState({
-                    startedNavigation: true
-                  });
-                }
-
-                // handle the customization of google's direction to the component
-                directions.includes('left') ? directions = 'turn-left' :
-                  directions.includes('right') ? directions = 'turn-right' :
-                    directions.includes('straight') ? directions = 'continue-straight' : directions = 'continue-straight';
-
-                // handle only specific meters before the turn - in order to not overload the component
-                if (distance >= 50.0 && distance <= 51.0) {       // if 50m from turn
-                  console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
-                } else if (distance >= 20 && distance <= 21) {    // if 20m from turn
-                  console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
-                } else if (distance >= 0 && distance <= 2) {      // if need to turn now
-                  console.log(directions + "," + distance);
-                  this.send(directions + "," + distance);
-                  console.log(this.state.currStep);
-                  if (!(leg.steps[this.state.currStep] == (leg.steps.length - 1))) {
-                    this.state.currStep = this.state.currStep + 1
-                  }
-                }
-              } else {
-                console.log("You have reached your destination");
-                this.send('destination-reached,0');
-              }
-            });
-          }
-
         }, (err) => {
           console.error(`ERROR(${err.code}): ${err.message}`);
         }, options);
@@ -289,7 +168,7 @@ getWayPoints(wayPoints){
 
   if(wayPoints.length != 0){
     for (let i = 0; i < wayPoints.length; i++) {
-      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longitude }});
+      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longtitude }});
     }
   }
   return html;
@@ -301,7 +180,6 @@ onPolylineComplete = (polyline) => {
 
 render() {
   const {loading} = this.state;
-
   // const {loading} = true;
 
     return (
@@ -312,16 +190,15 @@ render() {
           maxWidth: "90%"}}>
         {this.state.loading ? 
           (<div className="load-container">
-          
           <LoadScript
             id="script-loader"
             googleMapsApiKey={getGoogleApiKey()}
             onError={this.onLoadScriptError}
             onLoad={this.onLoadScriptSuccess}
-            language="en"
+            language="English"
             version="3.36"
-            region="en"
-              libraries={this.mode}
+            region="US"
+              libraries={["drawing" ]}
           >
           <div className="map-container">
             <GoogleMap
@@ -354,72 +231,42 @@ render() {
                   icon={'/images/map-marker-icon3.png'}
                   >
               </Marker>
-              {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
-              {typeof this.props.track.startPoint.city !== "undefined" ? 
-                  (
-                      (
-                        this.state.response === null
-                      ) && (
-                        <DirectionsService
-                        options={{
-                          origin: this.props.track.startPoint.city,
-                          destination: this.props.track.endPoint.city,
-                          waypoints: this.getWayPoints(this.props.track.wayPoints),
-                          travelMode: this.props.track.travelMode.toUpperCase(),
-                          drivingOptions: {
-                            departureTime: new Date(Date.now()),
-                            trafficModel: 'bestguess' 
-                          },
-                          optimizeWaypoints: true
-                        }}
-                          callback={this.directionsCallback}
-                        />
-                      )
-                  )
-                  :
-                  (
-
-                      (
-                        this.state.response === null
-                      ) && (
-                        <DirectionsService
-                        options={{
-                      		// origin: LatLng | String | google.maps.Place,
-                          // destination: LatLng | String | google.maps.Place,
-                          // travelMode: TravelMode,
-                          // transitOptions: TransitOptions,
-                          // drivingOptions: DrivingOptions,
-                          // unitSystem: UnitSystem,
-                          // waypoints[]: DirectionsWaypoint,
-                          // optimizeWaypoints: Boolean,
-                          // provideRouteAlternatives: Boolean,
-                          avoidFerries: true,
-                          avoidHighways: true,
-                          avoidTolls: true,
-                          // region: String
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                          waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
-                          // travelMode: this.props.track.type.toUpperCase() }}
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                          origin: this.props.track.startPoint,
-                          destination: this.props.track.endPoint,
-                          // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
-                          // travelMode: this.props.track.type.toUpperCase() }}
-                          travelMode: this.props.track.travelMode,
-                          drivingOptions: {
-                            departureTime: new Date(Date.now()),
-                            trafficModel: 'bestguess' 
-                          },
-                          optimizeWaypoints: true
-                        }}
-                          callback={this.directionsCallback}
-                        />
-                      )
+                {
+									(
+										this.state.response === null
+									) && (
+                    <DirectionsService
+                    options={{
+											// origin: LatLng | String | google.maps.Place,
+											// destination: LatLng | String | google.maps.Place,
+											// travelMode: TravelMode,
+											// transitOptions: TransitOptions,
+											// drivingOptions: DrivingOptions,
+											// unitSystem: UnitSystem,
+											// waypoints[]: DirectionsWaypoint,
+											// optimizeWaypoints: Boolean,
+											// provideRouteAlternatives: Boolean,
+											// avoidFerries: Boolean,
+											// avoidHighways: Boolean,
+											// avoidTolls: Boolean,
+											// region: String
+                      // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                      // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                      origin: this.props.track.startPoint,
+                      destination: this.props.track.endPoint,
+                      waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
+                      // travelMode: this.props.track.type.toUpperCase() }}
+                      travelMode: this.props.track.travelMode,
+                      drivingOptions: {
+                        departureTime: new Date(Date.now()),
+                        trafficModel: 'bestguess' 
+                      },
+                      optimizeWaypoints: true
+                    }}
+                      callback={this.directionsCallback}
+                    />
                   )
                 }
-                
                 {
                   this.state.response != null &&
                   (
@@ -433,14 +280,6 @@ render() {
             </GoogleMap>
           </div>
         </LoadScript>
-            <div className="buttons">
-              <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-                <i className="material-icons">bluetooth_connected</i>
-              </button>
-              <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-                <i className="material-icons">bluetooth_disabled</i>
-              </button>
-            </div>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
     );
