@@ -4,6 +4,7 @@ import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import {getGoogleLoginApiKey} from '../globalService';
+import google from './style/Login.css'
 
 class Login extends Component {
     constructor(props) {
