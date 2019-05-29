@@ -15,9 +15,9 @@ export function getAllTracksURL(){
     return `${originURL}track/getAllTracks`;
 }
 
-export function getTracksByCityURL(fromCity,toCity,travelmode,Star){
-  console.log(`${originURL}track/getTracksByCity/${fromCity}/${toCity}/${travelmode}`);
-    return `${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}/${Star}/false`;
+export function getTracksByCityURL(fromCity,toCity,travelmode,Star,accesability){
+  console.log(`${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}`);
+    return `${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}/${Star}/${accesability}`;
 }
 
 export function getUpdateDefficultyLevelURL(trackId,Star){

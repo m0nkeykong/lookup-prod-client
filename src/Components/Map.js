@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
-import './css/Map.css';
+// import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
 import BluetoothTerminal from './BLEController';

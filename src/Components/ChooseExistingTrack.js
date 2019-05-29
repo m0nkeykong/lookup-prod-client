@@ -60,6 +60,9 @@ class ChooseExistingTrack extends Component {
     if(this.refs.star5.checked)
       checkedStar = "5";
 
+      console.log("ACCESABILTY:");
+      this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+      console.log(this.userid);
     // TODO: parse city to upper case and lower case:
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar))
     .then((res) => { 
@@ -232,6 +235,7 @@ class ChooseExistingTrack extends Component {
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
         this.setState({ userDetails: userResponse.data, loading: false });
+        console.log("000000000000000000000000");
         console.log(userResponse.data);
       })
       .catch(error => {
@@ -279,43 +283,43 @@ class ChooseExistingTrack extends Component {
 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-              <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/profile`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >View Profile</NavLink>
-
+                <Nav className="mr-auto">
                 <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Favorite Tracks</NavLink>
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/profile`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >View Profile</NavLink>
 
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/auto`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Generate Auto Track</NavLink>
-                  
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Choose Existing Tracks</NavLink>
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Favorite Tracks</NavLink>
 
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/custom`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Custom Made Track</NavLink>
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/auto`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Generate Auto Track</NavLink>
+                    
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/choose`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Choose Existing Tracks</NavLink>
 
-              </Nav>
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/custom`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Custom Made Track</NavLink>
+
+                </Nav>
               </Navbar.Collapse>
 
             </Navbar>
