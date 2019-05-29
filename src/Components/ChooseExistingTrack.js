@@ -38,14 +38,6 @@ class ChooseExistingTrack extends Component {
   onSubmit(e){
     // e.preventDefault();
     e.preventDefault();
-
-    console.log("FROM:");
-    console.log(this.state.from);
-    console.log("to:");
-    console.log(this.state.to);
-    console.log("TYPE:");
-    console.log(this.refs.walking.checked);
-    console.log(this.refs.bicycling.checked);
     var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
 
     var checkedStar = "NO";
@@ -60,18 +52,13 @@ class ChooseExistingTrack extends Component {
     if(this.refs.star5.checked)
       checkedStar = "5";
 
-      console.log("ACCESABILTY:");
-      this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-      console.log(this.userid);
     // TODO: parse city to upper case and lower case:
-    fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar))
+    fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
     .then((res) => { 
       return res.json();      
     }).then((data) => {
       var self=this; 
       this.state.tracks = [];
-      console.log("DATA LENGTHHHHHH");
-      console.log(data);
       if( data.length == 0){
           self.addTracks('','','','','','','',''); 
       }  
@@ -80,8 +67,6 @@ class ChooseExistingTrack extends Component {
     }    
       else{
         data.map(json => { 
-          console.log(JSON.stringify(json) ); 
-          console.log("ELLLLLLSSSEEEEEEEEEE");
           self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star); 
         })  
       } 
@@ -90,7 +75,6 @@ class ChooseExistingTrack extends Component {
   }
 
   onChange(e){
-    console.log(this.props.width);
     this.setState({[e.target.name]:e.target.value});
   }
 
@@ -185,9 +169,6 @@ class ChooseExistingTrack extends Component {
               </TamplateComponent>
 
               <div style={{paddingBottom:'20px'}}>
-              {console.log("AAALLLAA:")}
-              {console.log(track)}
-              
               </div>
 
           </div>
@@ -204,29 +185,14 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {        
       var self=this;        
       data.map((json) => {   
-        console.log("QQQQQQQQQQQQ:");
-        console.log(json);  
-
-        // console.log(JSON.stringify(json) );          
         self.addTracks(json.track._id,json.track.title, json.track.type, json.track.reports, json.track.description,
           json.startPoint, json.endPoint, json.wayPoints, json.track.difficultyLevel.star);  
-          console.log("JSON:");
-          console.log(json);  
       })    // endOf data.map((data)  
     })
   }
 
   componentDidMount(){
     this.getAllTracks();
-
-    // let data = {city:"Kfar Saba", latitude:100, longitude:100 };
-    // console.log("DATA:");
-    // console.log(data);
-    // console.log(JSON.stringify(data));
-    // var res = PostRequest('point/insertPoint',data);
-    // console.log("response:");
-    // console.log(res);
-
     // user session
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
@@ -235,8 +201,6 @@ class ChooseExistingTrack extends Component {
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
         this.setState({ userDetails: userResponse.data, loading: false });
-        console.log("000000000000000000000000");
-        console.log(userResponse.data);
       })
       .catch(error => {
         console.error(error);

@@ -34,14 +34,11 @@ class PostNavigation extends Component {
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
         this.setState({ userDetails: userResponse.data, loading: false });
-        console.log(userResponse.data);
       })
       .catch(error => {
         console.error(error);
       });
 
-      console.log("ID OF TRACK:");
-      console.log(this.props.location.idOfTrack);
       // TODO: call route for update RANK
       // TODO: call route for update actual time
   }
@@ -72,8 +69,6 @@ class PostNavigation extends Component {
 
     axios.put(`http://localhost:3000/track/updateDefficultyLevel/${this.props.location.idOfTrack}/${checkedStar}`)
     .then(res => {
-        console.log("RES:");
-        console.log(res);
     })
     .catch(error => {
       console.error(error);
@@ -88,13 +83,10 @@ class PostNavigation extends Component {
     if(this.state.addReport.length != 0 ||
         typeof this.state.addReport !== "undefined")
     {
-        console.log("INNNN");
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
         let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-        console.log("DATA2:");
-        console.log(data2);
         var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
         
         this.initialState();

@@ -8,6 +8,7 @@ export function getTrackByIdURL(trackId = '5c7bca6ef318fa537c9c6dbe'){
 }
 
 export function getTrackDetailsByIdURL(trackId){
+  console.log(`${originURL}track/getTrackDetailsById/${trackId}`);
     return `${originURL}track/getTrackDetailsById/${trackId}`;
 }
 
@@ -16,7 +17,7 @@ export function getAllTracksURL(){
 }
 
 export function getTracksByCityURL(fromCity,toCity,travelmode,Star,accesability){
-  console.log(`${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}`);
+  console.log( `${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}/${Star}/${accesability}`);
     return `${originURL}track/getTracksFilter/${fromCity}/${toCity}/${travelmode}/${Star}/${accesability}`;
 }
 
@@ -33,30 +34,6 @@ export function getGoogleLoginApiKey(){
   return consts.GOOGLE_LOGIN_API_KEY;
 }
 
-/**
- * 
- * Description about this function:
- * 
- * for insert a new point send:
- * url = 'point/insertPoint'
- * data = {
- *          "city":"city name",
- *          "latitude":100,
- *          "longitude":100
- *        }
- * 
- * for insert a new track send:
- * url = 'track/insertTrack'
- * data = {
- *          "type":"Walking",
- *          "title":"some title",
- *          "startPoint":point._id (like: 5ca0ec347fd3dd5137edb1dc),
- *          "endPoint": point._id,
- *          "wayPoint":[point._id,point._id,point._id],
- *          "description": "some description"
- *        }
- * 
- */
 export function PostRequest(url, data) {
     console.log(originURL+url);
     return new Promise((resolve, reject) =>{
