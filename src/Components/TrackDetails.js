@@ -103,10 +103,6 @@ class TrackDetails extends Component {
     let html=[];
     console.log(reports);
     // Outer loop to create parent
-    console.log("REPORT LENGTH:");
-    console.log(reports.length);
-    console.log("userDetails RONI????");
-    console.log(userDetails);
     for (let i = 0; i < reports.length; i++) {
       html.push(
         <ul class="media-list">
