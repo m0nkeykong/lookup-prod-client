@@ -103,15 +103,15 @@ class TrackDetails extends Component {
     let html=[];
     console.log(reports);
     // Outer loop to create parent
+    console.log("REPORT LENGTH:");
+    console.log(reports.length);
+    console.log("userDetails RONI????");
+    console.log(userDetails);
     for (let i = 0; i < reports.length; i++) {
-      // html.push(<p>	&#8227; &#9;{reports[i].report}</p>)
-
       html.push(
         <ul class="media-list">
           <li class="media">
-            <a class="pull-left" href="#">
               <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
-            </a>
             <div class="media-body">
               <div class="well well-lg">
                   <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
