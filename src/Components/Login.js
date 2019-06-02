@@ -36,7 +36,7 @@ class Login extends Component {
                 sessionStorage.setItem('userDetails', JSON.stringify(response.data._id));
                 // localStorage Can be accessible from same tab and expires when tab close
                 localStorage.setItem('userDetails', JSON.stringify(response.data._id));
-                this.props.history.push('/homePage');
+                this.props.history.push('/auto');
             }
         })
         .catch(error => {
