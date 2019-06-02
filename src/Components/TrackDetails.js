@@ -42,20 +42,19 @@ class TrackDetails extends Component {
 
     // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
+  // user session
+  this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+  console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
-    // user session
-    this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
-
-    // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
-        console.log(userResponse.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  // Get the user details from database
+  axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    .then(userResponse => {
+      this.setState({ userDetails: userResponse.data, loading: false });
+      console.log(userResponse.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   getTrackById(trackId){
