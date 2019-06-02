@@ -42,20 +42,19 @@ class TrackDetails extends Component {
 
     // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
+  // user session
+  this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+  console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
-    // user session
-    this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
-
-    // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
-        console.log(userResponse.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  // Get the user details from database
+  axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    .then(userResponse => {
+      this.setState({ userDetails: userResponse.data, loading: false });
+      console.log(userResponse.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   getTrackById(trackId){
@@ -105,14 +104,10 @@ class TrackDetails extends Component {
     console.log(reports);
     // Outer loop to create parent
     for (let i = 0; i < reports.length; i++) {
-      // html.push(<p>	&#8227; &#9;{reports[i].report}</p>)
-
       html.push(
         <ul class="media-list">
           <li class="media">
-            <a class="pull-left" href="#">
               <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
-            </a>
             <div class="media-body">
               <div class="well well-lg">
                   <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
