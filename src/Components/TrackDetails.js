@@ -33,7 +33,8 @@ class TrackDetails extends Component {
     // this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.initialState = this.initialState.bind(this)
-
+    this.buildTrack = this.buildTrack.bind(this)
+    this.getTimeOfTrack = this.getTimeOfTrack.bind(this)
   }
   
   componentDidMount() {
@@ -66,12 +67,12 @@ class TrackDetails extends Component {
       console.log(data);       
       var self=this;      
       self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
-        data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
+        data.startPoint, data.endPoint, data.wayPoints, data.track.description,data.track.disabledTime,data.track.nonDisabledTime );        
     })
 
   }
 
-  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description,_disabledTime,_nonDisabledTime) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -86,7 +87,9 @@ class TrackDetails extends Component {
           endPoint:_endPoint,
           wayPoints:_wayPoints,
           description: _description,
-          difficultyLevel: _difficultyLevel
+          difficultyLevel: _difficultyLevel,
+          disabledTime:_disabledTime,
+          nonDisabledTime:_nonDisabledTime
       }]
     }))
   }
@@ -204,6 +207,49 @@ class TrackDetails extends Component {
     return html;
   } 
 
+  
+  buildTrack(track){
+    // const trackObj = {
+    //   description: track.description,
+    //   difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
+    //   disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
+
+
+    //   startPoint: startPointId,
+    //   endPoint: endPointId,
+    //   wayPoints: track.wayPoints !== '' ? [...track.wayPoints] : [],
+    //   travelMode: track.travelMode,
+    //   title: track.title,
+    //   distance: track.distance,
+    //   rating: track.rating,
+    //   nonDisabledTime: track.nonDisabledTime !== '' ? track.nonDisabledTime : {},
+    //   // estimatedDuration: track.estimatedDuration,
+    //   changesDuringTrack: false,
+    // };
+
+    return track;
+  }
+
+  getTimeOfTrack(disabledTime,nonDisabledTime){
+    let html=[];
+
+    let num;
+    // this.state.userDetails.accessibility;
+    // if user is nonDisabledTime
+    if(this.state.userDetails.accessibility == 0)
+      num = nonDisabledTime.actual;
+    else
+      num = disabledTime.actual;
+
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+
+    html.push(<span class="">{rhours}:{rminutes}</span>)
+    return html;
+  }
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -247,6 +293,7 @@ class TrackDetails extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
+            <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
             <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
 
@@ -273,6 +320,7 @@ class TrackDetails extends Component {
           <div style={{paddingBottom:'20px'}}>
           {console.log("AAALLLAA:")}
           {console.log(track)}
+          
             <Map track={track}></Map>
           </div>
         </div>

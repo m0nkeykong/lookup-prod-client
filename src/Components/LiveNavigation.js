@@ -174,7 +174,8 @@ class LiveNavigation extends Component {
 
           <Card.Header> 
             <h6> Live Navigation Map </h6> 
-
+              {console.log("HHHHHGGGGGGGTTTTTTTT")}
+              {console.log(this.state.generatedTrack.track)}
               {!this.state.isLoading && 
                 <Map
                 track={this.state.generatedTrack.track}>
