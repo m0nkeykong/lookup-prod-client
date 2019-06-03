@@ -7,7 +7,6 @@ export const rank = {
 }
 
 export const accessibility = {
-    0: 'Normal',
-    1: 'Blind',
-    2: 'Deaf'
+    0: 'NotDisabled',
+    1: 'Disabled'
 }

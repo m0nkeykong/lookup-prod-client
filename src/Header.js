@@ -1,9 +1,4 @@
-
-
 import React, { Component } from "react";
-import { NavLink , Link} from "react-router-dom";
-import MdFace from "react-icons/lib/md/face";
-import {Redirect} from 'react-router-dom';
 
 class Header extends Component {
     active = {
@@ -23,11 +18,7 @@ class Header extends Component {
     render() {
         return (
             <div className="container">
-                {/* <NavLink to={`/login`} activeStyle={this.active} > */}
                 <img alt="HeaderLogo" style={this.logo} src='./images/logoSmall.png'></img>
-                {/* </NavLink> */}
             </div>
 );}}
 export default Header;
-
-// <div style={{ backgroundImage: `url(./images/logo.PNG)`, margin: '0 auto', width: '100px', height: '100px', marginTop: '5px' }}></div>

@@ -1,149 +1,182 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
 import axios from 'axios';
-
 import { rank, accessibility } from '../MISC';
+import { Button, Form, Alert, Breadcrumb} from 'react-bootstrap';
+import { originURL } from '../globalService';
 
-import { Button, Card, Form, Navbar, NavDropdown, Nav, InputGroup, Modal, ButtonToolbar, ProgressBar, Row, Col, ListGroup} from 'react-bootstrap';
+import Menu from './Menu';
 
-import { BeatLoader } from 'react-spinners';
-import './style/TrackDetails.css'
+const _ = require('lodash');
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      variant: 'success',
       tracks: [],
       userDetails: [],
+      show: false,
       isUpdated: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);   
     this.handleInputChange = this.handleInputChange.bind(this);
     this.updateUserDetails = this.updateUserDetails.bind(this);
+    this.getUserDetails = this.getUserDetails.bind(this);
   }
-  
-  componentDidMount(){
+
+  // Fetch the updated user data from db
+  getUserDetails(){
+    var self = this;
+    return new Promise(resolve => {
+      self.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+      // Get the user details from database
+      axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
+        .then(userResponse => {
+          // Preparing the user object to be handled by form change
+          delete userResponse.data.BLE;
+          delete userResponse.data._id;
+          delete userResponse.data.favoriteTracks;
+          delete userResponse.data.trackRecords;
+          userResponse.data.createdDate = userResponse.data.createdDate.split('T')[0];
+          this.setState({ userDetails: userResponse.data, initalUserDetails: userResponse.data, loading: false });
+          console.log(userResponse.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });      
+    });
+  }
+
+  async componentDidMount(){
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
-
-    // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
-        console.log(userResponse.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    await this.getUserDetails();
   }
 
+  // Hnadle form details submittion
   handleSubmit(e){
     e.persist();
     e.preventDefault();
-
-    this.setState({ isUpdated: true });
-
+    
     const userDetails = this.state.userDetails;
     this.updateUserDetails(userDetails);
   }
 
+  // Update user data
   updateUserDetails(userDetails){
-    axios.put(`http://localhost:3000/user/updateAccountDetails/${this.userid}`, {...userDetails})
+    axios.put(`${originURL}user/updateAccountDetails/${this.userid}`, {...userDetails})
     .then(userDetails => {
-      console.log("startPoint fetched: " + userDetails.data);
+      console.log("userDetails fetched: " + userDetails.data);
+      this.setState({ isUpdated: true, show: true, variant: 'success' });
+      this.getUserDetails();
     })
     .catch(error => {
+      this.setState({ isUpdated: false, show: true, variant: 'danger' });
       console.log(error);
     });
   }
 
+  // Handle the input change
   handleInputChange(e){
     e.persist();
     console.log(e);
-    e.target.value !== '' &&
+    if(e.target.value !== ''){
       this.setState(
         (prevState) => ({
           ...prevState,
-          userDetails: {[e.target.name]: e.target.value},
+          userDetails: {...prevState.userDetails, [e.target.name]: e.target.value},
         }), () => {
           console.log(this.state.userDetails);
         }
       )
+    }
+    else{
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          userDetails: {...prevState.userDetails, [e.target.name]: ''},
+        }), () => {
+          console.log(this.state.userDetails);
+        }
+      )
+    }
   }
 
   render() {
-    
+    const userDetails = {...this.state.userDetails};
+    const handleHide = () => this.setState({ show: false });
     return (
       <div>
+        <Menu currentPage={"Profile Settings"}></Menu>
+        <Breadcrumb>
+          <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
+          <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+        </Breadcrumb>
 
-        <Card.Header>
-          <Navbar collapseOnSelect expand="lg">
-
-            <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-              {this.state.userDetails.profilePicture ?
-                (
-                  <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                )
-                :
-                (
-                  <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                )
-              }
-            </Navbar.Brand>
-
-            <Navbar.Brand href="#name" style={{ float: 'center' }}>
-              {this.state.userDetails.name ?
-                (
-                  <div>
-                    <p>{this.state.userDetails.name}</p>
-                  </div>
-                )
-                :
-                (
-                  <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                )
-              }
-            </Navbar.Brand>
-
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="#profile">View Profile</Nav.Link>
-                <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#contact">Contact us</Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-
-          </Navbar>
-        </Card.Header>
-        <Form onSubmit={e => this.handleSubmit(e)}>
-
-            <Form.Group controlId="formDestination">
-            {/*<Form.Label>Destination</Form.Label>*/}
-            User ID<Form.Control disabled type="text" placeholder={this.state.userDetails._id} value={this.state.userDetails._id} name="_id" onChange={this.handleInputChange }/>
-            Name<Form.Control type="text" placeholder={this.state.userDetails.name} value={this.state.userDetails.name} name="name" onChange={this.handleInputChange}/>
-            Email<Form.Control type="text" placeholder={this.state.userDetails.email} value={this.state.userDetails.email} name="email" onChange={this.handleInputChange}/>
-            Profile picture<Form.Control disabled type="text" placeholder={this.state.userDetails.profilePicture} value={this.state.userDetails.profilePicture} name="profilePicture" onChange={() => {"Hello"}}/>
-            Account creation date<Form.Control disabled type="text" placeholder={this.state.userDetails.createdDate} value={this.state.userDetails.createdDate} name="createdDate" onChange={this.handleInputChange}/>
-            Password<Form.Control type="password" placeholder={this.state.userDetails.password} value={this.state.userDetails.password} name="password" onChange={this.handleInputChange}/>
-            Phone Number<Form.Control type="number" placeholder={this.state.userDetails.phone} value={this.state.userDetails.phone} name="phone" onChange={this.handleInputChange}/>
-            Accessibility<Form.Control type="text" placeholder={this.state.userDetails.accessibility} value={this.state.userDetails.accessibility} name="accessibility" onChange={this.handleInputChange}/>
-            Rank<Form.Control disabled type="text" placeholder={this.state.userDetails.rank} value={this.state.userDetails.rank} name="rank" onChange={this.handleInputChange}/>
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-                Update Details
-            </Button>
+        <Form onSubmit={e => this.handleSubmit(e)} style={{ padding: '7px'}}>
+          <Form.Group controlId="formUserID">
+            <Form.Label> User ID </Form.Label>
+            <Form.Control disabled type="text" placeholder={this.userid} value={this.userid} name="userId"/>
+          </Form.Group>
+          <Form.Group controlId="formUserProfilePicture">
+            <Form.Label> Profile Picture </Form.Label>
+            <img alt="Profile" src={userDetails.profilePicture} style={{ height: '52px', width: '52px', borderRadius: '50%', display: 'block', margin: '0 auto', marginBottom: '5px'}}></img>
+            <Form.Control disabled type="text" placeholder={userDetails.profilePicture} value={userDetails.profilePicture} name="profilePicture"/>
+          </Form.Group>
+          <Form.Group controlId="formUserCreationDate">
+            <Form.Label> Account Creation Date </Form.Label>
+            <Form.Control disabled type="text" placeholder={userDetails.createdDate} value={userDetails.createdDate} name="createdDate"/>
+          </Form.Group>
+          <Form.Group controlId="formUserRank">
+            <Form.Label> Rank </Form.Label>
+            <Form.Control disabled type="text" placeholder={userDetails.rank} value={rank[userDetails.rank]} name="rank" onChange={this.handleInputChange}/>
+          </Form.Group>
+          <Form.Group controlId="formUserName">
+            <Form.Label> Full Name </Form.Label>
+            <Form.Control required type="text" placeholder={userDetails.name} value={userDetails.name} name="name" onChange={this.handleInputChange}/>
+          </Form.Group>
+          <Form.Group controlId="formBirthDay">
+            <Form.Label> Birth Day </Form.Label>
+            <Form.Control type="text" placeholder={userDetails.birthDay} value={userDetails.birthDay} name="birthDay" onChange={this.handleInputChange}/>
+          </Form.Group>          
+          <Form.Group controlId="formUserAccessibility">
+            <Form.Label> Accessibility </Form.Label>
+            <Form.Control as="select" name="accessibility" value={userDetails.accessibility} onChange={this.handleInputChange}>
+              <option value={0}>Not-Disabled</option>
+              <option value={1}>Disabled</option>
+            </Form.Control>
+          </Form.Group>          
+          <Form.Group controlId="formUserEmail">
+            <Form.Label> Email </Form.Label>
+            <Form.Control disabled type="text" placeholder={userDetails.email} value={userDetails.email} name="email" onChange={this.handleInputChange}/>
+          </Form.Group>
+          <Form.Group controlId="formUserPassword">
+            <Form.Label> Password </Form.Label>
+            <Form.Control required type="password" placeholder={userDetails.password} value={userDetails.password} name="password" onChange={this.handleInputChange}/>
+          </Form.Group>
+          <Form.Group controlId="formUserPhoneNumber">
+            <Form.Label> Phone Number </Form.Label>
+            <Form.Control required type="number" placeholder={userDetails.phone} value={userDetails.phone} name="phone" onChange={this.handleInputChange}/>
+          </Form.Group>
+          <Alert show={this.state.show} variant={this.state.variant}>
+            <Alert.Heading>Profile update message</Alert.Heading>
+              <p>
+                {this.state.variant === "success" ?  
+                `Hello ${userDetails.name}, Your profile details updated successfully.`:
+                `Hello ${userDetails.name}, There was a problem while updating your profile details.`
+                }
+              </p>
+            <hr />
+            <div className="d-flex justify-content-end">
+              <Button onClick={handleHide} variant={`outline-${this.state.variant}`}>
+                OK, Close!
+              </Button>
+            </div>
+         </Alert>
+          { !this.state.show && <Button disabled={_.isEqual(this.state.initalUserDetails, this.state.userDetails)} style={{ display: "block", margin: "0 auto" }} variant="primary" type="submit">
+              Update Details
+          </Button>}
         </Form>
       </div>
     );

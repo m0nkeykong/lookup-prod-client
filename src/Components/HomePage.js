@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
+import Menu from './Menu';
 
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Card, Navbar, NavDropdown, Nav, Breadcrumb, Container, Row, Col } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
+import './style/HomePage.css'
 
 class HomePage extends Component {
   constructor(props) {
@@ -36,93 +38,78 @@ class HomePage extends Component {
     
     return (
       <div>
+        {/* Page Menu */}
+        <Menu currentPage={"Home"}> </Menu>
 
-        <Card.Header>
-          <Navbar collapseOnSelect expand="lg">
+        {/* Page BreadCrumbs */}
+        <Breadcrumb>
+          <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
+          <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        </Breadcrumb>
 
-            <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-              {this.state.userDetails.profilePicture ?
-                (
-                  <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                )
-                :
-                (
-                  <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                )
-              }
-            </Navbar.Brand>
+        <Container>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+              <button type="button" className="btn btn-primary btn-circle btn-xl">
+                <NavLink 
+                  to={{ pathname: `${process.env.PUBLIC_URL}/profile` }}
+                  style={{ color: 'white', textDecoration: 'none'}}>
+                  Profile <br/> Settings
+                </NavLink>
+              </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/auto` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Auto <br/> Generate
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/custom` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Custom <br/> Generate
+            </NavLink>
+          </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/choose` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Choose <br/> Existing
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/myTracks` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              My <br/> Tracks
+            </NavLink>
+          </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/favorites` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Favorite <br/> Tracks
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+        </Container>
 
-            <Navbar.Brand href="#name" style={{ float: 'center' }}>
-              {this.state.userDetails.name ?
-                (
-                  <div>
-                    <p>{this.state.userDetails.name}</p>
-                  </div>
-                )
-                :
-                (
-                  <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                )
-              }
-            </Navbar.Brand>
-
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link href="#profile">View Profile</Nav.Link>
-                <Nav.Link href="#favoriteTracks">Favorite Tracks</Nav.Link>
-                <NavDropdown title="Navigate a Route" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/2.1">Choose Existing Track</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/2.2">Generate Auto Track</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/2.3">Custom Made Track</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/2.4">Info</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link href="#searcgTracks">Serach Tracks</Nav.Link>
-                <Nav.Link href="#vibrations">Vibrations</Nav.Link>
-                <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#contact">Contact us</Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-
-          </Navbar>
-        </Card.Header>
-
-        <div className="col-10" style={{ margin: 'auto', textAlign: 'center' }}>
-          <NavLink to=
-            // button
-            {{ pathname: `${process.env.PUBLIC_URL}/auto` }}
-            activeStyle={this.active}
-            style={{ marginTop: '30px', borderRadius: '10px', width: '60%' }}
-            className="btn btn-primary" >Auto Generate</NavLink>
-        </div>
-
-        <div className="col-10" style={{ margin: 'auto', textAlign: 'center' }}>
-          <NavLink to=
-            // button
-            {{ pathname: `${process.env.PUBLIC_URL}/choose` }}
-            activeStyle={this.active}
-            style={{ marginTop: '30px', borderRadius: '10px', width: '60%' }}
-            className="btn btn-primary" >Choose Existing</NavLink>
-        </div>
-
-        <div className="col-10" style={{ margin: 'auto', textAlign: 'center' }}>
-          <NavLink to=
-            // button
-            {{ pathname: `${process.env.PUBLIC_URL}/favorites` }}
-            activeStyle={this.active}
-            style={{ marginTop: '30px', borderRadius: '10px', width: '60%' }}
-            className="btn btn-primary" >Favorites List</NavLink>
-        </div>
-
-        <div className="col-10" style={{ margin: 'auto', textAlign: 'center' }}>
-          <NavLink to=
-            // button
-            {{ pathname: `${process.env.PUBLIC_URL}/profile` }}
-            activeStyle={this.active}
-            style={{ marginTop: '30px', borderRadius: '10px', width: '60%' }}
-            className="btn btn-primary" >Profile</NavLink>
-        </div>
       </div>
     );
   }

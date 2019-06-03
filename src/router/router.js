@@ -25,18 +25,18 @@ import Favorites from "../Components/FavoritesList";
 const AppRouter = () =>{
   return(
     <React.Fragment>
-      <Header />
-      <Route exact path="/" component={Login} />
-      <Route exact path="/map" component={Map} />
-      <Route exact path="/auto" component={AutoGenerateTrack} />
-      <Route exact path="/choose" component={ChooseExistingTrack} />
-      <Route exact path="/custom" component={CustomTrack} />
-      <Route exact path="/trackDetails" component={TrackDetails} />
-      <Route exact path="/homePage" component={HomePage} />
-      <Route exact path="/liveNavigation" component={LiveNavigation} />
-      <Route exact path="/post" component={PostNavigation} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/favorites" component={Favorites} />
+      {/* <Header/> */}
+      <Route exact path="/" component={Login}/>
+      <Route exact path="/map" component={Map}/>
+      <Route exact path="/auto" component={AutoGenerateTrack}/>
+      <Route exact path="/choose" component={ChooseExistingTrack}/>
+      <Route exact path="/custom" component={CustomTrack}/>
+      <Route exact path="/trackDetails" component={TrackDetails}/>
+      <Route exact path="/home" component={HomePage}/>
+      <Route exact path="/liveNavigation" component={LiveNavigation}/>
+      <Route exact path="/post" component={PostNavigation}/>
+      <Route exact path="/profile" component={Profile}/>
+      <Route exact path="/favorites" component={Favorites}/>
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />
