@@ -4,10 +4,10 @@ import axios from 'axios';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
-// import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
 import BluetoothTerminal from './BLEController';
+import { originURL } from '../globalService';
 
 
 /*
@@ -129,7 +129,7 @@ class Map extends Component {
 		this.onLoadPosition();
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${userid}`)
+    axios.get(`${originURL}user/getAccountDetails/${userid}`)
       .then(response => {
 				this.setState({userDetails: response.data});
         this.onLoadPosition();
@@ -269,7 +269,8 @@ class Map extends Component {
       }, options);
     }
     else {
-      console.warn("Geolocation API not supported.")
+      alert("Geolocation API not supported.");
+      console.warn("Geolocation API not supported.");
     }
   }
 
@@ -350,7 +351,7 @@ render() {
 
               <Marker
                   position={this.state.UpdatedPosition}
-                  icon={'/images/map-marker-icon3.png'}
+                  icon={`/images/map-marker-icon3.png`}
                   >
               </Marker>
               {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
