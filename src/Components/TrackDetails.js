@@ -235,7 +235,8 @@ class TrackDetails extends Component {
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/post`, 
-        idOfTrack: track.idOfTrack}}
+        idOfTrack: track.idOfTrack,
+        actualTime:45}}
         activeStyle={this.active} 
         style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
         className="btn btn-primary" >Post Navigator</NavLink>

@@ -26,6 +26,18 @@ export const getUpdateDefficultyLevelURL = (trackId, Star) => {
   return `${originURL}track/updateDefficultyLevel/${trackId}/${Star}`;
 }
 
+export const getUpdateTrackTimeURL = (trackId, isDisable, minues) => {
+  let disable = "";
+
+  if(isDisable)
+    disable = 'true';
+  else
+    disable = 'false';
+
+  console.log(`${originURL}track/updateTrackTime/${trackId}/${disable}/${minues}`);
+  return `${originURL}track/updateTrackTime/${trackId}/${disable}/${minues}`;
+}
+
 export const getGoogleApiKey = () => {
   return consts.GOOGLE_API_KEY;
 }

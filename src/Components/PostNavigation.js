@@ -4,7 +4,7 @@ import axios from 'axios';
 import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import {PostAsyncRequest} from '../globalService';
+import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
 
 
 
@@ -53,7 +53,7 @@ class PostNavigation extends Component {
 
   async onSubmit(e){
     e.preventDefault();
-
+    var idOfTrack = this.props.location.idOfTrack;
     // add stars:
     var checkedStar = "";
     if(this.refs.star1.checked)
@@ -66,6 +66,15 @@ class PostNavigation extends Component {
       checkedStar = "4";
     if(this.refs.star5.checked)
       checkedStar = "5";
+
+    axios.put(getUpdateTrackTimeURL(idOfTrack,this.state.userDetails.accessibility,this.props.location.actualTime))
+    .then(res => {
+        console.log("result:");
+        console.log(res);
+    })
+    .catch(error => {
+    console.error(error);
+    });
 
     axios.put(`http://localhost:3000/track/updateDefficultyLevel/${this.props.location.idOfTrack}/${checkedStar}`)
     .then(res => {

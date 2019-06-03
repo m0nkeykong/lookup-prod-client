@@ -6,7 +6,7 @@ import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import IoMap from 'react-icons/lib/io/map';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
 import axios from 'axios';
