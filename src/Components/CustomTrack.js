@@ -3,7 +3,7 @@ import Map from './Map';
 import { BeatLoader } from 'react-spinners';
 import './style/AutoGenerateTrack.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager, MarkerClusterer } from '@react-google-maps/api';
 import { getGoogleApiKey } from '../globalService';
 import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
 
@@ -23,16 +23,19 @@ class CustomTrack extends Component {
         wayPoints: [],
         travelMode: null
       },
-      markers: 0
+      markerObjects: []
     }
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onSubmit.bind(this);
-    this.renderForm = this.renderForm.bind(this);
 
-    this.getGeneratedTrack = this.getGeneratedTrack.bind(this);
-    this.getAllTracks = this.getAllTracks.bind(this);    
     this.mode = ["drawing"];
+
+    this.onMarkerMounted = element => {
+      this.setState(prevState => ({
+        markerObjects: [...prevState.markerObjects, element]
+      }))
+    };
   }
 
   componentDidMount(){
@@ -65,18 +68,6 @@ class CustomTrack extends Component {
       this.setState({ direction: [...this.state.direction, {name: value}] });
     }
     console.log(`Updated state direction object [{name: value:}] >> ${this.state.direction}`);
-  }
-
-  renderForm(){
-
-  }
-
-  getGeneratedTrack(){
-
-  }
-  
-  getAllTracks(){
-
   }
 
   // Change to class method
@@ -116,39 +107,30 @@ class CustomTrack extends Component {
   // Change to class method
   onClick = () => {
     console.log(`Entered onClick`);
-    if (this.origin.value !== '' && this.destination.value !== '') {
-        if (this.wayPoints.value !== ''){
-            var waypts = this.state.track.wayPoints;
-            waypts.push({
-                location: this.wayPoints.value,
-                stopover: true
-            });
-        } else {
-            var waypts = null;
+
+    // here, the user asked to start to build the route
+    // split all the markers by points
+    let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints));
+    
+    let origin = wayPts[0];
+    wayPts.splice(0, 1);
+
+    let ending = wayPts[wayPts.length - 1];
+    wayPts.splice(wayPts.length - 1, 1);
+
+    this.setState(
+      (prevState) => ({
+        track: {
+          startPoint: origin,
+          endPoint: ending,
+          wayPoints: wayPts,
+          travelMode: this.state.travelMode
         }
-      this.setState(
-        (prevState) => ({
-          // track: [...prevState, {
-          //   startPoint: this.origin.value,
-          //   endPoint:  this.destination.value,
-          //   wayPoints: null,
-          //   travelMode: this.state.travelMode
-          // }]
-          track: {
-            startPoint: this.origin.value,
-            endPoint:  this.destination.value,
-            wayPoints: waypts,
-            travelMode: this.state.travelMode
-          }
-        }), () => {
-          console.log(this.state.track);
-        }
-      )
-      this.setState({ loading: true });
-    }
-    else{
-      console.log(`Entered Invalid value, ORIGIN: ${this.origin.value}, DESTINATION: ${this.origin.destination}`);
-    }
+      }), () => {
+        console.log(this.state.track);
+      }
+    )
+    this.setState({ loading: true });
   }
 
   // Change to class method
@@ -308,7 +290,179 @@ class CustomTrack extends Component {
               </Row>
             </Container>
 
-            
+
+          </Card.Body>
+
+          <Card.Header> 
+            <h6> Live Navigation Map </h6> 
+          </Card.Header>
+          <Card.Body>
+            <div style={{
+              margin: "0 auto",
+              height: "400px",
+              maxWidth: "90%"
+            }}>
+
+            <LoadScript
+              id="script-loader"
+              googleMapsApiKey={getGoogleApiKey()}
+              onError={this.onLoadScriptError}
+              onLoad={this.onLoadScriptSuccess}
+              language="English"
+              version="3.36"
+              region="US"
+              libraries={this.mode}
+            >
+              <GoogleMap
+                id="circle-example"
+                mapContainerStyle={{
+                  margin: "0 auto",
+                  height: "400px",
+                  width: "100%"
+                }}
+                zoom={10}
+                center={{
+                  lat: 32.083549,
+                  lng: 34.815498
+                }}
+              >
+              <DrawingManager
+                    onLoad={drawingManager => {
+                      console.log(drawingManager);
+                      
+                      drawingManager.setOptions({
+                        drawingControlOptions: {
+                          drawingModes: ['marker']
+                        },
+                        drawingControl: true
+                      });
+                    }}
+                
+                    // handle marker addition
+                    // ******************************************************************
+                    onMarkerComplete={(marker) => {
+                      
+                      // save marker into marker array
+                      this.onMarkerMounted(marker);
+
+                      marker.setOptions({
+                        draggable: true
+                      });
+
+                      // set attributes for marker
+                      marker.set("type", "point");
+
+                      // update the marker id
+                      marker.set("id", this.state.markerObjects.length);
+
+                      // get marker id in Char
+                      marker.setOptions({
+                        label: {
+                          color: 'white',
+                          fontWeight: 'bold',
+                          fontSize: '10px',
+                          text: nextChar(marker.get("id"))
+                        }
+                      });
+
+                      // get the lng and lat as string
+                      let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+                      let Lat = objLatLng[0].toString();
+                      let Lng = objLatLng[1].toString();
+
+                      // echo to console for checks
+                      console.log("lat: " + Lat + "  Lng: " + Lng);
+                      console.log("marker " + marker.get("id") + " has been placed by user");
+
+                      // create marker lat\lng object at waypoints array
+                      let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
+                      this.setState(prevState => ({
+                        track: {
+                          startPoint: prevState.startPoint,
+                          endPoint: prevState.endPoint,
+                          wayPoints: [...prevState.track.wayPoints, mrkrwaypt],
+                          travelMode: prevState.travelMode
+                        }
+                      }));
+
+
+                      // handle marker location change
+                      // -------------------------------------------------------
+                      marker.addListener('dragend', () => {
+                        let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+                        let Lat = objLatLng[0].toString();
+                        let Lng = objLatLng[1].toString();
+                        console.log("lat: " + Lat + "   Lng: " + Lng);
+                        console.log("marker " + marker.get("id") + " has been moved to a different location");
+                        let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
+
+                        // update marker lat\lng at waypoints array
+                        let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
+                        wayPts[marker.get('id')] = mrkrwaypt;
+                        this.setState(prevState => ({
+                          track: {
+                            startPoint: prevState.startPoint,
+                            endPoint: prevState.endPoint,
+                            travelMode: prevState.travelMode,
+                            wayPoints: wayPts,
+                          },
+                        }));
+                        console.log(this.state.track.wayPoints);
+                      });
+                      // -------------------------------------------------------
+
+
+                      // handle click on marker - remove it from waypoints
+                      // -------------------------------------------------------
+                      marker.addListener('click', () => {
+                        marker.setMap(null);
+                        console.log("marker " + marker.get("id") + " has been removed by user");
+
+                        // remove marker from waypoints array
+                        let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
+
+                        // handle to iterator to fix the markers\waypoints indexes
+                        // check for bugs
+                        for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
+                          wayPts[i] = wayPts[i + 1];
+                        }
+                        wayPts.splice(wayPts.length - 1, 1);
+
+                        // update in state
+                        this.setState(prevState => ({
+                          track: {
+                            startPoint: prevState.startPoint,
+                            endPoint: prevState.endPoint,
+                            travelMode: prevState.travelMode,
+                            wayPoints: wayPts,
+                          }
+                        }));
+
+                        // this loop needs to be called in each marker - this will update its marker index letter
+                        // *** this needs to be checked regarding the letter update of waypoints *** //
+                        // this.state.markerObjects.forEach((mrkr) => {
+                        //   mrkr.setOptions({
+                        //     label: {
+                        //       color: 'white',
+                        //       fontWeight: 'bold',
+                        //       fontSize: '10px',
+                        //       text: nextChar(marker.get("id"))
+                        //     }
+                        //   });
+                        // });
+                        console.log(this.state.markerObjects);
+                      });
+                      // -------------------------------------------------------
+                    }}
+                    // ******************************************************************
+                  >
+                  </DrawingManager>
+            </GoogleMap>
+      </LoadScript>
+      </div>
+                  
+          </Card.Body>
+          <Card.Footer id="locationUpdate" className="text-muted">
             <div className='d-flex flex-wrap justify-content-md-center'>
               <div className='form-group custom-control custom-radio mr-4 justify-content-md-center' >
                 <input
@@ -334,153 +488,6 @@ class CustomTrack extends Component {
                 <label className='custom-control-label' htmlFor='BICYCLING'>Bicycling</label>
               </div>
             </div>
-
-          </Card.Body>
-
-          <Card.Header> 
-            <h6> Live Navigation Map </h6> 
-          </Card.Header>
-          <Card.Body>
-            <div style={{
-              margin: "0 auto",
-              height: "400px",
-              maxWidth: "90%"
-            }}>
-            <LoadScript
-              id="script-loader"
-              googleMapsApiKey={getGoogleApiKey()}
-              onError={this.onLoadScriptError}
-              onLoad={this.onLoadScriptSuccess}
-              language="English"
-              version="3.36"
-              region="US"
-              libraries={this.mode}
-            >
-              <GoogleMap
-                id="circle-example"
-                mapContainerStyle={{
-                  margin: "0 auto",
-                  height: "400px",
-                  width: "100%"
-                }}
-                zoom={10}
-                center={{
-                  lat: 32.083549,
-                  lng: 34.815498
-                }}
-              >
-              <DrawingManager
-                onLoad={drawingManager => {
-                  console.log(drawingManager);
-                  
-                  drawingManager.setOptions({
-                    drawingControlOptions: {
-                      drawingModes: ['marker']
-                    },
-                    drawingControl: true
-                  });
-                }}
-                // handle marker addition
-                onMarkerComplete ={(marker) => {
-                  marker.setOptions({
-                    draggable: true
-                  });
-
-                  // set attributes for marker
-                  marker.set("type", "point");
-
-                  // update the marker id
-                  marker.set("id", this.state.markers);
-                  marker.setOptions({
-                    label: nextChar(marker.get("id"))
-                  });
-
-                  this.setState(prevState => ({ markers: prevState.markers + 1}));
-                  var objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
-                  var Lat = objLatLng[0].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
-                  var Lng = objLatLng[1].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
-                  console.log("lat: " + Lat + "   Lng: " + Lng); 
-                  console.log("marker " + marker.get("id") + " has been placed by user");
-                  
-                  // create marker lat\lng object at waypoints array
-                  let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id")};
-                  this.setState(prevState => ({
-                    track: {
-                      startPoint: prevState.startPoint,
-                      endPoint: prevState.endPoint,
-                      wayPoints: [...prevState.track.wayPoints, mrkrwaypt],
-                      travelMode: prevState.travelMode
-                    }
-                  }))
-                  
-
-                  // handle marker location change
-                  marker.addListener('dragend', () => {
-                    var objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
-                    var Lat = objLatLng[0].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
-                    var Lng = objLatLng[1].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
-                    console.log("lat: " + Lat + "   Lng: " + Lng);
-                    console.log("marker " + marker.get("id") + " has been moved to a different location");
-                    let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
-                    
-                    // update marker lat\lng at waypoints array
-                    let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
-                    wayPts[marker.get('id')] = mrkrwaypt;
-                    this.setState(prevState => ({
-                      track: {
-                        startPoint: prevState.startPoint,
-                        endPoint: prevState.endPoint,
-                        travelMode: prevState.travelMode,
-                        wayPoints: wayPts,
-                      },
-                    }));
-                    console.log(this.state.track.wayPoints);
-                  });
-
-                  // handle click on marker - remove it from waypoints
-                  marker.addListener('click', () => {
-                    marker.setMap(null);
-                    console.log("marker "+ marker.get("id") + " has been removed by user");
-
-                    // remove marker from waypoints array
-                    let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
-                    
-                    // handle to iterator to fix the markers\waypoints indexes
-                    // check for bugs
-                    for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
-                      wayPts[i] = wayPts[i + 1];
-                    }
-                    wayPts.splice(wayPts.length - 1, 1);
-                    
-                    // update in state
-                    this.setState(prevState => ({
-                      track: {
-                        startPoint: prevState.startPoint,
-                        endPoint: prevState.endPoint,
-                        travelMode: prevState.travelMode,
-                        wayPoints: wayPts,
-                      },
-                    }));
-                    this.setState(prevState => ({ markers: prevState.markers - 1 }));
-
-                    // update the other markers label
-                    // something with this functions and accessing all the other markers
-                    // need to find a way to access other markers ~~map.getMarkers~~
-                    marker.set("id", this.state.markers);
-                    marker.setOptions({
-                      label: nextChar(marker.get("id"))
-                    });
-
-                    console.log(this.state.track.wayPoints);
-                  });
-                }}
-                
-              />
-            </GoogleMap>
-      </LoadScript>
-      </div>
-          </Card.Body>
-          <Card.Footer id="locationUpdate" className="text-muted">
             <button className='btn btn-primary' type='button' onClick={this.onClick}>
               Build Route
             </button>
@@ -494,7 +501,7 @@ class CustomTrack extends Component {
 // show marker label by ABC chars and not numbers
 const nextChar = (id) => {
   var char = 'A';
-  return String.fromCharCode(char.charCodeAt(0) + id);
+  return String.fromCharCode(char.charCodeAt(0) + (id) - 1);
 }
 
 export default CustomTrack;
