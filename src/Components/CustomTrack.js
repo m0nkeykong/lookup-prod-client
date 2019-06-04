@@ -22,10 +22,11 @@ class CustomTrack extends Component {
         endPoint: null,
         wayPoints: [],
         travelMode: null
-      }
+      },
+      markers: 0
     }
 
-    this.onSubmit = this.onSubmit.bind(this);   
+    this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onSubmit.bind(this);
     this.renderForm = this.renderForm.bind(this);
 
@@ -104,12 +105,6 @@ class CustomTrack extends Component {
   getOrigin = ref => {
     console.log(`Entered getOrigin ${ref}`);
     this.origin = ref
-  }
-
-  // Change to class method
-  getDestination = ref => {
-    console.log(`Entered getDestination ${ref}`);
-    this.destination = ref
   }
 
 // Change to class method
@@ -241,8 +236,6 @@ class CustomTrack extends Component {
       }
     }
   }
-  // <img alt="Profile" src={JSON.parse(sessionStorage.getItem('userDetails')).profilePicture} style={{ height: '40px', width: '40px', float: 'right', borderRadius: '50%', padding: '3px 3px 3px 3px' }}></img>
-  // <h6 style={{ fontFamily: "ABeeZee, sans-serif" }}>Hello, {JSON.parse(sessionStorage.getItem('userDetails')).name}</h6>
 
   render() {
     return (
@@ -299,26 +292,23 @@ class CustomTrack extends Component {
 
           <Card.Body>
             <Card.Title>
-              <h6> Choose Origin and Destination </h6>
+              <h6> Search </h6>
            </Card.Title>
 
             <Container>
               <Row>
                 <Col>
                   <Form.Group as={Row} controlId="ORIGIN">
-                    <Form.Control type="Text" placeholder="Origin" ref={this.getOrigin} />
+                    <Form.Control type="Text" placeholder="Enter Address..." ref={this.getOrigin} />
                   </Form.Group>
                 </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group as={Row} controlId="DESTINATION">
-                    <Form.Control type="Text" placeholder="Destination" ref={this.getDestination} />
-                  </Form.Group>
-                </Col>
+              <button className='btn btn-primary' type='button' onClick={this.onClick}>
+                Search
+            </button>
               </Row>
             </Container>
 
+            
             <div className='d-flex flex-wrap justify-content-md-center'>
               <div className='form-group custom-control custom-radio mr-4 justify-content-md-center' >
                 <input
@@ -373,23 +363,118 @@ class CustomTrack extends Component {
                   height: "400px",
                   width: "100%"
                 }}
-                //   onBoundsChanged={}
-                //   onCenterChanged={}
-                // onClick={this.onGoogleMapClick}
-                //   onDblClick={}
-                //   options={}
-                // Max Zoom: 0 to 18
                 zoom={10}
                 center={{
-                  lat: -3.745,
-                  lng: -38.523
+                  lat: 32.083549,
+                  lng: 34.815498
                 }}
               >
               <DrawingManager
                 onLoad={drawingManager => {
-                  console.log(drawingManager)
+                  console.log(drawingManager);
+                  
+                  drawingManager.setOptions({
+                    drawingControlOptions: {
+                      drawingModes: ['marker']
+                    },
+                    drawingControl: true
+                  });
                 }}
-                onPolygonComplete={(polygon) => console.log({ polygon })}
+                // handle marker addition
+                onMarkerComplete ={(marker) => {
+                  marker.setOptions({
+                    draggable: true
+                  });
+
+                  // set attributes for marker
+                  marker.set("type", "point");
+
+                  // update the marker id
+                  marker.set("id", this.state.markers);
+                  marker.setOptions({
+                    label: nextChar(marker.get("id"))
+                  });
+
+                  this.setState(prevState => ({ markers: prevState.markers + 1}));
+                  var objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+                  var Lat = objLatLng[0].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
+                  var Lng = objLatLng[1].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
+                  console.log("lat: " + Lat + "   Lng: " + Lng); 
+                  console.log("marker " + marker.get("id") + " has been placed by user");
+                  
+                  // create marker lat\lng object at waypoints array
+                  let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id")};
+                  this.setState(prevState => ({
+                    track: {
+                      startPoint: prevState.startPoint,
+                      endPoint: prevState.endPoint,
+                      wayPoints: [...prevState.track.wayPoints, mrkrwaypt],
+                      travelMode: prevState.travelMode
+                    }
+                  }))
+                  
+
+                  // handle marker location change
+                  marker.addListener('dragend', () => {
+                    var objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+                    var Lat = objLatLng[0].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
+                    var Lng = objLatLng[1].toString().replace(/(\.\d{1,7})\d*$/, "$1");  // Set 7 Digits after comma;
+                    console.log("lat: " + Lat + "   Lng: " + Lng);
+                    console.log("marker " + marker.get("id") + " has been moved to a different location");
+                    let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
+                    
+                    // update marker lat\lng at waypoints array
+                    let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
+                    wayPts[marker.get('id')] = mrkrwaypt;
+                    this.setState(prevState => ({
+                      track: {
+                        startPoint: prevState.startPoint,
+                        endPoint: prevState.endPoint,
+                        travelMode: prevState.travelMode,
+                        wayPoints: wayPts,
+                      },
+                    }));
+                    console.log(this.state.track.wayPoints);
+                  });
+
+                  // handle click on marker - remove it from waypoints
+                  marker.addListener('click', () => {
+                    marker.setMap(null);
+                    console.log("marker "+ marker.get("id") + " has been removed by user");
+
+                    // remove marker from waypoints array
+                    let wayPts = JSON.parse(JSON.stringify(this.state.track.wayPoints))
+                    
+                    // handle to iterator to fix the markers\waypoints indexes
+                    // check for bugs
+                    for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
+                      wayPts[i] = wayPts[i + 1];
+                    }
+                    wayPts.splice(wayPts.length - 1, 1);
+                    
+                    // update in state
+                    this.setState(prevState => ({
+                      track: {
+                        startPoint: prevState.startPoint,
+                        endPoint: prevState.endPoint,
+                        travelMode: prevState.travelMode,
+                        wayPoints: wayPts,
+                      },
+                    }));
+                    this.setState(prevState => ({ markers: prevState.markers - 1 }));
+
+                    // update the other markers label
+                    // something with this functions and accessing all the other markers
+                    // need to find a way to access other markers ~~map.getMarkers~~
+                    marker.set("id", this.state.markers);
+                    marker.setOptions({
+                      label: nextChar(marker.get("id"))
+                    });
+
+                    console.log(this.state.track.wayPoints);
+                  });
+                }}
+                
               />
             </GoogleMap>
       </LoadScript>
@@ -405,8 +490,11 @@ class CustomTrack extends Component {
     );
   }
 }
-// Save - Save (DB) track without navigating
-// Fast Travel - Navigate without saving ::: Warning Modal
-// Save and Navigate - Save (DB) and Immidiatly start Navigation
+
+// show marker label by ABC chars and not numbers
+const nextChar = (id) => {
+  var char = 'A';
+  return String.fromCharCode(char.charCodeAt(0) + id);
+}
 
 export default CustomTrack;
