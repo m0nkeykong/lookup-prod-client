@@ -209,25 +209,23 @@ class TrackDetails extends Component {
 
   
   buildTrack(track){
-    // const trackObj = {
-    //   description: track.description,
-    //   difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
-    //   disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
+    const trackObj = {
+      description: track.description,
+      difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
+      disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
+      endPoint: track.endPoint.city,
+      endPointObj: track.endPoint,
+      // estimatedDuration: track.estimatedDuration,
+      nonDisabledTime: track.nonDisabledTime !== '' ? track.nonDisabledTime : {},
+      startPoint: track.startPoint.city,
+      startPointObj: track.startPoint,
+      title: track.title,
+      travelMode: track.travelMode,
+      wayPoints: track.wayPoints !== '' ? track.wayPoints : [],
+      changesDuringTrack: false
+    };
 
-
-    //   startPoint: startPointId,
-    //   endPoint: endPointId,
-    //   wayPoints: track.wayPoints !== '' ? [...track.wayPoints] : [],
-    //   travelMode: track.travelMode,
-    //   title: track.title,
-    //   distance: track.distance,
-    //   rating: track.rating,
-    //   nonDisabledTime: track.nonDisabledTime !== '' ? track.nonDisabledTime : {},
-    //   // estimatedDuration: track.estimatedDuration,
-    //   changesDuringTrack: false,
-    // };
-
-    return track;
+    return trackObj;
   }
 
   getTimeOfTrack(disabledTime,nonDisabledTime){
@@ -321,7 +319,7 @@ class TrackDetails extends Component {
           {console.log("AAALLLAA:")}
           {console.log(track)}
           
-            <Map track={track}></Map>
+            <Map track={this.buildTrack(track)}></Map>
           </div>
         </div>
       </div>

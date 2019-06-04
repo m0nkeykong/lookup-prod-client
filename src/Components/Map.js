@@ -285,7 +285,8 @@ class Map extends Component {
 
 getWayPoints(wayPoints){
   let html=[];
-  console.log(`wayPoints: ${wayPoints}`);
+  console.log("wayPoints:");
+  console.log(wayPoints);
 
   if(wayPoints.length != 0){
     for (let i = 0; i < wayPoints.length; i++) {
@@ -305,6 +306,8 @@ render() {
   // const {loading} = true;
   {console.log("TTTTTTTTTTTT")}
   {console.log(this.props.track)}
+  {console.log(this.props.track.wayPoints)}
+  
     return (
      <div style={{   
           margin: "0 auto",  
@@ -355,70 +358,45 @@ render() {
                   icon={`/images/map-marker-icon3.png`}
                   >
               </Marker>
-              {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
-              {typeof this.props.track.startPoint.city !== "undefined" ? 
-                  (
-                      (
-                        this.state.response === null
-                      ) && (
-                        <DirectionsService
-                        options={{
-                          origin: this.props.track.startPoint.city,
-                          destination: this.props.track.endPoint.city,
-                          waypoints: this.getWayPoints(this.props.track.wayPoints),
-                          travelMode: this.props.track.travelMode.toUpperCase(),
-                          drivingOptions: {
-                            departureTime: new Date(Date.now()),
-                            trafficModel: 'bestguess' 
-                          },
-                          optimizeWaypoints: true
-                        }}
-                          callback={this.directionsCallback}
-                        />
-                      )
-                  )
-                  :
-                  (
-                      (
-                        this.state.response === null
-                      ) && (
-                        <DirectionsService
-                        options={{
-                      		// origin: LatLng | String | google.maps.Place,
-                          // destination: LatLng | String | google.maps.Place,
-                          // travelMode: TravelMode,
-                          // transitOptions: TransitOptions,
-                          // drivingOptions: DrivingOptions,
-                          // unitSystem: UnitSystem,
-                          // waypoints[]: DirectionsWaypoint,
-                          // optimizeWaypoints: Boolean,
-                          // provideRouteAlternatives: Boolean,
-                          avoidFerries: true,
-                          avoidHighways: true,
-                          avoidTolls: true,
-                          // region: String
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                          waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
-                          // travelMode: this.props.track.type.toUpperCase() }}
-                          // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                          // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                          origin: this.props.track.startPoint,
-                          destination: this.props.track.endPoint,
-                          // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
-                          // travelMode: this.props.track.type.toUpperCase() }}
-                          travelMode: this.props.track.travelMode,
-                          drivingOptions: {
-                            departureTime: new Date(Date.now()),
-                            trafficModel: 'bestguess' 
-                          },
-                          optimizeWaypoints: true
-                        }}
-                          callback={this.directionsCallback}
-                        />
-                      )
-                  )
-                }
+              (
+                this.state.response === null
+              ) && (
+                <DirectionsService
+                options={{
+                  // origin: LatLng | String | google.maps.Place,
+                  // destination: LatLng | String | google.maps.Place,
+                  // travelMode: TravelMode,
+                  // transitOptions: TransitOptions,
+                  // drivingOptions: DrivingOptions,
+                  // unitSystem: UnitSystem,
+                  // waypoints[]: DirectionsWaypoint,
+                  // optimizeWaypoints: Boolean,
+                  // provideRouteAlternatives: Boolean,
+                  avoidFerries: true,
+                  avoidHighways: true,
+                  avoidTolls: true,
+                  // region: String
+                  // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
+                  // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
+                  // waypoints: this.props.track.wayPoints ? this.getWayPoints(this.props.track.wayPoints) : null,
+                  waypoints: this.getWayPoints(this.props.track.wayPoints),
+                  // travelMode: this.props.track.type.toUpperCase() }}
+                  // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                  // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                  origin: this.props.track.startPoint,
+                  destination: this.props.track.endPoint,
+                  // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                  // travelMode: this.props.track.type.toUpperCase() }}
+                  travelMode: this.props.track.travelMode.toUpperCase(),
+                  drivingOptions: {
+                    departureTime: new Date(Date.now()),
+                    trafficModel: 'bestguess' 
+                  },
+                  optimizeWaypoints: true
+                }}
+                  callback={this.directionsCallback}
+                />
+              )
                 
                 {
                   this.state.response != null &&
