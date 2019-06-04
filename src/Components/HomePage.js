@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
+import Menu from './Menu';
 
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Card, Navbar, NavDropdown, Nav, Breadcrumb, Container, Row, Col } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
+import './style/HomePage.css'
 
-class IntermediatePage extends Component {
+class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,73 +38,77 @@ class IntermediatePage extends Component {
     
     return (
       <div>
+        {/* Page Menu */}
+        <Menu currentPage={"Home"}> </Menu>
 
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
+        {/* Page BreadCrumbs */}
+        <Breadcrumb>
+          <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
+          <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        </Breadcrumb>
 
-            <Navbar.Brand href="/profile" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-            <Navbar.Brand href="/profile" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav" >
-              <Nav className="mr-auto">
-                <Nav.Link href="/homePage">Home</Nav.Link>
-                <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
-                <NavDropdown title="Create Track" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
-                  <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link href="/choose">Search Track</Nav.Link>
-                <Nav.Link href="/about">About</Nav.Link>
-                <Nav.Link href="/contactUs">Contact us</Nav.Link>
-                <Nav.Link href="/">Disconnect</Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
-          
-          <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
-          <NavLink to=
-          // button
-          {{pathname: `${process.env.PUBLIC_URL}/auto`}}
-            activeStyle={this.active} 
-            style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
-            className="btn btn-primary" >Auto Generate</NavLink>
-        </div>
-
-
-        <div className="col-10" style={{margin:'auto', textAlign:'center'}}>
-        <NavLink to=
-        // button
-        {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-          activeStyle={this.active} 
-          style={{marginTop:'30px',borderRadius:'10px', width:'60%'}}
-          className="btn btn-primary" >Choose Existing</NavLink>
-      </div>
+        <Container>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+              <button type="button" className="btn btn-primary btn-circle btn-xl">
+                <NavLink 
+                  to={{ pathname: `${process.env.PUBLIC_URL}/profile` }}
+                  style={{ color: 'white', textDecoration: 'none'}}>
+                  Profile <br/> Settings
+                </NavLink>
+              </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/auto` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Auto <br/> Generate
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/custom` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Custom <br/> Generate
+            </NavLink>
+          </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/choose` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Choose <br/> Existing
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/myTracks` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              My <br/> Tracks
+            </NavLink>
+          </button>
+            </Col>
+            <Col style={{ textAlign: 'center', marginTop: '15px' }}>
+            <button type="button" className="btn btn-primary btn-circle btn-xl">
+            <NavLink 
+              to={{ pathname: `${process.env.PUBLIC_URL}/favorites` }}
+              style={{ color: 'white', textDecoration: 'none'}}>
+              Favorite <br/> Tracks
+            </NavLink>
+          </button>
+            </Col>
+          </Row>
+        </Container>
 
       </div>
     );
@@ -110,4 +116,4 @@ class IntermediatePage extends Component {
 }
 
 
-export default IntermediatePage;
+export default HomePage;

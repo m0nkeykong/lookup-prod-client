@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {getTrackByIdURL, PostAsyncRequest} from '../globalService';
+import {getTrackByIdURL} from '../globalService';
 import TamplateComponent from './TemplateComponent';
-import { NavLink , Link} from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import axios from 'axios';
+import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -20,8 +21,7 @@ class TrackDetails extends Component {
       endPoint: [],
       wayPoints: [],
       travelMode: [],
-      comments: [],
-      userDetails: [],
+      reports: [],
       updated: false
     }
 
@@ -29,8 +29,8 @@ class TrackDetails extends Component {
     this.addTrack = this.addTrack.bind(this)
     this.viewTrack = this.viewTrack.bind(this)
     this.updateTrack = this.updateTrack.bind(this)
-    this.getComments = this.getComments.bind(this)
-    this.onSubmitAddComment = this.onSubmitAddComment.bind(this)
+    this.getReports = this.getReports.bind(this)
+    // this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.initialState = this.initialState.bind(this)
 
@@ -42,6 +42,19 @@ class TrackDetails extends Component {
 
     // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
+  // user session
+  this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+  console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+
+  // Get the user details from database
+  axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    .then(userResponse => {
+      this.setState({ userDetails: userResponse.data, loading: false });
+      console.log(userResponse.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   getTrackById(trackId){
@@ -52,13 +65,13 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.comments, data.userDetails,
+      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
     })
 
   }
 
-  addTrack(_id,_title,_type, _comments,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -67,12 +80,13 @@ class TrackDetails extends Component {
           idOfTrack: _id,
           title: _title,
           travelMode: _type,
-          comments: _comments,
+          reports: _reports,
           userDetails: _userDetails,
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
-          description: _description
+          description: _description,
+          difficultyLevel: _difficultyLevel
       }]
     }))
   }
@@ -85,24 +99,20 @@ class TrackDetails extends Component {
     }))
   }
 
-  getComments(comments, userDetails){
+  getReports(reports, userDetails){
     let html=[];
-    console.log(comments);
+    console.log(reports);
     // Outer loop to create parent
-    for (let i = 0; i < comments.length; i++) {
-      // html.push(<p>	&#8227; &#9;{comments[i].comment}</p>)
-
+    for (let i = 0; i < reports.length; i++) {
       html.push(
         <ul class="media-list">
           <li class="media">
-            <a class="pull-left" href="#">
               <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
-            </a>
             <div class="media-body">
               <div class="well well-lg">
                   <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
-                  <p class="media-comment">
-                    {comments[i].comment}
+                  <p class="media-report">
+                    {reports[i].report}
                   </p>
               </div>              
             </div>
@@ -137,7 +147,7 @@ class TrackDetails extends Component {
     let html=[];
     console.log(`wayPoints: ${wayPoints}`);
 
-    if(wayPoints.length != 0){
+    if(wayPoints.length !== 0){
       for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
         html.push(<p>	&#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
@@ -148,7 +158,7 @@ class TrackDetails extends Component {
   }
 
   getIconType(type){
-    if(type == 'Walking')
+    if(type === 'Walking')
       return <MdDirectionsWalk size={20} color="black" />;
     else
       return <IoAndroidBicycle size={20} color="black" />;
@@ -159,25 +169,40 @@ class TrackDetails extends Component {
     this.setState(prevState => ({tracks: []}))
   }
 
-  async onSubmitAddComment(e){
-    e.preventDefault();
+  // async onSubmitAddReport(e){
+  //   e.preventDefault();
 
-     // TODO: how to get user Id here
-    let data1 = {userId:"5c978235efd9d315e8d7a0d9", comment: `${this.state.addComment}` };
-    var commentId = await PostAsyncRequest('comments/insertComment', data1);
+  //    // TODO: how to get user Id here
+  //   let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
+  //   var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
-     let data2 = {trackId:`${this.props.location.idOfTrack}`, commentId: `${commentId}` };
-     console.log("DATA2:");
-     console.log(data2);
-    var commentId = await PostAsyncRequest('track/addCommentToTrack', data2);
+  //    let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
+  //    console.log("DATA2:");
+  //    console.log(data2);
+  //   var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
     
-    this.initialState();
-    this.getTrackById(this.props.location.idOfTrack);
-  }
+  //   this.initialState();
+  //   this.getTrackById(this.props.location.idOfTrack);
+  // }
 
   handleChange(event){
     this.setState({ [event.target.name]: event.target.value})
   }
+
+  getStarsForDifficultyLevel(diffLever){
+    let html=[];
+    let limitOfStars = 5;
+    let diffNumber = Math.round(diffLever);
+
+    for (let i = 0; i < limitOfStars; i++) {
+      if(i < diffNumber)
+        html.push(<span class="fa fa-star colorStar"></span>)
+      else
+        html.push(<span class="fa fa-star"></span>)
+
+    }
+    return html;
+  } 
 
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
@@ -196,7 +221,7 @@ class TrackDetails extends Component {
       </div>
 
 
-      <div className="col-10" style={{margin:'auto'}}>
+      <div className="col-12" style={{margin:'auto'}}>
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
         {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
@@ -206,46 +231,36 @@ class TrackDetails extends Component {
           className="btn btn-primary" >Start Navigator</NavLink>
       </div>
 
-          <div className="col-10 p-md-4" style={{ margin:`0 auto`,width: 18 + 'rem'}}>
+      <div className="col-12" style={{margin:'auto'}}>
+      <NavLink to=
+      //navigate to TrackDetails via TemplateComponent with the params
+      {{pathname: `${process.env.PUBLIC_URL}/post`, 
+        idOfTrack: track.idOfTrack}}
+        activeStyle={this.active} 
+        style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+        className="btn btn-primary" >Post Navigator</NavLink>
+    </div>
+
+          <div className="col-12 px-4">
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
+            <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+
 
               <div class="row">
-                <div class="col-sm-10 col-sm-offset-1" id="logout">
+                <div class="col-sm-12 col-md-5" id="logout" style={{ margin:`20px auto`}}>
                     
-                    <div class="comment-tabs">
+                    <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
+                            <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Reports</h4></a></li>
                         </ul>            
                         <div class="tab-content">
-                            <div class="tab-pane active" id="comments-logout">  
-                              {this.getComments(track.comments,track.userDetails)}
+                            <div class="tab-pane active" id="reports-logout">  
+                              {this.getReports(track.reports,track.userDetails)}
                             </div>  
-                            
-
-                            <div class="col-sm-10 col-sm-offset-1 pt-2"> 
-                            <ul class="nav nav-tabs" role="tablist">
-                              <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="addComment text-capitalize">Add comment</h4></a></li>
-                            </ul> 
-                
-                            <div class="tab-pane" id="add-comment">
-                              <form onSubmit={this.onSubmitAddComment}> 
-                                  <div class="form-group">
-                                      <div class="col-sm-10">
-                                        <textarea className="form-control textareaSize" name="addComment" onChange={this.handleChange}  value={this.state.addComment} rows="5"></textarea>
-                                      </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <div class="col-sm-offset-2 col-sm-10">                    
-                                          <button className="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Submit comment</button>
-                                      </div>
-                                  </div>            
-                              </form>
-                            </div>
-                          </div>
 
                         </div>
                     </div>
@@ -302,16 +317,41 @@ class TrackDetails extends Component {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav" >
                 <Nav className="mr-auto">
-                  <Nav.Link href="/homePage">Home</Nav.Link>
-                  <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Create Track" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
-                    <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="/choose">Search Track</Nav.Link>
-                  <Nav.Link href="/about">About</Nav.Link>
-                  <Nav.Link href="/contactUs">Contact us</Nav.Link>
-                  <Nav.Link href="/">Disconnect</Nav.Link>
+                <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/profile`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >View Profile</NavLink>
+
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Favorite Tracks</NavLink>
+
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/auto`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Generate Auto Track</NavLink>
+                    
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/choose`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Choose Existing Tracks</NavLink>
+
+                  <NavLink to=
+                  //navigate to TrackDetails via TemplateComponent with the params
+                  {{pathname: `${process.env.PUBLIC_URL}/custom`}}
+                    activeStyle={this.active} 
+                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                    >Custom Made Track</NavLink>
+
                 </Nav>
               </Navbar.Collapse>
 

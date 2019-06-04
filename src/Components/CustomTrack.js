@@ -3,9 +3,10 @@ import Map from './Map';
 import { BeatLoader } from 'react-spinners';
 import './style/AutoGenerateTrack.css';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager, MarkerClusterer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DrawingManager } from '@react-google-maps/api';
 import { getGoogleApiKey } from '../globalService';
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Form, Col, Row, Container, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { NavLink } from "react-router-dom";
 
 class CustomTrack extends Component {
   constructor(props) {
@@ -173,7 +174,7 @@ class CustomTrack extends Component {
           // @TODO: Validate unique title
           title: `User route ` + Math.random(9999999999),
           // @TODO: Let the user insert this value from form
-          comment: `First auto generated track`,
+          report: `First auto generated track`,
           // @TODO: Let the user insert this value from form
           rating: Math.random(10),
           // @TODO: Let the user insert this value from form
@@ -254,19 +255,44 @@ class CustomTrack extends Component {
               </Navbar.Brand>
 
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav" >
-                <Nav className="mr-auto">
-                  <Nav.Link href="/homePage">Home</Nav.Link>
-                  <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
-                  <NavDropdown title="Create Track" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
-                    <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
-                  </NavDropdown>
-                  <Nav.Link href="/choose">Search Track</Nav.Link>
-                  <Nav.Link href="/about">About</Nav.Link>
-                  <Nav.Link href="/contactUs">Contact us</Nav.Link>
-                  <Nav.Link href="/">Disconnect</Nav.Link>
-                </Nav>
+              <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="mr-auto">
+              <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/profile`}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  >View Profile</NavLink>
+
+                <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  >Favorite Tracks</NavLink>
+
+                <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/auto`}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  >Generate Auto Track</NavLink>
+                  
+                <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/choose`}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  >Choose Existing Tracks</NavLink>
+
+                <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/custom`}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  >Custom Made Track</NavLink>
+
+              </Nav>
               </Navbar.Collapse>
 
             </Navbar>

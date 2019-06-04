@@ -4,11 +4,17 @@ import axios from 'axios';
 import Geocode from 'react-geocode';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api';
-import { Button, Card, Form, Navbar, NavDropdown, Nav, InputGroup, Modal, ButtonToolbar, ProgressBar, Row, Col, ListGroup} from 'react-bootstrap';
+import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup} from 'react-bootstrap';
 import IoIosLocation from 'react-icons/lib/io/ios-location';
+import { fetchDataHandleError, originURL } from '../globalService';
+
 import LiveNavigation from './LiveNavigation';
 import {getGoogleApiKey} from '../globalService';
 import './style/AutoGenerateTrack.css';
+import Menu from './Menu';
+
+var EventEmitter = require('events');
+var ee = new EventEmitter();
 
 class AutoGenerateTrack extends Component {
   constructor(props) {
@@ -18,6 +24,7 @@ class AutoGenerateTrack extends Component {
       directionsResponse: null,
       userDetails: [],
       isGenerated: false,
+      isCustomGenerated: false,
       loading: true,
       startLiveNavigation: false,
 
@@ -27,17 +34,22 @@ class AutoGenerateTrack extends Component {
       avoidFerries: true,
       avoidHighways: true,
       track: {
+        startPointObj: {},
+        endPointObj: {},
+
         startPoint: '',
         endPoint: '',
         wayPoints: '',
         travelMode: 'WALKING',
         description: '',
         title: '',
-        estimatedDuration: '',
-        actualDuration: '',
-        difficultyLevel: '',
+        distance: '',
         rating: '',
-        changesDuringTrack: ''
+        disabledTime: '',
+        nonDisabledTime: '',
+
+        estimatedDuration: '',
+        difficultyLevel: '',
       }
     }
 
@@ -51,12 +63,11 @@ class AutoGenerateTrack extends Component {
 
     this.showGeneratedTrackModal = this.showGeneratedTrackModal.bind(this);
     this.showTrackForm = this.showTrackForm.bind(this);
-    this.showMenu = this.showMenu.bind(this);
+
+    this.setPoints = this.setPoints.bind(this);
 
     this.getGeneratedTrackDetails = this.getGeneratedTrackDetails.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
-
-    this.startLiveNavigation = this.startLiveNavigation.bind(this);
   }
 
   componentDidMount(){
@@ -64,7 +75,7 @@ class AutoGenerateTrack extends Component {
 		console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
-    axios.get(`https://db.lookup.band/user/getAccountDetails/${this.userid}`)
+    axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
 				this.setState({ userDetails: userResponse.data, loading: false, userResponse: true});
         console.log(userResponse.data);
@@ -74,10 +85,11 @@ class AutoGenerateTrack extends Component {
       });
   }
 
+  // Handle the input change
   handleInputChange(e){
     e.persist();
     console.log(e);
-    e.target.value !== '' &&
+    if(e.target.value !== ''){
       this.setState(
         (prevState) => ({
           ...prevState,
@@ -86,8 +98,20 @@ class AutoGenerateTrack extends Component {
           console.log(this.state.track);
         }
       )
+    }
+    else{
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          track: {...prevState.track, [e.target.name]: ''},
+        }), () => {
+          console.log(this.state.track);
+        }
+      )
+    }
   }
 
+  // Handle the radio change
   handleRadioChange(e){
     e.persist();
     e.target.checked &&
@@ -99,6 +123,7 @@ class AutoGenerateTrack extends Component {
       )
   }
 
+  // Getting the current location for input button
   getCurrentLocation(){
     console.log("Entered <AutoGenerateTrack> getCurrentLocation()");
 
@@ -113,7 +138,9 @@ class AutoGenerateTrack extends Component {
         Geocode.setApiKey(getGoogleApiKey());
         Geocode.fromLatLng(pos.coords.latitude, pos.coords.longitude).then(
           response => {
+
             const address = response.results[0].formatted_address;
+            console.log(address);
             this.setState(
               (prevState) => ({
                 ...prevState,
@@ -139,6 +166,7 @@ class AutoGenerateTrack extends Component {
     }
   }
 
+  // Handloing the form submit and continure to live navigation
   handleSubmit(e){
     e.persist();
     e.preventDefault();
@@ -147,126 +175,42 @@ class AutoGenerateTrack extends Component {
     this.handleShowModal();
   }
 
+  // Handle the close modal request
   handleCloseModal() {
     this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
   }
 
+  // Handle the show modal event
   handleShowModal() {
     this.setState({ showModal: true });
   }
 
+  // Handle the discard modal event
   handleResetModal() {
     this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
     this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '' } })
   }
 
-  // Change to class method
-  directionsCallback = response => {
-    console.log(`Entered directionsCallback, RESPONSE: `);
-    console.log(response);
-    if (response !== null) {
-      if (response.status === 'OK') {
-        const {leg} = response.routes[0].legs[0];
-        
-        // Set startPoint to Point Object and get its _id
-        axios.post(`https://db.lookup.band/point/insertPoint`, {
-          ...leg.start_location
-        })
-        .then(startPointResponse => {
-          console.log("startPoint fetched: " + startPointResponse.data);
-          this.startPointId = startPointResponse.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-        
-        // Set endPoint to Point Object and get its _id
-        axios.post(`https://db.lookup.band/point/insertPoint`, {
-          ...leg.end_location
-        })
-        .then(endPointResponse => {
-          console.log("endPoint fetched: " + endPointResponse.data);
-          this.endPointId = endPointResponse.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-        
-        const trackObj = {
-          startPoint: this.startPoint,
-          endPoint: this.endPoint,
-          middlePoint: this.wayPoints.length > 0 ? {...this.wayPoints} : [],
-          type: this.state.travelMode,
-          // @TODO: Validate unique title
-          title: `User route ` + Math.random(9999999999),
-          // @TODO: Let the user insert this value from form
-          comment: `First auto generated track`,
-          // @TODO: Let the user insert this value from form
-          rating: Math.random(10),
-          // @TODO: Let the user insert this value from form
-          changesDuringTrack: false,
-          // @TODO: Let the user insert this value from form
-          diffucultyLevel: Math.random(10)
-        }
-
-        axios.post(`https://db.lookup.band/track/insertTrack`, {
-          trackObj
-        })
-        .then(createdTrackResponse => {
-          this.createdTrack = createdTrackResponse.data;
-          // @TODO: Store in session and state
-          console.log("insertTrack fetched: " + createdTrackResponse.data);
-          
-        })
-        .catch(error => {
-          console.error(error);
-        });
-        
-        axios.put(`https://db.lookup.band/addTrackRecord/${this.userid}`, 
-        {trackid: this.createdTrack._id})
-        .then(addedTrackRecord => {
-          if(addedTrackRecord.data.status === 200){
-            console.log(`Track ${this.trackid} successfully added to User ${this.userid} track records list`);
-          }
-          else{
-            console.error(`There was a problem to add ${this.trackid} to User ${this.userid} track record list`);
-          }
-
-        })
-        .catch( error => {
-          console.error(error);
-        })
-
-        this.setState( () => ({ response }));
-        
-      } else {
-        console.error(`Resnpose = null: `);
-        console.log(response);
-      }
-    }
-  }
-
-  startLiveNavigation(){
-
-  }
-
+  // Generated track filled form
   getGeneratedTrackDetails(){
     console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getGeneratedTrackDetails()");
     const response = this.state.directionsResponse;
-    const leg = response.routes[0].legs[0];
+    var leg = ''; 
 		if (response !== null) {
       if (response.status === 'OK') {
+        leg = response.routes[0].legs[0];
+        console.log(leg);
         return(
           <div>
             <div>
               <ListGroup variant="flush">
-                <ListGroup.Item> <span> Track Title: </span> {this.state.track.title} </ListGroup.Item>
-                <ListGroup.Item> <span> Description: </span> {this.state.track.description} </ListGroup.Item>
-                <ListGroup.Item> <span> Travel Mode: </span> {this.state.track.travelMode} </ListGroup.Item>
-                <ListGroup.Item> <span> From: </span> {leg.start_address} </ListGroup.Item>
-                <ListGroup.Item> <span> To: </span> {leg.end_address} </ListGroup.Item>
-                <ListGroup.Item> <span> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
-                <ListGroup.Item> <span> Estimated Duration: </span> {leg.duration.text} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Track Title: </span> {this.state.track.title} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Description: </span> {this.state.track.description} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Travel Mode: </span> {this.state.track.travelMode} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> From: </span> {leg.start_address} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> To: </span> {leg.end_address} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {leg.duration.text} </ListGroup.Item>
              </ListGroup>
               
               {/*
@@ -281,13 +225,16 @@ class AutoGenerateTrack extends Component {
       }
       else {
         console.error(`Response From Directions API Was Returned With Status ${response.status}`);
+        return( <div/> );
       }
     }
     else{
       console.error('Response From Directions API is null');
+      return( <div/> );
     }   
   }
 
+  // Show generated track details
   showGeneratedTrackModal(){
     return(
       <div>
@@ -319,31 +266,23 @@ class AutoGenerateTrack extends Component {
           
           </Modal.Body>
 
-          <Modal.Footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Row>
-            <Col>
-        <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
-          <Button variant="primary" onClick={this.startLiveNavigation}>Save & Navigate</Button>
-        </NavLink>            
-             
-            </Col>
-            <Col>
-              <Button variant="secondary" onClick={this.handleResetModal}>Reset</Button>
-            </Col>
-            <Col xs lg="2">
-              <Button variant="dark" onClick={this.handleCloseModal}>Close</Button>
-            </Col>
-          </Row>
-            
-            
-            
+          <Modal.Footer>
+              <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
+                <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
+              </NavLink>            
+
+              <Button variant="secondary" onClick={this.handleCloseModal}>Save</Button>
+            {/* @TODO: Save only button */}
+              <Button variant="dark" onClick={this.handleResetModal}>Discard</Button>
           </Modal.Footer>
+
         </Modal>
        </ButtonToolbar>      
       </div>
     )
   }
 
+  // Showing track form
   showTrackForm(){
     return(
       <Card.Body>
@@ -354,14 +293,16 @@ class AutoGenerateTrack extends Component {
 
         <InputGroup className="mb-3">
           {/*<Form.Label>Origin</Form.Label>*/}
+          {/* @TODO: Let the user choose location from auto complete input */}
           <InputGroup.Prepend>
             <Button title="Get current location" onClick={ this.getCurrentLocation }> <IoIosLocation/> </Button>
           </InputGroup.Prepend>
           <Form.Control required type="text" placeholder="Enter Origin" value={this.state.track.startPoint} name="startPoint" onChange={e => {this.handleInputChange(e)}} ref={(input)=> this.myinput = input}/>
         </InputGroup>
-      
+
         <Form.Group controlId="formDestination">
           {/*<Form.Label>Destination</Form.Label>*/}
+          {/* @TODO: Let the user choose location from auto complete input */}
           <Form.Control required type="text" placeholder="Enter Destination" value={this.state.track.endPoint} name="endPoint" onChange={this.handleInputChange}/>
         </Form.Group>
 
@@ -382,6 +323,7 @@ class AutoGenerateTrack extends Component {
           <Form.Control as="textarea" required type="text" placeholder="Description" value={this.state.track.description} name="description" onChange={this.handleInputChange}/>
         </Form.Group>
 
+        {/* @TODO: Validate if title is unique before continue */}
         <Form.Group controlId="formTitle">
           <Form.Control required type="text" placeholder="Track Title" name="title" value={this.state.track.title} onChange={this.handleInputChange}/>
           <Form.Text className="text-muted" style={{float: 'left'}}>
@@ -408,59 +350,6 @@ class AutoGenerateTrack extends Component {
     )
   }
 
-  showMenu(){
-    return(
-      <div>
-        <Card.Header>
-        <Navbar collapseOnSelect expand="lg">
-
-          <Navbar.Brand href="/profile" style={{ float: 'left' }}>
-            {this.state.userDetails.profilePicture ?
-              (
-                <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-              )
-              :
-              (
-                <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-              )
-            }
-          </Navbar.Brand>
-
-          <Navbar.Brand href="/profile" style={{ float: 'center' }}>
-            {this.state.userDetails.name ?
-              (
-                <div>
-                  <p>{this.state.userDetails.name}</p>
-                </div>
-              )
-              :
-              (
-                <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-              )
-            }
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav" >
-              <Nav className="mr-auto">
-                <Nav.Link href="/homePage">Home</Nav.Link>
-                <Nav.Link href="/favorites">Favorite Tracks</Nav.Link>
-                <NavDropdown title="Create Track" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="/auto">Fast Track</NavDropdown.Item>
-                  <NavDropdown.Item href="/custom">Custom Track</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link href="/choose">Search Track</Nav.Link>
-                <Nav.Link href="/about">About</Nav.Link>
-                <Nav.Link href="/contactUs">Contact us</Nav.Link>
-                <Nav.Link href="/">Disconnect</Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-
-        </Card.Header>
-      </div>
-    )
-  }
-
   directionsRequest(){
     return(
       <div>
@@ -469,9 +358,9 @@ class AutoGenerateTrack extends Component {
         googleMapsApiKey={getGoogleApiKey()}
         onError={this.onLoadScriptError}
         onLoad={this.onLoadScriptSuccess}
-        language="English"
+        language="en"
         version="3.36"
-        region="US"
+        region="us"
         >
 
           <div className="map-container">
@@ -494,7 +383,11 @@ class AutoGenerateTrack extends Component {
                   },
                   optimizeWaypoints: true
                 }}
-                callback={(response) => {this.setState({ directionsResponse: response })}}
+                callback={(response) => {
+                  this.setState({ directionsResponse: response })
+                  this.setPoints();
+                }
+                }
               >
               </DirectionsService>
               }
@@ -508,6 +401,91 @@ class AutoGenerateTrack extends Component {
     )
   }
 
+  setPoints(){
+    const response = this.state.directionsResponse;
+    if (response !== null) {
+      if (response.status === 'OK') {
+        const leg = response.routes[0].legs[0];
+    
+        let startPoint = leg.start_address;
+        let startPointArray = startPoint.split(', ', 3);
+        let endPoint = leg.end_address;
+        let endPointArray = endPoint.split(', ', 3);
+        
+        ee.on('trackObj', () => {
+          this.setState(
+            (prevState) => ({
+              ...prevState,
+              track: {...prevState.track,  distance: leg.distance.value, estimatedDuration: leg.duration.value, disabledTime: '', nonDisabledTime: '', rating: 0},
+            }));  
+        })
+    
+        ee.on('pointObject', (pointDetails, address, point) => {
+          let lat;
+          let lng;
+    
+          Geocode.setApiKey(getGoogleApiKey());
+          Geocode.fromAddress(address).then(
+            response => {
+              lat = response.results[0].geometry.location.lat;
+              lng = response.results[0].geometry.location.lng;
+              console.log(lat, lng);
+              
+              switch(pointDetails.length){
+                // User writed only country
+                case 1:
+                  this.setState(
+                    (prevState) => ({
+                      ...prevState,
+                      track: { ...prevState.track, [point]: { country: pointDetails[0], lat: lat, lng: lng }},
+                    }));
+                  console.log("case 1");
+                  break;
+                // User writed only country, city
+                case 2:
+                  this.setState(
+                    (prevState) => ({
+                      ...prevState,
+                      track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], lat: lat, lng: lng }}
+                    }));
+                  console.log("case 2");
+                  break;
+                // User writed only country, city, street
+                case 3:
+                  this.setState(
+                    (prevState) => ({
+                      ...prevState,
+                      track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], street: pointDetails[2], lat: lat, lng: lng }}
+                    }));
+                  console.log("case 3");
+                  break;
+        
+                default:
+                  console.log('<AutoGenerateTeack></AutoGenerateTeack> setPoints() Incorrect address');
+                  break;
+              }
+            },
+            error => {
+              console.error(error);
+            }
+          );
+    
+        })
+    
+        ee.emit('pointObject', startPointArray, startPoint,'startPointObj');
+        ee.emit('pointObject', endPointArray, endPoint,'endPointObj');
+        ee.emit('trackObj');
+      }
+      else {
+        console.error(`Response From Directions API Was Returned With Status ${response.status}`);
+        return( <div/> );
+      }
+    }
+    else{
+      console.error('Response From Directions API is null');
+      return( <div/> );
+    }   
+  }
 
   render() {    
     return (
@@ -515,26 +493,25 @@ class AutoGenerateTrack extends Component {
         <Card className="text-center">
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
-          {!this.state.loading && this.showMenu()}
+          <Menu currentPage={"Auto Generate"}> </Menu>
+          {/* {!this.state.loading && this.showMenu()} */}
+
+          {/* Page BreadCrumbs */}
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
+            <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+            <Breadcrumb.Item active>Auto</Breadcrumb.Item>
+          </Breadcrumb>
 
           {/* Show Generate Track Form When Page Stop Loading sessionStorage */}
           {this.state.userResponse && this.showTrackForm()}
 
           {/* Generated Track Modal */}
           {this.state.isGenerated && this.showGeneratedTrackModal()}
-          
-          <Card.Header> 
-            <h6> Live Navigation Map </h6> 
-            {/*
-              <Map
-              track={this.state.track}>
-              </Map>
-            */}
-          </Card.Header>
 
           <Card.Body>
             {/* Send Directions API Request Only When The User Send The Required Track Details Form */}
-            {this.state.isGenerated ? this.directionsRequest() : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
+            {this.state.isGenerated && this.directionsRequest()}
           </Card.Body>
 
           <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
@@ -543,8 +520,5 @@ class AutoGenerateTrack extends Component {
     );
   }
 }
-// Save - Save (DB) track without navigating
-// Fast Travel - Navigate without saving ::: Warning Modal
-// Save and Navigate - Save (DB) and Immidiatly start Navigation
 
 export default AutoGenerateTrack;

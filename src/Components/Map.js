@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import './style/CustomTrack.css';
 import axios from 'axios';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
-import './css/Map.css';
 import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
 import BLE from './BLE';
+import { originURL } from '../globalService';
 
 
 /*
@@ -20,7 +19,7 @@ difficultyLevel
 actualDuration
 rating
 ובכללי להציג את הנתונים האלה:
-actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, comments, travelMode, startPoint-endPoint
+actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, reports, travelMode, startPoint-endPoint
 */
 
 class Map extends Component {
@@ -80,7 +79,7 @@ class Map extends Component {
 		this.onLoadPosition();
 
     // Get the user details from database
-    axios.get(`https://db.lookup.band/user/getAccountDetails/${userid}`)
+    axios.get(`${originURL}user/getAccountDetails/${userid}`)
       .then(response => {
 				this.setState({userDetails: response.data});
         this.onLoadPosition();
@@ -224,7 +223,8 @@ class Map extends Component {
       }, options);
     }
     else {
-      console.warn("Geolocation API not supported.")
+      alert("Geolocation API not supported.");
+      console.warn("Geolocation API not supported.");
     }
   }
 
@@ -266,15 +266,16 @@ render() {
           maxWidth: "90%"}}>
         {this.state.loading ? 
           (<div className="load-container">
+          
           <LoadScript
             id="script-loader"
             googleMapsApiKey={getGoogleApiKey()}
             onError={this.onLoadScriptError}
             onLoad={this.onLoadScriptSuccess}
-            language="English"
+            language="en"
             version="3.36"
-            region="US"
-            libraries={this.mode}
+            region="en"
+              libraries={this.mode}
           >
           <BLE>
           </BLE>
@@ -307,7 +308,7 @@ render() {
 
               <Marker
                   position={this.state.UpdatedPosition}
-                  icon={'/images/map-marker-icon3.png'}
+                  icon={`/images/map-marker-icon3.png`}
                   >
               </Marker>
               {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
