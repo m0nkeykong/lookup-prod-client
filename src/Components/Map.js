@@ -277,8 +277,7 @@ render() {
             region="en"
               libraries={this.mode}
           >
-          <BLE>
-          </BLE>
+
           <div className="map-container">
             <GoogleMap
             id='example-map'

@@ -4,6 +4,7 @@ import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
 import './style//LiveNavigation.css';
+import BLE from './BLE';
 
 class Menu extends Component {
   constructor(props) {
@@ -106,6 +107,8 @@ class Menu extends Component {
                     <Nav.Link href="choose">Choose Existing Track</Nav.Link>
                     <Nav.Link href="contact">Contact us</Nav.Link>
                 </Nav>
+                <BLE>
+                </BLE>
                 </Navbar.Collapse>
             </Navbar>
 

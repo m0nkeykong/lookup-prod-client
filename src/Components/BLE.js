@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import './style/BLE.css';
+import './style/BLE.css';
 //import './style/normalize.css';
 import BLEController from './BLEController';
 
