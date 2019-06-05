@@ -106,6 +106,7 @@ class TrackDetails extends Component {
     let html=[];
     console.log(reports);
     // Outer loop to create parent
+   if(reports.length !== 0){
     for (let i = 0; i < reports.length; i++) {
       html.push(
         <ul class="media-list">
@@ -123,6 +124,12 @@ class TrackDetails extends Component {
         </ul> 
       );
     }
+   }
+   else{
+    html.push(
+      <p class="media-report"></p>
+    );
+   }
     return html;
   }
 
@@ -262,17 +269,6 @@ class TrackDetails extends Component {
           style={{padding:'6px', verticalAlign:'baseline'}}
           className="tring" >
           <TiArrowBackOutline size={29} color='black'/></NavLink>
-      </div>
-
-
-      <div className="col-12" style={{margin:'auto'}}>
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-          idOfTrack: track.idOfTrack}}
-          activeStyle={this.active} 
-          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-          className="btn btn-primary" >Start Navigator</NavLink>
       </div>
 
       <div className="col-12" style={{margin:'auto'}}>
@@ -415,10 +411,13 @@ class TrackDetails extends Component {
 
 export default TrackDetails;
 
-
-            // <p className="titles">start point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-            //  <p className="titles">end point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-            //  <p className="titles">middle points: </p>
-            //     <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>
+ // <div className="col-12" style={{margin:'auto'}}>
+      //   <NavLink to=
+      //   //navigate to TrackDetails via TemplateComponent with the params
+      //   {{pathname: `${process.env.PUBLIC_URL}/map`, 
+      //     idOfTrack: track.idOfTrack,
+      //   track:this.buildTrack(track)}}
+      //     activeStyle={this.active} 
+      //     style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+      //     className="btn btn-primary" >Start Navigator</NavLink>
+      // </div>
