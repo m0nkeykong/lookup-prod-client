@@ -15,7 +15,7 @@ class Login extends Component {
         this.state = {
             userDetails: null,
             isAccessibility: true,
-            accessibility: 0,
+            accessibility: '1',
             phone: '',
             birthDay: '',
             isLoading: true
@@ -120,6 +120,7 @@ class Login extends Component {
         const url = `${originURL}user/updateAccountDetails/${this.userid}`;
         axios.put(url, {birthDay: this.state.birthDay, accessibility: this.state.accessibility, phone: this.state.phone})
         .then(response => {
+            console.log(response);
             this.props.history.push('/home');
         })
         .catch(error => {
@@ -154,8 +155,8 @@ class Login extends Component {
                   <Form.Control required type="tel" placeholder="Enter Phone Number" value={this.state.phone} name="phone" onChange={this.handleInputChange}/>
               </Form.Group>
               <Form.Group controlId="formAccessibility">
-                  <Form.Check custom inline id="formNotDisabled" type="radio" label="Not-Disabled" name="accessibility" checked={this.state.accessibility == 0} value="0" onChange={this.handleRadioChange}/>
-                  <Form.Check custom inline id="formDisabled" type="radio" label="Disabled" name="accessibility" checked={this.state.accessibility == 1} value="1" onChange={this.handleRadioChange}/>
+                  <Form.Check custom inline id="formNotDisabled" type="radio" label="Not-Disabled" name="accessibility" checked={this.state.accessibility === '1'} value='1' onChange={this.handleRadioChange}/>
+                  <Form.Check custom inline id="formDisabled" type="radio" label="Disabled" name="accessibility" checked={this.state.accessibility === '2'} value='2' onChange={this.handleRadioChange}/>
               </Form.Group>
               </div>
           </Modal.Body>
