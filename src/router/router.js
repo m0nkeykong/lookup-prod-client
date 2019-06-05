@@ -13,6 +13,7 @@ import HomePage from '../Components/HomePage';
 import PostNavigation from '../Components/PostNavigation'
 import Profile from "../Components/Profile";
 import Favorites from "../Components/FavoritesList";
+import LiveMap from "../Components/LiveMap";
 // import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 
@@ -37,6 +38,7 @@ const AppRouter = () =>{
       <Route exact path="/post" component={PostNavigation}/>
       <Route exact path="/profile" component={Profile}/>
       <Route exact path="/favorites" component={Favorites}/>
+      <Route exact path="/liveMap" component={LiveMap}/>
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />

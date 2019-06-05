@@ -272,6 +272,17 @@ class TrackDetails extends Component {
       </div>
 
       <div className="col-12" style={{margin:'auto'}}>
+        <NavLink to=
+        //navigate to TrackDetails via TemplateComponent with the params
+        {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
+          idOfTrack: track.idOfTrack,
+          track:this.buildTrack(track)}}
+          activeStyle={this.active} 
+          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+          className="btn btn-primary" >Start Navigator</NavLink>
+      </div>
+
+      <div className="col-12" style={{margin:'auto'}}>
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/post`, 
@@ -411,13 +422,3 @@ class TrackDetails extends Component {
 
 export default TrackDetails;
 
- // <div className="col-12" style={{margin:'auto'}}>
-      //   <NavLink to=
-      //   //navigate to TrackDetails via TemplateComponent with the params
-      //   {{pathname: `${process.env.PUBLIC_URL}/map`, 
-      //     idOfTrack: track.idOfTrack,
-      //   track:this.buildTrack(track)}}
-      //     activeStyle={this.active} 
-      //     style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-      //     className="btn btn-primary" >Start Navigator</NavLink>
-      // </div>
