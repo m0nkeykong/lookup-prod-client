@@ -26,6 +26,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
     "react-spinners": "^0.5.3",
+    "react-static-google-map": "^0.5.2",
     "webfontloader": "^1.6.28"
   },
   "scripts": {

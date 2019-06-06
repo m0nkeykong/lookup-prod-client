@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { rank, accessibility } from '../MISC';
 import { Breadcrumb, CardGroup, Card } from 'react-bootstrap';
-import { originURL } from '../globalService';
+import { originURL, getGoogleApiKey } from '../globalService';
+import {
+  StaticGoogleMap,
+  Marker,
+  Path
+} from 'react-static-google-map';
 
 import Menu from './Menu';
 
@@ -44,13 +49,25 @@ class FavoriteTracks extends Component {
     await this.getUserDetails();
   }
 
-  trackRecord(track, trackid){
-    return(
-    <div style={{ width: '100px', height: '400px' }}>
-      <p> {track} </p>
-    </div>
-    )
+  trackRecord(track){
+    let location = [];
+    location.push({lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString()});
+    if(track.wayPoints.length > 0){
+      track.wayPoints.forEach( (obj, index) => {
+        if(index === obj.length-1){
+          location.push({lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString()});
+        }
+        else{
+          location.push({lat: obj.lat.toString(), lng: obj.lng.toString()});
+        }
+      })
+      return location;
+    }
 
+    else{
+      location.push({lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString()});
+      return location;
+    }
   }
 
   render() {
@@ -66,34 +83,66 @@ class FavoriteTracks extends Component {
         </Breadcrumb>
         <CardGroup>
 
-        {!this.state.loading && userDetails.trackRecords.map( (track, index) => {
-          return(
-            <Card key={track}>
-              <Card.Img variant="top" src="holder.js/100px160" />
-              <Card.Body>
-                <Card.Title>{track.title}</Card.Title>
-                <Card.Text>
-                  {track.startPoint}
-                  {track.endPoint}
-                  {track.wayPoints}
-                  {track.reports}
-                  {track.travelMode}
-                  {track.distance}
-                  {track.description}
-                  {track.difficultyLevel}
-                  {userDetails.accessibility === 1 ? track.nonDisabledTime : track.disabledTime}
-                  {track.description}
-                  This is a wider card with supporting text below as a natural lead-in to
-                  additional content. This card has even longer content than the first to
-                  show that equal height action.
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-          );
-        })}
+        {!this.state.loading && userDetails.trackRecords.map( (track, index) => 
+          (
+            <React.Fragment key={index.toString()}>
+
+            <Card>
+            <Card.Header>{track.title.toString()}</Card.Header>
+            <Card.Body>
+            <div style={{display: 'block', width: '340px', height: '240px', margin: '0 auto'}}>
+            <StaticGoogleMap
+                maptype='roadmap'
+                apiKey={getGoogleApiKey()}
+                size="340x240"
+                language='en'
+              >        
+              <Marker
+                size ='mid'
+                location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
+                color="green"
+                label="A"
+              />
+
+              <Marker
+                size ='mid'
+                location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
+                color="red"
+                label="B"
+              />
+              <Path
+                points={[
+                  this.trackRecord(track)
+                ]}
+              />
+              </StaticGoogleMap> 
+              </div>         
+              <blockquote className="blockquote mb-0">
+                <p>
+                  {' '}
+                  {`From ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + ', ' : ''} ${track.startPoint.country}`}.{' '} <br></br>
+                  {`To ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + ', ' : ''} ${track.endPoint.country}`}.{' '}
+                </p>
+                <p>
+                Distance: <cite title="Source Title"> {track.distance.toString() + 'm'} </cite> 
+                <br></br>Duration: <cite title="Source Title"> {userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </cite>
+                <br></br>Travel Mode: <cite title="Source Title"> {track.travelMode.toString()} </cite> 
+                <br></br>Difficuly Level: <cite title="Source Title"> {track.difficultyLevel.star ? track.difficultyLevel.star.toString() : '0'} </cite>
+                <br></br>Reports: <cite title="Source Title"> {track.reports.map( (report) => {return <div> Report: {report.report} Reported by: {report.userid} </div>})} </cite> 
+                </p>
+                <footer className="blockquote-footer">
+                  Description: <cite title="Source Title"> {track.description.toString()} </cite>
+
+                </footer>
+              </blockquote>
+            </Card.Body>
+          </Card>
+
+
+
+            </React.Fragment>
+          )
+        )}
       </CardGroup>
         
       </div>
