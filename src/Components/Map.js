@@ -302,7 +302,7 @@ onPolylineComplete = (polyline) => {
 
 render() {
   const {loading} = this.state;
-
+  // @TODO: IMPLEMENT STOP NAVIGATION BUTTON
   // const {loading} = true;
   {console.log("TTTTTTTTTTTT")}
   {console.log(this.props.track)}

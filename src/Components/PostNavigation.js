@@ -21,6 +21,7 @@ class PostNavigation extends Component {
       isRankUpdated: false,
       isLoading: true
     }
+
     this.getUserDetails = this.getUserDetails.bind(this);
     this.rankUpdate = this.rankUpdate.bind(this);
 
@@ -29,12 +30,13 @@ class PostNavigation extends Component {
   }
   
   async componentDidMount(){
-      // get user details
+    // get user details
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <PostNavigation> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
     await this.getUserDetails();
+
     // Update user rank
     // await this.rankUpdate();
 
@@ -67,6 +69,7 @@ class PostNavigation extends Component {
     return new Promise(resolve => {
       console.log(`Entered <PostNavigation> rankUpdate(), Updating rank for userid: ${self.userid}`);
       // Updating the user rank 
+      // @TODO: Get the total distance user navigated
       axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
         .then(response => {
           self.setState({ isRankUpdated: true });

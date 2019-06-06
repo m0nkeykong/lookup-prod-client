@@ -83,7 +83,8 @@ class FavoriteTracks extends Component {
         </Breadcrumb>
         <CardGroup>
 
-        {!this.state.loading && userDetails.trackRecords.map( (track, index) => 
+        {/* @TODO: Change from trackRecords to favoriteTracks */}
+        {!this.state.loading && userDetails.trackRecords.length > 0 && userDetails.trackRecords.map( (track, index) => 
           (
             <React.Fragment key={index.toString()}>
 
@@ -143,6 +144,8 @@ class FavoriteTracks extends Component {
             </React.Fragment>
           )
         )}
+
+        {!this.state.loading && userDetails.trackRecords.length <= 0 && (<div> <p> Favorite tracks list is empty. </p> </div>)}
       </CardGroup>
         
       </div>

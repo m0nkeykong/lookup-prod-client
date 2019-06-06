@@ -3,6 +3,7 @@ import axios from 'axios';
 import { rank, accessibility } from '../MISC';
 import { Breadcrumb, CardGroup, Card } from 'react-bootstrap';
 import { originURL } from '../globalService';
+import './style/FavoriteTracks.css';
 
 import Menu from './Menu';
 
@@ -47,7 +48,9 @@ class FavoriteTracks extends Component {
   render() {
     const userDetails = {...this.state.userDetails};
     return (
-      <div>
+      <div className="panel-body">
+          <button type="button" className="btn btn-danger btn-circle"> <i className="fa fa-heart"></i>
+          </button>
       </div>
     );
   }
