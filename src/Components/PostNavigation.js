@@ -28,7 +28,10 @@ class PostNavigation extends Component {
   componentDidMount(){
       // get user details
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <PostNavidation> componentDidMount(), fetching userid: ${this.userid}`);
+
+    console.log("ID OF TRACK: ");
+    console.log(this.props.location.idOfTrack);
 
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
@@ -195,8 +198,7 @@ class PostNavigation extends Component {
           <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
-                <div className="row rating">  
-                {/*react/jsx-no-duplicate-props*/}   
+                <div className="row rating"> 
                     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
                     <label className="stars" for="4_stars">4 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />

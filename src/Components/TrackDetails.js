@@ -217,6 +217,7 @@ class TrackDetails extends Component {
   
   buildTrack(track){
     const trackObj = {
+      id: track.idOfTrack,
       description: track.description,
       difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
       disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
@@ -326,7 +327,12 @@ class TrackDetails extends Component {
           {console.log("AAALLLAA:")}
           {console.log(track)}
           
-            <Map track={this.buildTrack(track)}></Map>
+            <Map 
+            track={this.buildTrack(track)}
+            idOfTrack={track._id}
+            >
+            </Map>
+
           </div>
         </div>
       </div>
