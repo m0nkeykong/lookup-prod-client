@@ -5,11 +5,9 @@ import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
-
-
-
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Card, Navbar, NavDropdown, Nav, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
+import Menu from './Menu';
 import './style/TrackDetails.css'
 
 class PostNavigation extends Component {
@@ -107,78 +105,17 @@ class PostNavigation extends Component {
     return (
       <div>
         <div className="postContainer">
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
+          {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
+          <Menu currentPage={"Post Navigation"}> </Menu>
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-              <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/profile`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >View Profile</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Favorite Tracks</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/auto`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Generate Auto Track</NavLink>
-                  
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Choose Existing Tracks</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/custom`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Custom Made Track</NavLink>
-
-              </Nav>
-              </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
+          {/* Page BreadCrumbs */}
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
+            <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
+            <Breadcrumb.Item href="">Live</Breadcrumb.Item>
+            <Breadcrumb.Item active>Post</Breadcrumb.Item>
+          </Breadcrumb>
 
           <div className="col-10 p-md-4">
             <NavLink to=
