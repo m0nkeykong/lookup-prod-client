@@ -5,6 +5,7 @@ import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
+import { fetchDataHandleError, originURL } from '../globalService';
 import { Card, Navbar, NavDropdown, Nav, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Menu from './Menu';
@@ -16,29 +17,66 @@ class PostNavigation extends Component {
     this.state = {
       tracks: [],
       userDetails: [],
-      addReport: []
+      addReport: [],
+      isRankUpdated: false,
+      isLoading: true
     }
+    this.getUserDetails = this.getUserDetails.bind(this);
+    this.rankUpdate = this.rankUpdate.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this)
     this.handleChange  = this.handleChange.bind(this)
   }
   
-  componentDidMount(){
+  async componentDidMount(){
       // get user details
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <PostNavigation> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    await this.getUserDetails();
+    // Update user rank
+    // await this.rankUpdate();
 
-      // TODO: call route for update RANK
-      // TODO: call route for update actual time
+    // TODO: call route for update RANK
+    // TODO: call route for update actual time
+  }
+
+  // Fetching the user data 
+  getUserDetails(){
+    var self = this;
+    return new Promise(resolve => {
+      self.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+      console.log(`Entered <LiveNavigation> getUserDetails(), fetching userid: ${self.userid}`);
+      // Get the user details from database
+      axios.get(`${originURL}user/getAccountDetails/${self.userid}`)
+        .then(userResponse => {
+          self.setState({ userDetails: userResponse.data, isLoading: false });
+          console.log(userResponse.data);
+          // resolve(self.userid);
+        })
+        .catch(error => {
+          fetchDataHandleError(error);
+        });
+    });
+  }
+
+  // Update the user rank after finished the navigation
+  rankUpdate(){
+    var self = this;
+    return new Promise(resolve => {
+      console.log(`Entered <PostNavigation> rankUpdate(), Updating rank for userid: ${self.userid}`);
+      // Updating the user rank 
+      axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
+        .then(response => {
+          self.setState({ isRankUpdated: true });
+          console.log(response.data);
+          // resolve(self.userid);
+        })
+        .catch(error => {
+          fetchDataHandleError(error);
+        });
+    });
   }
 
   initialState(){
