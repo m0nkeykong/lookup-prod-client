@@ -7,7 +7,7 @@ import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
 import axios from 'axios';
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -241,7 +241,7 @@ class TrackDetails extends Component {
     let num;
     // this.state.userDetails.accessibility;
     // if user is nonDisabledTime
-    if(this.state.userDetails.accessibility == 0)
+    if(this.state.userDetails.accessibility === 0)
       num = nonDisabledTime.actual;
     else
       num = disabledTime.actual;

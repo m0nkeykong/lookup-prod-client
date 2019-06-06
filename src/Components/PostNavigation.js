@@ -8,7 +8,7 @@ import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
 
 
 
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -89,14 +89,14 @@ class PostNavigation extends Component {
     console.log(this.state.addReport);
     // add report if exist
 
-    if(this.state.addReport.length != 0 ||
+    if(this.state.addReport.length !== 0 ||
         typeof this.state.addReport !== "undefined")
     {
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
         let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-        var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
+        reportId = await PostAsyncRequest('track/addReportToTrack', data2);
         
         this.initialState();
     }
