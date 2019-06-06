@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Breadcrumb } from 'react-bootstrap';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
-import './style//LiveNavigation.css';
+import './style/LiveNavigation.css';
 import Map from './Map';
 import Menu from './Menu';
 

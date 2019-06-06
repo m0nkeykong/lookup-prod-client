@@ -350,7 +350,7 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-            zoom={10}>
+            zoom={18}>
               <DrawingManager
                 onLoad={drawingManager => {
                   console.log(drawingManager)
