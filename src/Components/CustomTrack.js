@@ -163,18 +163,18 @@ class CustomTrack extends Component {
   searchAddress() {
     console.log("search requested");
     console.log(this.state.searchField);
-  // from lat long to address
-  //   fetch('http://api.geonames.org/findNearestAddress?lat=' + latVar + '&lng=' + lngVar + '&username=demo')
-  //     .then(response => response.json())
-  //     .then(data => console.log(data));
-  
+    // from lat long to address
+    //   fetch('http://api.geonames.org/findNearestAddress?lat=' + latVar + '&lng=' + lngVar + '&username=demo')
+    //     .then(response => response.json())
+    //     .then(data => console.log(data));
+
     // from address to lat long
     // fetch('https://maps.googleapis.com/maps/api/geocode/json?address=THE_ADDRESS_YOU_WANT_TO_GEOCODE&key=YOUR_API_KEY')
     //   .then(response => response.json())
     //   .then(data => console.log(data));
 
   }
-  
+
 
 
   // Handle the radio change
@@ -198,11 +198,11 @@ class CustomTrack extends Component {
 
     let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
 
-    let origin = wayPts[0].lat+',';
+    let origin = wayPts[0].lat + ',';
     origin += +wayPts[0].lng;
     wayPts.splice(0, 1);
 
-    let ending = wayPts[wayPts.length - 1].lat+',';
+    let ending = wayPts[wayPts.length - 1].lat + ',';
     ending += +wayPts[wayPts.length - 1].lng;
     wayPts.splice(wayPts.length - 1, 1);
 
@@ -214,28 +214,29 @@ class CustomTrack extends Component {
     let wpArr = [];
 
     wayPts.forEach((point) => {
-      wpObj.location = point.lat+',';
+      wpObj.location = point.lat + ',';
       wpObj.location += +point.lng;
       wpArr.push(wpObj);
     });
-    
+
 
 
     this.setState(
       (prevState) => ({
         ...prevState,
-        track: { ...prevState.track,
+        track: {
+          ...prevState.track,
           startPoint: origin,
           endPoint: ending,
           wayPoints: wpArr
-           }
+        }
       })
     )
 
     console.log(origin);
     console.log(ending);
     console.log(wpArr);
-    
+
     // After track created, set state to load Modal
     this.setState({ isGenerated: true });
     this.handleShowModal();
@@ -248,7 +249,7 @@ class CustomTrack extends Component {
 
   // Handle the show modal event
   handleShowModal() {
-  
+
     this.setState({ showModal: true });
   }
 
@@ -471,7 +472,7 @@ class CustomTrack extends Component {
                         // update marker lat\lng at waypoints array
                         let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
                         wayPts[marker.get('id')] = mrkrwaypt;
-                        
+
                         this.setState(prevState => ({
                           markerPoints: wayPts
                         }));
@@ -576,38 +577,38 @@ class CustomTrack extends Component {
     return (
       <div>
 
-          <div className="map-container">
+        <div className="map-container">
 
-            <GoogleMap>
-              {/* Directions API Request */}
-              {this.state.directionsResponse === null &&
-                <DirectionsService
-                  options={{
-                    origin: this.state.track.startPoint,
-                    destination: this.state.track.endPoint,
-                    waypoints: this.state.track.wayPoints ? this.state.track.wayPoints : null,
-                    avoidTolls: this.state.avoidFerries,
-                    avoidFerries: this.state.avoidFerries,
-                    avoidHighways: this.state.avoidHighways,
-                    travelMode: this.state.track.travelMode,
-                    drivingOptions: {
-                      departureTime: new Date(Date.now()),
-                      trafficModel: 'bestguess'
-                    },
-                    optimizeWaypoints: true
-                  }}
-                  callback={(response) => {
-                    console.log(response);
-                    this.setState({ directionsResponse: response });
-                    this.setPoints();
-                  }
-                  }
-                >
-                </DirectionsService>
-              }
-            </GoogleMap>
+          <GoogleMap>
+            {/* Directions API Request */}
+            {this.state.directionsResponse === null &&
+              <DirectionsService
+                options={{
+                  origin: this.state.track.startPoint,
+                  destination: this.state.track.endPoint,
+                  waypoints: this.state.track.wayPoints ? this.state.track.wayPoints : null,
+                  avoidTolls: this.state.avoidFerries,
+                  avoidFerries: this.state.avoidFerries,
+                  avoidHighways: this.state.avoidHighways,
+                  travelMode: this.state.track.travelMode,
+                  drivingOptions: {
+                    departureTime: new Date(Date.now()),
+                    trafficModel: 'bestguess'
+                  },
+                  optimizeWaypoints: true
+                }}
+                callback={(response) => {
+                  console.log(response);
+                  this.setState({ directionsResponse: response });
+                  this.setPoints();
+                }
+                }
+              >
+              </DirectionsService>
+            }
+          </GoogleMap>
 
-          </div>
+        </div>
       </div>
     )
   }
