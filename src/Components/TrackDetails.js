@@ -8,7 +8,7 @@ import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
 import Menu from './Menu';
 import axios from 'axios';
-import { Card, Breadcrumb } from 'react-bootstrap';
+import { Card, Navbar, Nav, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 
@@ -218,6 +218,7 @@ class TrackDetails extends Component {
   
   buildTrack(track){
     const trackObj = {
+      id: track.idOfTrack,
       description: track.description,
       difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
       disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
@@ -242,7 +243,7 @@ class TrackDetails extends Component {
     let num;
     // this.state.userDetails.accessibility;
     // if user is nonDisabledTime
-    if(this.state.userDetails.accessibility == 0)
+    if(this.state.userDetails.accessibility === 0)
       num = nonDisabledTime.actual;
     else
       num = disabledTime.actual;
@@ -327,7 +328,12 @@ class TrackDetails extends Component {
           {console.log("AAALLLAA:")}
           {console.log(track)}
           
-            <Map track={this.buildTrack(track)}></Map>
+            <Map 
+            track={this.buildTrack(track)}
+            idOfTrack={track._id}
+            >
+            </Map>
+
           </div>
         </div>
       </div>

@@ -4,9 +4,8 @@ import axios from 'axios';
 import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
-import { fetchDataHandleError, originURL } from '../globalService';
-import { Card, Navbar, NavDropdown, Nav, Breadcrumb } from 'react-bootstrap';
+import {PostAsyncRequest, getUpdateTrackTimeURL, originURL,fetchDataHandleError} from '../globalService';
+import { Card, Navbar, Nav,Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Menu from './Menu';
 import './style/TrackDetails.css'
@@ -32,7 +31,10 @@ class PostNavigation extends Component {
   async componentDidMount(){
     // get user details
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <PostNavigation> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <PostNavidation> componentDidMount(), fetching userid: ${this.userid}`);
+
+    console.log("ID OF TRACK: ");
+    console.log(this.props.location.idOfTrack);
 
     // Get the user details from database
     await this.getUserDetails();
@@ -128,14 +130,14 @@ class PostNavigation extends Component {
     console.log(this.state.addReport);
     // add report if exist
 
-    if(this.state.addReport.length != 0 ||
+    if(this.state.addReport.length !== 0 ||
         typeof this.state.addReport !== "undefined")
     {
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
         let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-        var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
+        reportId = await PostAsyncRequest('track/addReportToTrack', data2);
         
         this.initialState();
     }
@@ -173,7 +175,7 @@ class PostNavigation extends Component {
           <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
-                <div className="row rating">     
+                <div className="row rating"> 
                     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
                     <label className="stars" for="4_stars">4 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />

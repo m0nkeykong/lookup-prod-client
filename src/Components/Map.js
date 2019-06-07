@@ -8,6 +8,8 @@ import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
 import BluetoothTerminal from './BLEController';
 import { originURL } from '../globalService';
+import { NavLink} from "react-router-dom";
+
 
 
 /*
@@ -35,7 +37,9 @@ class Map extends Component {
 				response: null,
         timestamp: 0,
         currStep: 0,
-        startedNavigation: false
+        startedNavigation: false,
+        idOfTrack: this.props.idOfTrack,
+        isLoadingIdOfTrack: true
     }
 
     // ****** bluetooth variables ******
@@ -105,6 +109,9 @@ class Map extends Component {
     // this.refs.deviceNameLabel.textContent = this.defaultDeviceName;
   };
 
+  postNavifation = () => {
+
+  }
   // ****** bluetooth functions ******
 
   onLoadScriptSuccess(){
@@ -125,6 +132,9 @@ class Map extends Component {
 
   // Remember to replace this method because UNSAFE
   componentDidMount() {
+    console.log("RONI RONI RONI RONI ORNI");
+    console.log(this.state.idOfTrack);
+    console.log(this.props.idOfTrack);
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
 		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
 		this.onLoadPosition();
@@ -134,7 +144,7 @@ class Map extends Component {
       .then(response => {
 				this.setState({userDetails: response.data});
         this.onLoadPosition();
-        this.setState({ loading: true });
+        this.setState({ loading: true, isLoadingIdOfTrack: false });
 
         console.log(response.data);
       })
@@ -303,12 +313,8 @@ onPolylineComplete = (polyline) => {
 
 render() {
   const {loading} = this.state;
-  // @TODO: IMPLEMENT STOP NAVIGATION BUTTON
+  const trackId = this.props.track.id;
   // const {loading} = true;
-  {console.log("TTTTTTTTTTTT")}
-  {console.log(this.props.track)}
-  {console.log(this.props.track.wayPoints)}
-  
     return (
      <div style={{   
           margin: "0 auto",  
@@ -421,6 +427,21 @@ render() {
               <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
                 <i className="material-icons">bluetooth_disabled</i>
               </button>
+              {
+                !this.state.isLoadingIdOfTrack && (
+                <button id="disconnect" onClick={this.postNavifation} type="button" aria-label="Disconnect">
+                <NavLink to=
+                //navigate to TrackDestails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/post`, 
+                  idOfTrack: trackId,
+                  actualTime:45}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  className="btn btn-primary" >Post Navigator</NavLink>
+                </button>)
+              }
+            
+
             </div>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
