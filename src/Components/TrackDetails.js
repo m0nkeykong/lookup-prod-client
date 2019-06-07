@@ -33,7 +33,8 @@ class TrackDetails extends Component {
     // this.onSubmitAddReport = this.onSubmitAddReport.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.initialState = this.initialState.bind(this)
-
+    this.buildTrack = this.buildTrack.bind(this)
+    this.getTimeOfTrack = this.getTimeOfTrack.bind(this)
   }
   
   componentDidMount() {
@@ -66,12 +67,12 @@ class TrackDetails extends Component {
       console.log(data);       
       var self=this;      
       self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
-        data.startPoint, data.endPoint, data.wayPoints, data.track.description);        
+        data.startPoint, data.endPoint, data.wayPoints, data.track.description,data.track.disabledTime,data.track.nonDisabledTime );        
     })
 
   }
 
-  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description) {
+  addTrack(_id,_title,_type, _difficultyLevel, _reports,_userDetails,_startPoint, _endPoint, _wayPoints, _description,_disabledTime,_nonDisabledTime) {
     this.setState(prevState => ({
       tracks: [
       ...prevState.tracks,
@@ -86,7 +87,9 @@ class TrackDetails extends Component {
           endPoint:_endPoint,
           wayPoints:_wayPoints,
           description: _description,
-          difficultyLevel: _difficultyLevel
+          difficultyLevel: _difficultyLevel,
+          disabledTime:_disabledTime,
+          nonDisabledTime:_nonDisabledTime
       }]
     }))
   }
@@ -103,6 +106,7 @@ class TrackDetails extends Component {
     let html=[];
     console.log(reports);
     // Outer loop to create parent
+   if(reports.length !== 0){
     for (let i = 0; i < reports.length; i++) {
       html.push(
         <ul class="media-list">
@@ -120,6 +124,12 @@ class TrackDetails extends Component {
         </ul> 
       );
     }
+   }
+   else{
+    html.push(
+      <p class="media-report"></p>
+    );
+   }
     return html;
   }
 
@@ -204,6 +214,47 @@ class TrackDetails extends Component {
     return html;
   } 
 
+  
+  buildTrack(track){
+    const trackObj = {
+      description: track.description,
+      difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
+      disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
+      endPoint: track.endPoint.city,
+      endPointObj: track.endPoint,
+      // estimatedDuration: track.estimatedDuration,
+      nonDisabledTime: track.nonDisabledTime !== '' ? track.nonDisabledTime : {},
+      startPoint: track.startPoint.city,
+      startPointObj: track.startPoint,
+      title: track.title,
+      travelMode: track.travelMode,
+      wayPoints: track.wayPoints !== '' ? track.wayPoints : [],
+      changesDuringTrack: false
+    };
+
+    return trackObj;
+  }
+
+  getTimeOfTrack(disabledTime,nonDisabledTime){
+    let html=[];
+
+    let num;
+    // this.state.userDetails.accessibility;
+    // if user is nonDisabledTime
+    if(this.state.userDetails.accessibility == 0)
+      num = nonDisabledTime.actual;
+    else
+      num = disabledTime.actual;
+
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+
+    html.push(<span class="">{rhours}:{rminutes}</span>)
+    return html;
+  }
+
   viewTrack(track,i) {
     console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
@@ -220,12 +271,12 @@ class TrackDetails extends Component {
           <TiArrowBackOutline size={29} color='black'/></NavLink>
       </div>
 
-
       <div className="col-12" style={{margin:'auto'}}>
         <NavLink to=
         //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-          idOfTrack: track.idOfTrack}}
+        {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
+          idOfTrack: track.idOfTrack,
+          track:this.buildTrack(track)}}
           activeStyle={this.active} 
           style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
           className="btn btn-primary" >Start Navigator</NavLink>
@@ -235,7 +286,8 @@ class TrackDetails extends Component {
       <NavLink to=
       //navigate to TrackDetails via TemplateComponent with the params
       {{pathname: `${process.env.PUBLIC_URL}/post`, 
-        idOfTrack: track.idOfTrack}}
+        idOfTrack: track.idOfTrack,
+        actualTime:45}}
         activeStyle={this.active} 
         style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
         className="btn btn-primary" >Post Navigator</NavLink>
@@ -246,6 +298,7 @@ class TrackDetails extends Component {
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
             <h1 className="card-title title" style={{ textAlign:`center`, marginTop: '20px'}}>{track.title}</h1>
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
+            <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
             <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
 
@@ -272,7 +325,8 @@ class TrackDetails extends Component {
           <div style={{paddingBottom:'20px'}}>
           {console.log("AAALLLAA:")}
           {console.log(track)}
-            <Map track={track}></Map>
+          
+            <Map track={this.buildTrack(track)}></Map>
           </div>
         </div>
       </div>
@@ -368,10 +422,3 @@ class TrackDetails extends Component {
 
 export default TrackDetails;
 
-
-            // <p className="titles">start point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getStartPoint(track.startPoint)}</p>
-            //  <p className="titles">end point: </p>
-            //  <p style={{fontSize:'10px'}}>{this.getEndPoint(track.endPoint)}</p>
-            //  <p className="titles">middle points: </p>
-            //     <p style={{fontSize:'10px'}}>{this.getWayPoints(track.wayPoints)}</p>

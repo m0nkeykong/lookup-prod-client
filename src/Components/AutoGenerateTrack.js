@@ -266,6 +266,8 @@ class AutoGenerateTrack extends Component {
           </Modal.Body>
 
           <Modal.Footer>
+          {console.log("GENERATED TRACK IS HERE:")}
+          {console.log(this.state)}
               <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
                 <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
               </NavLink>            
