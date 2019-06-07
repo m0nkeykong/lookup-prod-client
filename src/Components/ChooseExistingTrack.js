@@ -6,7 +6,7 @@ import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import IoMap from 'react-icons/lib/io/map';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
-import { Button, Card, Form, Col, Row, Container, Navbar, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap';
+import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
 import axios from 'axios';
@@ -32,7 +32,7 @@ class ChooseExistingTrack extends Component {
     this.onSubmit = this.onSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
     this.handleChange  = this.handleChange.bind(this)
-
+    this.getTimeOfTrack = this.getTimeOfTrack.bind(this)
   }
   
   onSubmit(e){
@@ -57,6 +57,8 @@ class ChooseExistingTrack extends Component {
     .then((res) => { 
       return res.json();      
     }).then((data) => {
+      console.log("DATTTTTA");
+      console.log(data);  
       var self=this; 
       this.state.tracks = [];
       if( data.length == 0){
@@ -67,7 +69,7 @@ class ChooseExistingTrack extends Component {
     }    
       else{
         data.map(json => { 
-          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star); 
+          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star,json.disabledTime, json.nonDisabledTime); 
         })  
       } 
     })
@@ -78,7 +80,7 @@ class ChooseExistingTrack extends Component {
     this.setState({[e.target.name]:e.target.value});
   }
 
-  addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel) {
+  addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel,_disabledTime,_nonDisabledTime) {
     this.setState(prevState => ({
       tracks: [
         ...prevState.tracks,      
@@ -92,7 +94,9 @@ class ChooseExistingTrack extends Component {
           startPoint:_startPoint,
           endPoint:_endPoint,
           wayPoints:_wayPoints,
-          difficultyLevel: _difficultyLevel
+          difficultyLevel: _difficultyLevel,
+          disabledTime:_disabledTime,
+          nonDisabledTime:_nonDisabledTime
       }]
     }))
   }
@@ -137,6 +141,25 @@ class ChooseExistingTrack extends Component {
     return html;
   } 
 
+  getTimeOfTrack(disabledTime,nonDisabledTime){
+    let html=[];
+
+    let num;
+    // this.state.userDetails.accessibility;
+    // if user is nonDisabledTime
+    if(this.state.userDetails.accessibility == 0)
+      num = nonDisabledTime.actual;
+    else
+      num = disabledTime.actual;
+
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+
+    html.push(<span class="">{rhours}:{rminutes}</span>)
+    return html;
+  }
 
   viewTracks(track,i) {
     if(track.title == ''){
@@ -161,7 +184,8 @@ class ChooseExistingTrack extends Component {
                 activeStyle={this.active} 
                 className="" >
                 <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p className="typeTrack" >{this.getIconType(track.travelMode)}</p>
+                <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
+                <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
                 <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
                 <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
               </NavLink>
@@ -182,7 +206,7 @@ class ChooseExistingTrack extends Component {
     fetch(getAllTracksURL())
     .then((res) => {        
       return res.json();      
-    }).then((data) => {        
+    }).then((data) => {      
       var self=this;        
       data.map((json) => {   
         self.addTracks(json.track._id,json.track.title, json.track.type, json.track.reports, json.track.description,
@@ -192,7 +216,7 @@ class ChooseExistingTrack extends Component {
   }
 
   componentDidMount(){
-    this.getAllTracks();
+    // this.getAllTracks();
     // user session
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
