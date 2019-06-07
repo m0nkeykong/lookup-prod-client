@@ -183,7 +183,7 @@ class Login extends Component {
                   HEADER
                   </div>                
                 </header>
-                <div style={{ backgroundImage: `url(./images/logo.PNG)`, backgroundSize: 'cover', margin: '0 auto', width: '350px', height: '121px', marginTop: '70px' }}>
+                <div style={{ backgroundImage: `url(./images/logo.png)`, backgroundSize: 'cover', margin: '0 auto', width: '350px', height: '121px', marginTop: '70px' }}>
                 </div>
                 <p style={{ marginTop: '50px' }}></p>
                 <div style={{ textAlign: 'center' }}>

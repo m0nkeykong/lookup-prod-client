@@ -68,6 +68,7 @@ class AutoGenerateTrack extends Component {
 
     this.getGeneratedTrackDetails = this.getGeneratedTrackDetails.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
+    
   }
 
   componentDidMount(){

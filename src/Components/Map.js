@@ -27,6 +27,7 @@ class Map extends Component {
     super(props);
     
     this.state = {
+        zoom: 11,
         userDetails: null,
         loading: true,
         CurrentPosition: {lat: 0, lng: 0},
@@ -344,7 +345,9 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-            zoom={18}>
+            zoom={this.state.zoom}
+            onZoomChanged={ (e) => {console.log(e);}}
+            >
               <DrawingManager
                 onLoad={drawingManager => {
                   console.log(drawingManager)
