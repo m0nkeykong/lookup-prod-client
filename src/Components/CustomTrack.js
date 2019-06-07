@@ -19,7 +19,7 @@ import Menu from './Menu';
   1. need to fix the directionsCallback.
   2. need to adjust the bluetooth buttons location
   3. needs to see that all is getting saved in DB
-  4. needs to fix the re-letter on markers after removing one
+  4. needs to fix the re-letter on markers after removing one - go on all ids in array and update
   5. needs to add search
   6. change saving of marker parameters in an outside var in state
 
@@ -32,6 +32,7 @@ class CustomTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchField: '',
       userResponse: null,
       directionsResponse: null,
       userDetails: [],
@@ -106,6 +107,32 @@ class CustomTrack extends Component {
       });
   }
 
+  // Handle search change
+  handleSearchChange(e) {
+    e.persist();
+    console.log(e);
+    if (e.target.value !== '') {
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          [e.target.name]: e.target.value
+        }), () => {
+          console.log(this.state.searchField);
+        }
+      )
+    }
+    else {
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          [e.target.name]: ''
+        }), () => {
+          console.log(this.state.searchField);
+        }
+      )
+    }
+  }
+
   // Handle the input change
   handleInputChange(e) {
     e.persist();
@@ -135,7 +162,20 @@ class CustomTrack extends Component {
   // Handle search address request
   searchAddress() {
     console.log("search requested");
+    console.log(this.state.searchField);
+  // from lat long to address
+  //   fetch('http://api.geonames.org/findNearestAddress?lat=' + latVar + '&lng=' + lngVar + '&username=demo')
+  //     .then(response => response.json())
+  //     .then(data => console.log(data));
+  
+    // from address to lat long
+    // fetch('https://maps.googleapis.com/maps/api/geocode/json?address=THE_ADDRESS_YOU_WANT_TO_GEOCODE&key=YOUR_API_KEY')
+    //   .then(response => response.json())
+    //   .then(data => console.log(data));
+
   }
+  
+
 
   // Handle the radio change
   handleRadioChange(e) {
@@ -327,7 +367,7 @@ class CustomTrack extends Component {
             <InputGroup.Append>
               <Button title="Search" onClick={this.searchAddress}> Search </Button>
             </InputGroup.Append>
-            <Form.Control type="text" placeholder="Enter Address" />
+            <Form.Control as="textarea" type="text" placeholder="Enter Address..." value={this.state.searchField} name="search" onChange={this.handleSearchChange} />
           </InputGroup>
 
           <Card.Header>
@@ -532,17 +572,9 @@ class CustomTrack extends Component {
   }
 
   directionsRequest() {
+    console.log("@directionsRequest()")
     return (
       <div>
-        <LoadScript
-          id="script-loader"
-          googleMapsApiKey={getGoogleApiKey()}
-          onError={this.onLoadScriptError}
-          onLoad={this.onLoadScriptSuccess}
-          language="en"
-          version="3.36"
-          region="us"
-        >
 
           <div className="map-container">
 
@@ -565,7 +597,8 @@ class CustomTrack extends Component {
                     optimizeWaypoints: true
                   }}
                   callback={(response) => {
-                    this.setState({ directionsResponse: response })
+                    console.log(response);
+                    this.setState({ directionsResponse: response });
                     this.setPoints();
                   }
                   }
@@ -575,9 +608,6 @@ class CustomTrack extends Component {
             </GoogleMap>
 
           </div>
-
-        </LoadScript>
-
       </div>
     )
   }
