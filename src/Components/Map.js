@@ -8,6 +8,8 @@ import {getGoogleApiKey} from '../globalService';
 import './style/normalize.css';
 import BLE from './BLE';
 import { originURL } from '../globalService';
+import { NavLink} from "react-router-dom";
+
 
 
 /*
@@ -27,6 +29,7 @@ class Map extends Component {
     super(props);
     
     this.state = {
+        zoom: 11,
         userDetails: null,
         loading: true,
         CurrentPosition: {lat: 0, lng: 0},
@@ -34,7 +37,9 @@ class Map extends Component {
 				response: null,
         timestamp: 0,
         currStep: 0,
-        startedNavigation: false
+        startedNavigation: false,
+        idOfTrack: this.props.idOfTrack,
+        isLoadingIdOfTrack: true
     }
 
     // ****** bluetooth variables ******
@@ -74,6 +79,9 @@ class Map extends Component {
 
   // Remember to replace this method because UNSAFE
   componentDidMount() {
+    console.log("RONI RONI RONI RONI ORNI");
+    console.log(this.state.idOfTrack);
+    console.log(this.props.idOfTrack);
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
 		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
 		this.onLoadPosition();
@@ -83,7 +91,7 @@ class Map extends Component {
       .then(response => {
 				this.setState({userDetails: response.data});
         this.onLoadPosition();
-        this.setState({ loading: true });
+        this.setState({ loading: true, isLoadingIdOfTrack: false });
 
         console.log(response.data);
       })
@@ -256,12 +264,8 @@ onPolylineComplete = (polyline) => {
 
 render() {
   const {loading} = this.state;
-
+  const trackId = this.props.track.id;
   // const {loading} = true;
-  {console.log("TTTTTTTTTTTT")}
-  {console.log(this.props.track)}
-  {console.log(this.props.track.wayPoints)}
-  
     return (
      <div style={{   
           margin: "0 auto",  
@@ -299,7 +303,8 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-            zoom={10}
+            zoom={this.state.zoom}
+            onZoomChanged={ (e) => {console.log(e);}}
             >
               <DrawingManager
                 onLoad={drawingManager => {
@@ -367,6 +372,23 @@ render() {
             </GoogleMap>
           </div>
         </LoadScript>
+            <div className="buttons">
+              {
+                !this.state.isLoadingIdOfTrack && (
+                <button id="disconnect" onClick={this.postNavifation} type="button" aria-label="Disconnect">
+                <NavLink to=
+                //navigate to TrackDestails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/post`, 
+                  idOfTrack: trackId,
+                  actualTime:45}}
+                  activeStyle={this.active} 
+                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+                  className="btn btn-primary" >Post Navigator</NavLink>
+                </button>)
+              }
+            
+
+            </div>
       </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
       </div>
     );

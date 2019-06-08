@@ -67,6 +67,7 @@ class AutoGenerateTrack extends Component {
 
     this.getGeneratedTrackDetails = this.getGeneratedTrackDetails.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
+    
   }
 
   componentDidMount(){
@@ -447,7 +448,7 @@ class AutoGenerateTrack extends Component {
                   this.setState(
                     (prevState) => ({
                       ...prevState,
-                      track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], lat: lat, lng: lng }}
+                      track: {...prevState.track, [point]: { city: pointDetails[0], country: pointDetails[1], lat: lat, lng: lng }}
                     }));
                   console.log("case 2");
                   break;
@@ -456,7 +457,7 @@ class AutoGenerateTrack extends Component {
                   this.setState(
                     (prevState) => ({
                       ...prevState,
-                      track: {...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], street: pointDetails[2], lat: lat, lng: lng }}
+                      track: {...prevState.track, [point]: { street: pointDetails[0], city: pointDetails[1], country: pointDetails[2], lat: lat, lng: lng }}
                     }));
                   console.log("case 3");
                   break;

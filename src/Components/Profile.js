@@ -143,8 +143,8 @@ class Profile extends Component {
           <Form.Group controlId="formUserAccessibility">
             <Form.Label> Accessibility </Form.Label>
             <Form.Control as="select" name="accessibility" value={userDetails.accessibility} onChange={this.handleInputChange}>
-              <option value={0}>Not-Disabled</option>
-              <option value={1}>Disabled</option>
+              <option value={1}>Not-Disabled</option>
+              <option value={2}>Disabled</option>
             </Form.Control>
           </Form.Group>          
           <Form.Group controlId="formUserEmail">

@@ -4,12 +4,10 @@ import axios from 'axios';
 import './style/ChooseExistingTrack.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
-import {PostAsyncRequest, getUpdateTrackTimeURL} from '../globalService';
-
-
-
-import { Card, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import {PostAsyncRequest, getUpdateTrackTimeURL, originURL,fetchDataHandleError} from '../globalService';
+import { Card, Navbar, Nav,Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
+import Menu from './Menu';
 import './style/TrackDetails.css'
 
 class PostNavigation extends Component {
@@ -18,29 +16,72 @@ class PostNavigation extends Component {
     this.state = {
       tracks: [],
       userDetails: [],
-      addReport: []
+      addReport: [],
+      isRankUpdated: false,
+      isLoading: true
     }
+
+    this.getUserDetails = this.getUserDetails.bind(this);
+    this.rankUpdate = this.rankUpdate.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this)
     this.handleChange  = this.handleChange.bind(this)
   }
   
-  componentDidMount(){
-      // get user details
+  async componentDidMount(){
+    // get user details
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <PostNavidation> componentDidMount(), fetching userid: ${this.userid}`);
+
+    console.log("ID OF TRACK: ");
+    console.log(this.props.location.idOfTrack);
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
-      .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    await this.getUserDetails();
 
-      // TODO: call route for update RANK
-      // TODO: call route for update actual time
+    // Update user rank
+    // await this.rankUpdate();
+
+    // TODO: call route for update RANK
+    // TODO: call route for update actual time
+  }
+
+  // Fetching the user data 
+  getUserDetails(){
+    var self = this;
+    return new Promise(resolve => {
+      self.userid = JSON.parse(sessionStorage.getItem('userDetails'));
+      console.log(`Entered <LiveNavigation> getUserDetails(), fetching userid: ${self.userid}`);
+      // Get the user details from database
+      axios.get(`${originURL}user/getAccountDetails/${self.userid}`)
+        .then(userResponse => {
+          self.setState({ userDetails: userResponse.data, isLoading: false });
+          console.log(userResponse.data);
+          // resolve(self.userid);
+        })
+        .catch(error => {
+          fetchDataHandleError(error);
+        });
+    });
+  }
+
+  // Update the user rank after finished the navigation
+  rankUpdate(){
+    var self = this;
+    return new Promise(resolve => {
+      console.log(`Entered <PostNavigation> rankUpdate(), Updating rank for userid: ${self.userid}`);
+      // Updating the user rank 
+      // @TODO: Get the total distance user navigated
+      axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
+        .then(response => {
+          self.setState({ isRankUpdated: true });
+          console.log(response.data);
+          // resolve(self.userid);
+        })
+        .catch(error => {
+          fetchDataHandleError(error);
+        });
+    });
   }
 
   initialState(){
@@ -89,14 +130,14 @@ class PostNavigation extends Component {
     console.log(this.state.addReport);
     // add report if exist
 
-    if(this.state.addReport.length != 0 ||
+    if(this.state.addReport.length !== 0 ||
         typeof this.state.addReport !== "undefined")
     {
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
         let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-        var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
+        reportId = await PostAsyncRequest('track/addReportToTrack', data2);
         
         this.initialState();
     }
@@ -107,78 +148,17 @@ class PostNavigation extends Component {
     return (
       <div>
         <div className="postContainer">
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
+          {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
+          <Menu currentPage={"Post Navigation"}> </Menu>
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-              <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/profile`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >View Profile</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Favorite Tracks</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/auto`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Generate Auto Track</NavLink>
-                  
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Choose Existing Tracks</NavLink>
-
-                <NavLink to=
-                //navigate to TrackDetails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/custom`}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  >Custom Made Track</NavLink>
-
-              </Nav>
-              </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
+          {/* Page BreadCrumbs */}
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
+            <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
+            <Breadcrumb.Item href="">Live</Breadcrumb.Item>
+            <Breadcrumb.Item active>Post</Breadcrumb.Item>
+          </Breadcrumb>
 
           <div className="col-10 p-md-4">
             <NavLink to=
@@ -195,7 +175,7 @@ class PostNavigation extends Component {
           <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
-                <div className="row rating">     
+                <div className="row rating"> 
                     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
                     <label className="stars" for="4_stars">4 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />

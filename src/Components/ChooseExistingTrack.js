@@ -6,9 +6,10 @@ import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import IoMap from 'react-icons/lib/io/map';
 import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
 import { NavLink , Link} from "react-router-dom";
-import { Card, Navbar, Nav } from 'react-bootstrap';
+import { Card, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Map from './Map'
+import Menu from './Menu'
 import axios from 'axios';
 
 
@@ -240,78 +241,15 @@ class ChooseExistingTrack extends Component {
       <div>
         <Card className="text-center">
 
-          <Card.Header>
-            <Navbar collapseOnSelect expand="lg">
+          {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
+          <Menu currentPage={"Choose Existing"}> </Menu>
 
-              <Navbar.Brand href="#profilePicture" style={{ float: 'left' }}>
-                {this.state.userDetails.profilePicture ?
-                  (
-                    <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Brand href="#name" style={{ float: 'center' }}>
-                {this.state.userDetails.name ?
-                  (
-                    <div>
-                      <p>{this.state.userDetails.name}</p>
-                    </div>
-                  )
-                  :
-                  (
-                    <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>
-                  )
-                }
-              </Navbar.Brand>
-
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                <NavLink to=
-                  //navigate to TrackDetails via TemplateComponent with the params
-                  {{pathname: `${process.env.PUBLIC_URL}/profile`}}
-                    activeStyle={this.active} 
-                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                    >View Profile</NavLink>
-
-                  <NavLink to=
-                  //navigate to TrackDetails via TemplateComponent with the params
-                  {{pathname: `${process.env.PUBLIC_URL}/favorites`}}
-                    activeStyle={this.active} 
-                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                    >Favorite Tracks</NavLink>
-
-                  <NavLink to=
-                  //navigate to TrackDetails via TemplateComponent with the params
-                  {{pathname: `${process.env.PUBLIC_URL}/auto`}}
-                    activeStyle={this.active} 
-                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                    >Generate Auto Track</NavLink>
-                    
-                  <NavLink to=
-                  //navigate to TrackDetails via TemplateComponent with the params
-                  {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-                    activeStyle={this.active} 
-                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                    >Choose Existing Tracks</NavLink>
-
-                  <NavLink to=
-                  //navigate to TrackDetails via TemplateComponent with the params
-                  {{pathname: `${process.env.PUBLIC_URL}/custom`}}
-                    activeStyle={this.active} 
-                    style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                    >Custom Made Track</NavLink>
-
-                </Nav>
-              </Navbar.Collapse>
-
-            </Navbar>
-          </Card.Header>
+          {/* Page BreadCrumbs */}
+          <Breadcrumb>
+            <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
+            <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+            <Breadcrumb.Item active>Choose</Breadcrumb.Item>
+          </Breadcrumb>
 
           <Card.Body>
             <Card.Title>
@@ -339,27 +277,57 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
-                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autocomplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value={this.state.walking} required />
                     <label className=''>Walking</label>
                   </div>
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode"> 
-                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autocomplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
                
+                {console.log("CHECK CHECK CHECK")}
+                {console.log(this.state.userDetails.accessibility)}
+                { console.log(this.state.userDetails.accessibility == '2')}
+                {
+                  this.state.userDetails.accessibility == '2' ?
+                  (
+                    <div className="container">
+                      <img alt="HeaderLogo" style={this.logo} src='../../images/stars.PNG'></img>
+                    </div>
+                  ) 
+                  :
+                  (
+                    <div>
+                    <h6>Choose Difficulty Level</h6>
+                      <div className="row rating">     
+                          <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} checked/>
+                          <label className="stars" htmlFor="4_stars">4 stars</label>
+                          <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
+                          <label className="stars" htmlFor="3_stars">3 stars</label>
+                          <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
+                          <label className="stars" htmlFor="2_stars">2 stars</label>
+                          <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
+                          <label className="stars" htmlFor="1_stars">1 star</label>
+                          <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
+                          <label className="stars" htmlFor="0_stars">0 star</label>
+                      </div>
+                    </div>
+                  )
+                }
+
                 <h6>Choose Difficulty Level</h6>
                 <div className="row rating">     
                     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="4_stars">4 stars</label>
+                    <label className="stars" htmlFor="4_stars">4 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="3_stars">3 stars</label>
+                    <label className="stars" htmlFor="3_stars">3 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="2_stars">2 stars</label>
+                    <label className="stars" htmlFor="2_stars">2 stars</label>
                     <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="1_stars">1 star</label>
+                    <label className="stars" htmlFor="1_stars">1 star</label>
                     <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="0_stars">0 star</label>
+                    <label className="stars" htmlFor="0_stars">0 star</label>
                 </div>
 
 
