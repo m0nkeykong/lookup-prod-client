@@ -7,7 +7,7 @@ import {
   StaticGoogleMap,
   Marker,
   Path
-} from 'react-static-google-map';
+} from '@react-google-maps/api';
 
 import Menu from './Menu';
 

@@ -4,12 +4,10 @@ import axios from 'axios';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
-import {getGoogleApiKey} from '../globalService';
+import { getGoogleApiKey } from '../globalService';
 import './style/normalize.css';
 import BLE from './BLE';
 import { originURL } from '../globalService';
-import { NavLink} from "react-router-dom";
-
 
 
 /*
@@ -27,19 +25,16 @@ actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, d
 class Map extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-        zoom: 11,
-        userDetails: null,
-        loading: true,
-        CurrentPosition: {lat: 0, lng: 0},
-        UpdatedPosition: {lat: 0, lng: 0},
-				response: null,
-        timestamp: 0,
-        currStep: 0,
-        startedNavigation: false,
-        idOfTrack: this.props.idOfTrack,
-        isLoadingIdOfTrack: true
+      userDetails: null,
+      loading: true,
+      CurrentPosition: { lat: 0, lng: 0 },
+      UpdatedPosition: { lat: 0, lng: 0 },
+      response: null,
+      timestamp: 0,
+      currStep: 0,
+      startedNavigation: false
     }
 
     // ****** bluetooth variables ******
@@ -48,17 +43,17 @@ class Map extends Component {
 
     this.onLoadPosition = this.onLoadPosition.bind(this);
     this.onLoadScriptError = this.onLoadScriptError.bind(this);
-    this.onLoadScriptSuccess = this.onLoadScriptSuccess.bind(this); 
+    this.onLoadScriptSuccess = this.onLoadScriptSuccess.bind(this);
 
     this.onGoogleMapSuccess = this.onGoogleMapSuccess.bind(this);
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
-    this.onPolylineComplete = this.onPolylineComplete.bind(this);
+
     this.directionsCallback = this.directionsCallback.bind(this);
 
     this.newLocation = document.getElementById('printLocation');
-
     this.mode = ["drawing"];
+
   }
 
   onLoadScriptSuccess(){
@@ -79,19 +74,16 @@ class Map extends Component {
 
   // Remember to replace this method because UNSAFE
   componentDidMount() {
-    console.log("RONI RONI RONI RONI ORNI");
-    console.log(this.state.idOfTrack);
-    console.log(this.props.idOfTrack);
     let userid = JSON.parse(sessionStorage.getItem('userDetails'));
-		console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
-		this.onLoadPosition();
+    console.log(`Entered <Map> componentDidMount(), fetching userid: ${userid}`);
+    this.onLoadPosition();
 
     // Get the user details from database
     axios.get(`${originURL}user/getAccountDetails/${userid}`)
       .then(response => {
-				this.setState({userDetails: response.data});
+        this.setState({ userDetails: response.data });
         this.onLoadPosition();
-        this.setState({ loading: true, isLoadingIdOfTrack: false });
+        this.setState({ loading: true });
 
         console.log(response.data);
       })
@@ -103,68 +95,68 @@ class Map extends Component {
     // NotificationManager.warning(message, title, timeOut, callback, priority);
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
-  
+
   // componentWillUnmount() {
   // }
 
 
-	// directionsCallback = response => {
-  directionsCallback(response){
-		console.log("in direectionsCallBack");
-		if (this.state.response === null) {
-			if (response !== null) {
-				if (response.status === 'OK') {
+  // directionsCallback = response => {
+  directionsCallback(response) {
+    console.log("in direectionsCallBack");
+    if (this.state.response === null) {
+      if (response !== null) {
+        if (response.status === 'OK') {
 
-					this.setState(
-						() => ({
-							response
-						})
-					)
-				} else {
-					console.error('response === null');
-				}
-			}
-		}
+          this.setState(
+            () => ({
+              response
+            })
+          )
+        } else {
+          console.error('response === null');
+        }
+      }
+    }
   }
 
-  onLoadPosition(){
+  onLoadPosition() {
     // currentPosition & watchPoisition options
     var options = {
       enableHighAccuracy: true,
       timeout: 500,
-			maximumAge: 0
-		  };
+      maximumAge: 0
+    };
     if (navigator.geolocation) {
       // Get Current Position
       navigator.geolocation.getCurrentPosition((pos) => {
         let lat = parseFloat(pos.coords.latitude);
         let lng = parseFloat(pos.coords.longitude);
-        
+
         this.setState({ CurrentPosition: { lat: lat, lng: lng } });
         console.log(`Current Position: `);
         console.log(this.state.CurrentPosition);
 
         // Check Position Update 
-				this.watchID = navigator.geolocation.watchPosition((pos) => {
+        this.watchID = navigator.geolocation.watchPosition((pos) => {
           let lat = parseFloat(pos.coords.latitude);
           let lng = parseFloat(pos.coords.longitude);
-					if (lat === this.state.UpdatedPosition.lat && lng === this.state.UpdatedPosition.lng) return;
-          if (pos.timestamp === this.state.timestamp ) return;
-          
-					// if (pos.coords.accuracy < 100) navigator.geolocation.clearWatch(this.watchID);
-					this.setState({ timestamp: pos.timestamp});
+          if (lat === this.state.UpdatedPosition.lat && lng === this.state.UpdatedPosition.lng) return;
+          if (pos.timestamp === this.state.timestamp) return;
+
+          // if (pos.coords.accuracy < 100) navigator.geolocation.clearWatch(this.watchID);
+          this.setState({ timestamp: pos.timestamp });
           this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
 
           // Create new 'p' elemnt to print updated location
           this.newElement = document.createElement('p');
-          this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          
+          this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;
           this.newLocation.appendChild(this.newElement);
           console.log("watching");
 
           // *** Bluetooth ***
-          
+
           // indicate the route (for all steps)
-          if (this.state.response !== null){
+          if (this.state.response !== null) {
             this.state.response.routes[0].legs.forEach(leg => {
               // calculate the meters from current location to the next turn
               //while (this.state.UpdatedPosition.lat != leg.steps[leg.steps.length].end_location.lat() && this.state.UpdatedPosition.lng != leg.steps[leg.steps.length].end_location.lng()) { 
@@ -222,7 +214,7 @@ class Map extends Component {
           }
 
           // *** Bluetooth ***
-          
+
         }, (err) => {
           console.error(`ERROR(${err.code}): ${err.message}`);
         }, options);
@@ -240,156 +232,155 @@ class Map extends Component {
   // }
 
 
-//   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
-//     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
+  //   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
+  //     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
 
-// {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
+  // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
-getWayPoints(wayPoints){
-  let html=[];
-  console.log("wayPoints:");
-  console.log(wayPoints);
+  getWayPoints(wayPoints) {
+    let html = [];
+    console.log("TESTTEST");
+    console.log(`wayPoints: ${wayPoints}`);
 
-  if(wayPoints.length != 0){
-    for (let i = 0; i < wayPoints.length; i++) {
-      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longitude }});
+    if (wayPoints.length != 0) {
+      for (let i = 0; i < wayPoints.length; i++) {
+        html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
+      }
     }
+    return html;
   }
-  return html;
-}
 
-onPolylineComplete = (polyline) => {
-  console.log(polyline.getPath().getArray());
-}
+  render() {
+    const { loading } = this.state;
 
-render() {
-  const {loading} = this.state;
-  const trackId = this.props.track.id;
-  // const {loading} = true;
+    // const {loading} = true;
+
     return (
-     <div style={{   
-          margin: "0 auto",  
-          // border: '2px solid red',
-          height: "400px",
-          maxWidth: "90%"}}>
-        {this.state.loading ? 
+      <div style={{
+        margin: "0 auto",
+        // border: '2px solid red',
+        height: "400px",
+        maxWidth: "90%"
+      }}>
+        {this.state.loading ?
           (<div className="load-container">
-          
-          <LoadScript
-            id="script-loader"
-            googleMapsApiKey={getGoogleApiKey()}
-            onError={this.onLoadScriptError}
-            onLoad={this.onLoadScriptSuccess}
-            language="en"
-            version="3.36"
-            region="en"
+
+            <LoadScript
+              id="script-loader"
+              googleMapsApiKey={getGoogleApiKey()}
+              onError={this.onLoadScriptError}
+              onLoad={this.onLoadScriptSuccess}
+              language="en"
+              version="3.36"
+              region="en"
               libraries={this.mode}
-          >
-
-          <div className="map-container">
-            <GoogleMap
-            id='example-map'
-            onLoad={this.onGoogleMapSuccess}
-            center={this.state.CurrentPosition}
-            // clickableIcons={true}
-            mapContainerStyle={{
-              margin: "0 auto",
-              height: "400px",
-              width: "100%"
-            }}
-            //   onBoundsChanged={}
-            //   onCenterChanged={}
-            // onClick={this.onGoogleMapClick}
-            //   onDblClick={}
-            //   options={}
-						// Max Zoom: 0 to 18
-            zoom={this.state.zoom}
-            onZoomChanged={ (e) => {console.log(e);}}
             >
-              <DrawingManager
-                onLoad={drawingManager => {
-                  console.log(drawingManager)
-                }}
-                onPolylineComplete={this.onPolylineComplete}
-              />
-           
 
-              <Marker
-                  position={this.state.UpdatedPosition}
-                  icon={`/images/map-marker-icon3.png`}
+              <div className="map-container">
+                <GoogleMap
+                  id='example-map'
+                  onLoad={this.onGoogleMapSuccess}
+                  center={this.state.CurrentPosition}
+                  // clickableIcons={true}
+                  mapContainerStyle={{
+                    margin: "0 auto",
+                    height: "400px",
+                    width: "100%"
+                  }}
+                  //   onBoundsChanged={}
+                  //   onCenterChanged={}
+                  // onClick={this.onGoogleMapClick}
+                  //   onDblClick={}
+                  //   options={}
+                  // Max Zoom: 0 to 18
+                  zoom={10}
+                >
+
+                  <Marker
+                    position={this.state.UpdatedPosition}
+                    icon={`/images/map-marker-icon3.png`}
                   >
-              </Marker>
-              (
-                this.state.response === null
-              ) && (
-                <DirectionsService
-                options={{
-                  // origin: LatLng | String | google.maps.Place,
-                  // destination: LatLng | String | google.maps.Place,
-                  // travelMode: TravelMode,
-                  // transitOptions: TransitOptions,
-                  // drivingOptions: DrivingOptions,
-                  // unitSystem: UnitSystem,
-                  // waypoints[]: DirectionsWaypoint,
-                  // optimizeWaypoints: Boolean,
-                  // provideRouteAlternatives: Boolean,
-                  avoidFerries: true,
-                  avoidHighways: true,
-                  avoidTolls: true,
-                  // region: String
-                  // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                  // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
-                  // waypoints: this.props.track.wayPoints ? this.getWayPoints(this.props.track.wayPoints) : null,
-                  waypoints: this.getWayPoints(this.props.track.wayPoints),
-                  // travelMode: this.props.track.type.toUpperCase() }}
-                  // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                  // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
-                  origin: this.props.track.startPoint,
-                  destination: this.props.track.endPoint,
-                  // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
-                  // travelMode: this.props.track.type.toUpperCase() }}
-                  travelMode: this.props.track.travelMode.toUpperCase(),
-                  drivingOptions: {
-                    departureTime: new Date(Date.now()),
-                    trafficModel: 'bestguess' 
-                  },
-                  optimizeWaypoints: true
-                }}
-                  callback={this.directionsCallback}
-                />
-              )
-                
-                {
-                  this.state.response != null &&
-                  (
-                    <DirectionsRenderer
-                      options={{ directions: this.state.response }}
-                    />
-                    
-                  )
-                }
-              
-            </GoogleMap>
-          </div>
-        </LoadScript>
-            <div className="buttons">
-              {
-                !this.state.isLoadingIdOfTrack && (
-                <button id="disconnect" onClick={this.postNavifation} type="button" aria-label="Disconnect">
-                <NavLink to=
-                //navigate to TrackDestails via TemplateComponent with the params
-                {{pathname: `${process.env.PUBLIC_URL}/post`, 
-                  idOfTrack: trackId,
-                  actualTime:45}}
-                  activeStyle={this.active} 
-                  style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  className="btn btn-primary" >Post Navigator</NavLink>
-                </button>)
-              }
-            
+                  </Marker>
+                  {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
+                  {typeof this.props.track.startPoint.city !== "undefined" ?
+                    (
+                      (
+                        this.state.response === null
+                      ) && (
+                        <DirectionsService
+                          options={{
+                            origin: this.props.track.startPoint.city,
+                            destination: this.props.track.endPoint.city,
+                            waypoints: this.getWayPoints(this.props.track.wayPoints),
+                            travelMode: this.props.track.travelMode.toUpperCase(),
+                            drivingOptions: {
+                              departureTime: new Date(Date.now()),
+                              trafficModel: 'bestguess'
+                            },
+                            optimizeWaypoints: true
+                          }}
+                          callback={this.directionsCallback}
+                        />
+                      )
+                    )
+                    :
+                    (
 
-            </div>
-      </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
+                      (
+                        this.state.response === null
+                      ) && (
+                        <DirectionsService
+                          options={{
+                            // origin: LatLng | String | google.maps.Place,
+                            // destination: LatLng | String | google.maps.Place,
+                            // travelMode: TravelMode,
+                            // transitOptions: TransitOptions,
+                            // drivingOptions: DrivingOptions,
+                            // unitSystem: UnitSystem,
+                            // waypoints[]: DirectionsWaypoint,
+                            // optimizeWaypoints: Boolean,
+                            // provideRouteAlternatives: Boolean,
+                            avoidFerries: true,
+                            avoidHighways: true,
+                            avoidTolls: true,
+                            // region: String
+                            // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
+                            // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
+                            waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
+                            // travelMode: this.props.track.type.toUpperCase() }}
+                            // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
+                            // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
+                            origin: this.props.track.startPoint,
+                            destination: this.props.track.endPoint,
+                            // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
+                            // travelMode: this.props.track.type.toUpperCase() }}
+                            travelMode: this.props.track.travelMode,
+                            drivingOptions: {
+                              departureTime: new Date(Date.now()),
+                              trafficModel: 'bestguess'
+                            },
+                            optimizeWaypoints: true
+                          }}
+                          callback={this.directionsCallback}
+                        />
+                      )
+                    )
+                  }
+
+                  {
+                    this.state.response != null &&
+                    (
+                      <DirectionsRenderer
+                        options={{ directions: this.state.response }}
+                      />
+
+                    )
+                  }
+
+                </GoogleMap>
+              </div>
+            </LoadScript>
+          </div>) : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
       </div>
     );
   }

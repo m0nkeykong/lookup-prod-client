@@ -331,7 +331,7 @@ class CustomTrack extends Component {
           </InputGroup>
 
           <Card.Header>
-            <h6> Live Navigation Map </h6>
+            <h6> Planning Map </h6>
           </Card.Header>
           <Card.Body>
             <div style={{
