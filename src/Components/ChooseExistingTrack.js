@@ -292,26 +292,14 @@ class ChooseExistingTrack extends Component {
                 {
                   this.state.userDetails.accessibility == '2' ?
                   (
-                    <div>
-                      <h6>Choose Difficulty Level</h6>
-                      <div className="row rating">     
-                          <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="4_stars">4 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="3_stars">3 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="2_stars">2 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="1_stars">1 star</label>
-                          <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="0_stars">0 star</label>
-                      </div>
+                    <div className="container">
+                      <img alt="HeaderLogo" style={this.logo} src='../../images/stars.PNG'></img>
                     </div>
-
                   ) 
                   :
                   (
                     <div>
+                    <h6>Choose Difficulty Level</h6>
                       <div className="row rating">     
                           <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} checked/>
                           <label className="stars" htmlFor="4_stars">4 stars</label>
