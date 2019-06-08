@@ -293,7 +293,7 @@ class ChooseExistingTrack extends Component {
                   this.state.userDetails.accessibility == '2' ?
                   (
                     <div className="container">
-                      <img alt="HeaderLogo" style={this.logo} src='../../images/stars.PNG'></img>
+                      <img alt="HeaderLogo" style={this.logo} src='../../images/start.jpg'></img>
                     </div>
                   ) 
                   :
