@@ -1,5 +1,6 @@
 import * as consts from './consts';
 
+//const originURL = 'https://db.lookup.band/';
 export const originURL = 'http://localhost:3000/';
 
 export const getTrackByIdURL = (trackId = '5c7bca6ef318fa537c9c6dbe') => {

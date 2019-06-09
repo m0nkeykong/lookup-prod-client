@@ -7,7 +7,6 @@ import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api
 import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup} from 'react-bootstrap';
 import IoIosLocation from 'react-icons/lib/io/ios-location';
 import { fetchDataHandleError, originURL } from '../globalService';
-
 import LiveNavigation from './LiveNavigation';
 import {getGoogleApiKey} from '../globalService';
 import './style/AutoGenerateTrack.css';
