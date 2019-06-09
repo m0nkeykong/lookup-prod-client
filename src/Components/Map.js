@@ -241,7 +241,6 @@ class Map extends Component {
 
   getWayPoints(wayPoints) {
     let html = [];
-    console.log("TESTTEST");
     console.log(`wayPoints: ${wayPoints}`);
 
     if (wayPoints.length != 0) {

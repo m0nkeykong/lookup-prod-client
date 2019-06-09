@@ -192,10 +192,10 @@ class BLEController {
      * @private
      */
     _connectToDevice = (device) => {
-        return (device ? Promise.resolve(device) : this._requestBluetoothDevice()).
-            then((device) => this._connectDeviceAndCacheCharacteristic(device)).
-            then((characteristic) => this._startNotifications(characteristic)).
-            catch((error) => {
+        return (device ? Promise.resolve(device) : this._requestBluetoothDevice())
+        .then((device) => this._connectDeviceAndCacheCharacteristic(device))
+        .then((characteristic) => this._startNotifications(characteristic))
+        .catch((error) => {
                 this._log(error);
                 return Promise.reject(error);
             });
@@ -233,8 +233,7 @@ class BLEController {
 
         return navigator.bluetooth.requestDevice({
             filters: [{ services: [this._serviceUuid] }],
-        }).
-            then((device) => {
+        }).then((device) => {
                 this._log('"' + device.name + '" bluetooth device selected');
                 this._device = device; // Remember device.
                 this._device.addEventListener('gattserverdisconnected', this._boundHandleDisconnection);
@@ -256,16 +255,14 @@ class BLEController {
 
         this._log('Connecting to GATT server...');
 
-        return device.gatt.connect().
-            then((server) => {
+        return device.gatt.connect()
+        .then((server) => {
                 this._log('GATT server connected', 'Getting service...');
                 return server.getPrimaryService(this._serviceUuid);
-            }).
-            then((service) => {
+            }).then((service) => {
                 this._log('Service found', 'Getting characteristic...');
                 return service.getCharacteristic(this._characteristicUuid);
-            }).
-            then((characteristic) => {
+            }).then((characteristic) => {
                 this._log('Characteristic found');
                 this._characteristic = characteristic; // Remember characteristic.
                 return this._characteristic;
@@ -281,8 +278,8 @@ class BLEController {
     _startNotifications = (characteristic) => {
         this._log('Starting notifications...');
 
-        return characteristic.startNotifications().
-            then(() => {
+        return characteristic.startNotifications()
+        .then(() => {
                 this._log('Notifications started');
                 characteristic.addEventListener('characteristicvaluechanged', this._boundHandleCharacteristicValueChanged);
             });
@@ -297,8 +294,8 @@ class BLEController {
     _stopNotifications = (characteristic) => {
         this._log('Stopping notifications...');
 
-        return characteristic.stopNotifications().
-            then(() => {
+        return characteristic.stopNotifications()
+        .then(() => {
                 this._log('Notifications stopped');
                 characteristic.removeEventListener('characteristicvaluechanged', this._boundHandleCharacteristicValueChanged);
             });
@@ -313,9 +310,9 @@ class BLEController {
         const device = event.target;
 
         this._log('"' + device.name + '" bluetooth device disconnected, trying to reconnect...');
-        this._connectDeviceAndCacheCharacteristic(device).
-            then((characteristic) => this._startNotifications(characteristic)).
-            catch((error) => this._log(error));
+        this._connectDeviceAndCacheCharacteristic(device)
+        .then((characteristic) => this._startNotifications(characteristic))
+        .catch((error) => this._log(error));
     }
 
     /**
