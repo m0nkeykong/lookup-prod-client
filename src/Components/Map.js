@@ -122,7 +122,9 @@ class Map extends Component {
     console.log(" <LoadScript/> Error ");
   }
 
-  onGoogleMapSuccess(){
+  onGoogleMapSuccess(map){
+    this.setState({ map: map});
+
     console.log(" <GoogleMap/> Success ");
   }
 
@@ -351,8 +353,8 @@ render() {
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
-            zoom={this.state.zoom}
-            onZoomChanged={ (e) => {console.log(e);}}
+            zoom={ 15 || this.state.map.getZoom()}
+            onZoomChanged={ () =>{ console.log(this.state.map.getZoom()); }}
             >
               <DrawingManager
                 onLoad={drawingManager => {
