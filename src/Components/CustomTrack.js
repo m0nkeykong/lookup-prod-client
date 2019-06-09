@@ -4,7 +4,7 @@ import axios from 'axios';
 import Geocode from 'react-geocode';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, DirectionsService, DrawingManager } from '@react-google-maps/api';
-import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup } from 'react-bootstrap';
+import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup, Alert } from 'react-bootstrap';
 import IoIosLocation from 'react-icons/lib/io/ios-location';
 import { fetchDataHandleError, originURL } from '../globalService';
 import LiveNavigation from './LiveNavigation';
@@ -18,11 +18,12 @@ import Menu from './Menu';
 
   1. need to fix the directionsCallback.   - FIXED ***
   2. need to adjust the bluetooth buttons location
-  3. needs to see that all is getting saved in DB
+  3. needs to see that all is getting saved in DB - FIXED ***
   4. needs to fix the re-letter on markers after removing one
-  5. needs to add search
-  6. change saving of marker parameters in an outside var in state
-  7. add check that if the user didnt add adlist 2 points - done allow to build route
+  5. needs to add search - FIXED ***
+  6. change saving of marker parameters in an outside var in state - FIXED ***
+  7. add check that if the user didnt add adlist 2 points - done allow to build route - FIXED ***
+  8. handle BLE errors (not supported browser, canceled search)
 
 
 // **********************************/
@@ -32,20 +33,20 @@ var ee = new EventEmitter();
 class CustomTrack extends Component {
   constructor(props) {
     super(props);
+    this._map = null;
     this.state = {
       userResponse: null,
       directionsResponse: null,
       userDetails: [],
-      isGenerated: false,
+      isCustomGenerated: false,
       isCustomGenerated: false,
       loading: true,
       startLiveNavigation: false,
       searchInput: '',
-      curMap: '',
       mapVars: {
         zoom: 10,
-        longitute: 34.815498,
-        latitute: 32.083549
+        longitude: 34.815498,
+        latitude: 32.083549
       },
 
       showModal: false,
@@ -93,16 +94,13 @@ class CustomTrack extends Component {
     this.getTrackDetails = this.getTrackDetails.bind(this);
 
 
-    this.onMarkerMounted = element => {
-      this.setState(prevState => ({
-        markerObjects: [...prevState.markerObjects, element]
-      }))
-    };
+    this.onMarkerMounted = this.onMarkerMounted.bind(this);
   }
+
 
   componentDidMount() {
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <CustomeGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
     axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
@@ -113,6 +111,12 @@ class CustomTrack extends Component {
       .catch(error => {
         console.error(error);
       });
+  }
+
+  onMarkerMounted(element) {
+    this.setState(prevState => ({
+      markerObjects: [...prevState.markerObjects, element]
+    }))
   }
 
   // Handle the input change
@@ -167,13 +171,30 @@ class CustomTrack extends Component {
 
   // Handle search address request
   searchAddress() {
+    if (this.state.searchInput !== '') {
     console.log("search requested for: " + this.state.searchInput);
-    
-    
-    
-    console.log("zooming map on query...");
 
-    
+    // convert address from user to lat\lng
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.state.searchInput + '&key=' + getGoogleApiKey())
+      .then((response) => {
+        return response.json();
+      })
+      .then((myJson) => {
+        console.log(myJson.results[0].geometry.location);
+        console.log("zooming map on query...");
+        let lat = myJson.results[0].geometry.location.lat;
+        let lng = myJson.results[0].geometry.location.lng;
+        
+        // update map location accordingly
+        this.setState((prevState) => ({
+          ...prevState,
+          mapVars: { longitude: lng, latitude: lat, 'zoom': 19 }
+        }))
+      });
+    } else {
+      console.log("User did not enter query for search, alerting");
+      alert("Please enter an address to search");
+    }
   }
 
   // Handle the radio change
@@ -192,6 +213,7 @@ class CustomTrack extends Component {
   handleSubmit(e) {
     e.persist();
     e.preventDefault();
+    if (this.state.markerPoints.length >= 2) {
     // here, the user asked to start to build the route
     // split all the markers by points
 
@@ -236,13 +258,17 @@ class CustomTrack extends Component {
     console.log(wpArr);
     
     // After track created, set state to load Modal
-    this.setState({ isGenerated: true });
+    this.setState({ isCustomGenerated: true });
     this.handleShowModal();
+    } else {
+      console.log('User entered only 1 point, alerting');
+      alert("Whoops! Please enter at least two point to navigate");
+    }
   }
 
   // Handle the close modal request
   handleCloseModal() {
-    this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
+    this.setState({ showModal: false, isCustomGenerated: false, directionsResponse: null });
   }
 
   // Handle the show modal event
@@ -252,7 +278,7 @@ class CustomTrack extends Component {
 
   // Handle the discard modal event
   handleResetModal() {
-    this.setState({ showModal: false, isGenerated: false, directionsResponse: null });
+    this.setState({ showModal: false, isCustomGenerated: false, directionsResponse: null });
     this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '', wayPoints: [] } })
     this.state.markerObjects.forEach((marker) => {
       marker.setMap(null);
@@ -335,6 +361,8 @@ class CustomTrack extends Component {
             </Modal.Body>
 
             <Modal.Footer>
+              {console.log("GENERATED TRACK IS HERE:")}
+              {console.log(this.state)}
               <NavLink to={{ pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state }}>
                 <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
               </NavLink>
@@ -354,20 +382,20 @@ class CustomTrack extends Component {
   showTrackForm() {
     return (
       <Card.Body>
-        <Form onSubmit={e => this.handleSubmit(e)}>
+        
           <Card.Title>
             <h6> Search </h6>
           </Card.Title>
-
+          <p id='searchAlert'></p>
+          
           <InputGroup className="mb-3">
-            {/*<Form.Label>Origin</Form.Label>*/}
-            {/* @TODO: Let the user choose location from auto complete input */}
             <InputGroup.Append>
               <Button title="Search" onClick={this.searchAddress}> Search </Button>
             </InputGroup.Append>
             <Form.Control name="searchInput" type="text" placeholder="Enter Address" onChange={this.handleSearchInputChange}/>
           </InputGroup>
-
+        
+        <Form onSubmit={e => this.handleSubmit(e)}>
           <Card.Header>
             <h6> Planning Map </h6>
           </Card.Header>
@@ -388,7 +416,7 @@ class CustomTrack extends Component {
                 region="US"
                 libraries={this.mode}
               >
-                <GoogleMap
+                <GoogleMap ref={map => this._map = map}
                   id="circle-example"
                   mapContainerStyle={{
                     margin: "0 auto",
@@ -397,18 +425,28 @@ class CustomTrack extends Component {
                   }}
                   zoom={this.state.mapVars.zoom}
                   center={{
-                    lat: this.state.mapVars.latitute,
-                    lng: this.state.mapVars.longitute
+                    lat: this.state.mapVars.latitude,
+                    lng: this.state.mapVars.longitude
                   }}
 
-                  onZoomChanged={(zoom) => {
-                    console.log(zoom.zoom);
+                  onZoomChanged={() => {
+                    this.setState((prevState) => ({
+                      ...prevState,
+                      mapVars: { ...prevState.mapVars, ['zoom']: this._map.state.map.zoom },
+                    }))
                   }}
-                >
+                  onDragEnd={() => {
+                    this.setState((prevState) => ({
+                      ...prevState,
+                      mapVars: { ...prevState.mapVars, 
+                        ['latitude']: this._map.state.map.center.lat(),
+                        ['longitude']: this._map.state.map.center.lng()
+                       },
+                    }))
+                    }}
+                  >
                   <DrawingManager
                     onLoad={drawingManager => {
-                      console.log(drawingManager);
-
                       drawingManager.setOptions({
                         drawingControlOptions: {
                           drawingModes: ['marker']
@@ -450,7 +488,7 @@ class CustomTrack extends Component {
                       let Lng = objLatLng[1].toString();
 
                       // echo to console for checks
-                      console.log("lat: " + Lat + "  Lng: " + Lng);
+                      console.log("lat: " + Lat + "  lng: " + Lng);
                       console.log("marker " + marker.get("id") + " has been placed by user");
 
                       // create marker lat\lng object at waypoints array
@@ -486,37 +524,48 @@ class CustomTrack extends Component {
                       // handle click on marker - remove it from waypoints
                       // -------------------------------------------------------
                       marker.addListener('click', () => {
+                        // unmount marker from map
                         marker.setMap(null);
-                        console.log("marker " + marker.get("id") + " has been removed by user");
+                        
+
+                        // remove marker from markers array
+                        for (let i = 0; i < this.state.markerObjects.length; i++) {
+                          if (this.state.markerObjects[i].getPosition().equals(marker.getPosition())) {
+                            this.state.markerObjects.splice(i, 1);
+                          }
+                        }
 
                         // remove marker from waypoints array
                         let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints))
 
-                        // handle to iterator to fix the markers\waypoints indexes
-                        // check for bugs
                         for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
                           wayPts[i] = wayPts[i + 1];
                         }
+
                         wayPts.splice(wayPts.length - 1, 1);
-
+                        
                         // update in state
-                        this.setState(prevState => ({
+                        this.setState({
                           markerPoints: wayPts
-                        }));
-
-                        // this loop needs to be called in each marker - this will update its marker index letter
-                        // *** this needs to be checked regarding the letter update of waypoints *** //
-                        this.state.markerObjects.forEach((mrkr) => {
-                          mrkr.setOptions({
-                            label: {
-                              color: 'white',
-                              fontWeight: 'bold',
-                              fontSize: '10px',
-                              text: nextChar(marker.get("id"))
-                            }
-                          });
                         });
-                        //console.log(this.state.markerObjects);
+
+                        //this loop updates the markers index letters
+                        for (let i = 0; i < this.state.markerObjects.length - 1; ++i) {
+                          for (let j = 0; j < wayPts.length - 1; ++j){
+                            if (this.state.markerObjects[i].getPosition().lat() == parseFloat(wayPts[j].lat) && this.state.markerObjects[i].getPosition().lng() == parseFloat(wayPts[j].lng)){
+                              this.state.markerObjects[i].setOptions({
+                                label: {
+                                  color: 'white',
+                                  fontWeight: 'bold',
+                                  fontSize: '10px',
+                                  text: nextChar(wayPts[j].id)
+                                }
+                              });
+                            }
+                          }
+                        }
+
+                        console.log("marker " + marker.get("id") + " has been removed by user");
                       });
                       // -------------------------------------------------------
                     }}
@@ -556,7 +605,7 @@ class CustomTrack extends Component {
           <br />
 
           <Card.Title>
-            <h6> Additional settings </h6>
+            <h6> Required Settings </h6>
           </Card.Title>
 
           <Form.Group>
@@ -602,7 +651,7 @@ class CustomTrack extends Component {
                     this.setPoints();
                   }
                   }
-                >
+            >
                 </DirectionsService>
               }
             </GoogleMap>
@@ -705,25 +754,25 @@ class CustomTrack extends Component {
         <Card className="text-center">
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
-          <Menu currentPage={"Auto Generate"}> </Menu>
+          <Menu currentPage={"Custom Track"}> </Menu>
           {/* {!this.state.loading && this.showMenu()} */}
 
           {/* Page BreadCrumbs */}
           <Breadcrumb>
             <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
             <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
-            <Breadcrumb.Item active>Auto</Breadcrumb.Item>
+            <Breadcrumb.Item active>Custom</Breadcrumb.Item>
           </Breadcrumb>
 
           {/* Show Generate Track Form When Page Stop Loading sessionStorage */}
           {this.state.userResponse && this.showTrackForm()}
 
           {/* Generated Track Modal */}
-          {this.state.isGenerated && this.showTrackModal()}
+          {this.state.isCustomGenerated && this.showTrackModal()}
 
           <Card.Body>
             {/* Send Directions API Request Only When The User Send The Required Track Details Form */}
-            {this.state.isGenerated && this.directionsRequest()}
+            {this.state.isCustomGenerated && this.directionsRequest()}
           </Card.Body>
 
           <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
