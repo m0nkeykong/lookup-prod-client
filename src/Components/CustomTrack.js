@@ -16,12 +16,13 @@ import Menu from './Menu';
 
 /*/ **********************************
 
-  1. need to fix the directionsCallback.
+  1. need to fix the directionsCallback.   - FIXED ***
   2. need to adjust the bluetooth buttons location
   3. needs to see that all is getting saved in DB
   4. needs to fix the re-letter on markers after removing one
   5. needs to add search
   6. change saving of marker parameters in an outside var in state
+  7. add check that if the user didnt add adlist 2 points - done allow to build route
 
 
 // **********************************/
@@ -39,6 +40,13 @@ class CustomTrack extends Component {
       isCustomGenerated: false,
       loading: true,
       startLiveNavigation: false,
+      searchInput: '',
+      curMap: '',
+      mapVars: {
+        zoom: 10,
+        longitute: 34.815498,
+        latitute: 32.083549
+      },
 
       showModal: false,
 
@@ -71,6 +79,7 @@ class CustomTrack extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
 
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
@@ -132,9 +141,39 @@ class CustomTrack extends Component {
     }
   }
 
+  // Handle the search input change
+  handleSearchInputChange(e) {
+    e.persist();
+    console.log(e);
+    if (e.target.value !== '') {
+      this.setState(
+        (prevState) => ({
+          [e.target.name]: e.target.value
+        }), () => {
+          console.log(this.state.searchInput);
+        }
+      )
+    }
+    else {
+      this.setState(
+        (prevState) => ({
+          [e.target.name]: ''
+        }), () => {
+          console.log(this.state.searchInput);
+        }
+      )
+    }
+  }
+
   // Handle search address request
   searchAddress() {
-    console.log("search requested");
+    console.log("search requested for: " + this.state.searchInput);
+    
+    
+    
+    console.log("zooming map on query...");
+
+    
   }
 
   // Handle the radio change
@@ -208,7 +247,6 @@ class CustomTrack extends Component {
 
   // Handle the show modal event
   handleShowModal() {
-  
     this.setState({ showModal: true });
   }
 
@@ -327,7 +365,7 @@ class CustomTrack extends Component {
             <InputGroup.Append>
               <Button title="Search" onClick={this.searchAddress}> Search </Button>
             </InputGroup.Append>
-            <Form.Control type="text" placeholder="Enter Address" />
+            <Form.Control name="searchInput" type="text" placeholder="Enter Address" onChange={this.handleSearchInputChange}/>
           </InputGroup>
 
           <Card.Header>
@@ -357,10 +395,14 @@ class CustomTrack extends Component {
                     height: "400px",
                     width: "100%"
                   }}
-                  zoom={10}
+                  zoom={this.state.mapVars.zoom}
                   center={{
-                    lat: 32.083549,
-                    lng: 34.815498
+                    lat: this.state.mapVars.latitute,
+                    lng: this.state.mapVars.longitute
+                  }}
+
+                  onZoomChanged={(zoom) => {
+                    console.log(zoom.zoom);
                   }}
                 >
                   <DrawingManager
@@ -464,16 +506,16 @@ class CustomTrack extends Component {
 
                         // this loop needs to be called in each marker - this will update its marker index letter
                         // *** this needs to be checked regarding the letter update of waypoints *** //
-                        // this.state.markerObjects.forEach((mrkr) => {
-                        //   mrkr.setOptions({
-                        //     label: {
-                        //       color: 'white',
-                        //       fontWeight: 'bold',
-                        //       fontSize: '10px',
-                        //       text: nextChar(marker.get("id"))
-                        //     }
-                        //   });
-                        // });
+                        this.state.markerObjects.forEach((mrkr) => {
+                          mrkr.setOptions({
+                            label: {
+                              color: 'white',
+                              fontWeight: 'bold',
+                              fontSize: '10px',
+                              text: nextChar(marker.get("id"))
+                            }
+                          });
+                        });
                         //console.log(this.state.markerObjects);
                       });
                       // -------------------------------------------------------
