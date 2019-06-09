@@ -11,6 +11,8 @@ import LiveNavigation from './LiveNavigation';
 import { getGoogleApiKey } from '../globalService';
 import './style/AutoGenerateTrack.css';
 import Menu from './Menu';
+import { lookup } from 'dns';
+const _ = require('lodash');
 
 
 
@@ -95,8 +97,124 @@ class CustomTrack extends Component {
 
 
     this.onMarkerMounted = this.onMarkerMounted.bind(this);
+    this.handleMarker = this.handleMarker.bind(this);
   }
 
+  handleMarker(marker) {
+
+    // save marker into marker array
+    this.onMarkerMounted(marker);
+
+    marker.setOptions({
+      draggable: true
+    });
+
+    // set attributes for marker
+    marker.set("type", "point");
+
+    // update the marker id
+    marker.set("id", this.state.markerObjects.length);
+
+    // get marker id in Char
+    marker.setOptions({
+      label: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: '10px',
+        text: nextChar(marker.get("id"))
+      }
+    });
+
+    // get the lng and lat as string
+    let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+    let Lat = objLatLng[0].toString();
+    let Lng = objLatLng[1].toString();
+
+    // echo to console for checks
+    console.log("lat: " + Lat + "  lng: " + Lng);
+    console.log("marker " + marker.get("id") + " has been placed by user");
+
+    // create marker lat\lng object at waypoints array
+    let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
+    this.setState(prevState => ({
+      markerPoints: [...prevState.markerPoints, mrkrwaypt]
+    }));
+
+
+    // handle marker location change
+    // -------------------------------------------------------
+    marker.addListener('dragend', () => {
+      let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
+      let Lat = objLatLng[0].toString();
+      let Lng = objLatLng[1].toString();
+      console.log("lat: " + Lat + "   Lng: " + Lng);
+      console.log("marker " + marker.get("id") + " has been moved to a different location");
+      let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
+
+      // update marker lat\lng at waypoints array
+      let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
+      wayPts[marker.get('id')] = mrkrwaypt;
+
+      this.setState(prevState => ({
+        markerPoints: wayPts
+      }));
+
+      console.log(this.state.markerPoints);
+    });
+    // -------------------------------------------------------
+
+
+    // handle click on marker - remove it from waypoints
+    // -------------------------------------------------------
+    marker.addListener('click', () => {
+      // unmount marker from map
+      marker.setMap(null);
+
+      // remove marker from markers array
+      for (let i = 0; i < this.state.markerObjects.length; i++) {
+        if (this.state.markerObjects[i].getPosition().equals(marker.getPosition())) {
+          this.state.markerObjects.splice(i, 1);
+        }
+      }
+
+      // remove marker from waypoints array
+      let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints))
+
+      for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
+        wayPts[i] = wayPts[i + 1];
+      }
+
+      wayPts.splice(wayPts.length - 1, 1);
+
+      // update in state
+      this.setState({
+        markerPoints: wayPts
+      });
+
+      //this loop updates the markers index letters
+      for (let i = 0; i < this.state.markerObjects.length; ++i) {
+        console.log()
+        for (let j = 0; j < wayPts.length; ++j) {
+          let markerObj = { lat: parseFloat(this.state.markerObjects[i].getPosition().lat()), lng: parseFloat(this.state.markerObjects[i].getPosition().lng()) };
+          let wayPtsObj = { lat: parseFloat(wayPts[j].lat), lng: parseFloat(wayPts[j].lng) };
+          if (_.isEqual(markerObj, wayPtsObj)) {
+            console.log("found");
+            this.state.markerObjects[i].setOptions({
+              label: {
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: '10px',
+                text: (wayPts[j].id).toString()
+              }
+            });
+          }
+        }
+      }
+
+      console.log("marker " + marker.get("id") + " has been removed by user");
+    });
+    // -------------------------------------------------------
+  }
 
   componentDidMount() {
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -457,118 +575,7 @@ class CustomTrack extends Component {
 
                     // handle marker addition
                     // ******************************************************************
-                    onMarkerComplete={(marker) => {
-
-                      // save marker into marker array
-                      this.onMarkerMounted(marker);
-
-                      marker.setOptions({
-                        draggable: true
-                      });
-
-                      // set attributes for marker
-                      marker.set("type", "point");
-
-                      // update the marker id
-                      marker.set("id", this.state.markerObjects.length);
-
-                      // get marker id in Char
-                      marker.setOptions({
-                        label: {
-                          color: 'white',
-                          fontWeight: 'bold',
-                          fontSize: '10px',
-                          text: nextChar(marker.get("id"))
-                        }
-                      });
-
-                      // get the lng and lat as string
-                      let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
-                      let Lat = objLatLng[0].toString();
-                      let Lng = objLatLng[1].toString();
-
-                      // echo to console for checks
-                      console.log("lat: " + Lat + "  lng: " + Lng);
-                      console.log("marker " + marker.get("id") + " has been placed by user");
-
-                      // create marker lat\lng object at waypoints array
-                      let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
-                      this.setState(prevState => ({
-                        markerPoints: [...prevState.markerPoints, mrkrwaypt]
-                      }));
-
-
-                      // handle marker location change
-                      // -------------------------------------------------------
-                      marker.addListener('dragend', () => {
-                        let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
-                        let Lat = objLatLng[0].toString();
-                        let Lng = objLatLng[1].toString();
-                        console.log("lat: " + Lat + "   Lng: " + Lng);
-                        console.log("marker " + marker.get("id") + " has been moved to a different location");
-                        let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
-
-                        // update marker lat\lng at waypoints array
-                        let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
-                        wayPts[marker.get('id')] = mrkrwaypt;
-                        
-                        this.setState(prevState => ({
-                          markerPoints: wayPts
-                        }));
-
-                        console.log(this.state.markerPoints);
-                      });
-                      // -------------------------------------------------------
-
-
-                      // handle click on marker - remove it from waypoints
-                      // -------------------------------------------------------
-                      marker.addListener('click', () => {
-                        // unmount marker from map
-                        marker.setMap(null);
-                        
-
-                        // remove marker from markers array
-                        for (let i = 0; i < this.state.markerObjects.length; i++) {
-                          if (this.state.markerObjects[i].getPosition().equals(marker.getPosition())) {
-                            this.state.markerObjects.splice(i, 1);
-                          }
-                        }
-
-                        // remove marker from waypoints array
-                        let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints))
-
-                        for (let i = marker.get('id'); i <= wayPts.length - 2; ++i) {
-                          wayPts[i] = wayPts[i + 1];
-                        }
-
-                        wayPts.splice(wayPts.length - 1, 1);
-                        
-                        // update in state
-                        this.setState({
-                          markerPoints: wayPts
-                        });
-
-                        //this loop updates the markers index letters
-                        for (let i = 0; i < this.state.markerObjects.length - 1; ++i) {
-                          for (let j = 0; j < wayPts.length - 1; ++j){
-                            if (this.state.markerObjects[i].getPosition().lat() == parseFloat(wayPts[j].lat) && this.state.markerObjects[i].getPosition().lng() == parseFloat(wayPts[j].lng)){
-                              this.state.markerObjects[i].setOptions({
-                                label: {
-                                  color: 'white',
-                                  fontWeight: 'bold',
-                                  fontSize: '10px',
-                                  text: nextChar(wayPts[j].id)
-                                }
-                              });
-                            }
-                          }
-                        }
-
-                        console.log("marker " + marker.get("id") + " has been removed by user");
-                      });
-                      // -------------------------------------------------------
-                    }}
+                    onMarkerComplete={this.handleMarker}
                   // ******************************************************************
                   >
                   </DrawingManager>
