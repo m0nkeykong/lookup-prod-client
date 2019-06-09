@@ -295,6 +295,7 @@ class Map extends Component {
 						// Max Zoom: 0 to 18
             zoom={ 15 || this.state.map.getZoom()}
             onZoomChanged={ () =>{ console.log(this.state.map.getZoom()); }}
+            
             >
 
                   <Marker

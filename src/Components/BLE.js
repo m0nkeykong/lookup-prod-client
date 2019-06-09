@@ -10,7 +10,7 @@ class BLE extends Component {
   constructor(props) {
     super(props);
     this.BLEController = new BLEController();
-    
+
     this.receive = this.receive.bind(this);
     this._log = this._log.bind(this);
     this.send = this.send.bind(this);
@@ -57,22 +57,18 @@ class BLE extends Component {
 
   // disconnect button functionallity (disconnet component)               
   disconnectButton = () => {
-    this.BLEController.disconnect();  
+    this.BLEController.disconnect();
   };
 
   render() {
     return (
-      <div className="app">
-        <div className="toolbar">
-          <div className="buttons">
-            <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-              <i className="material-icons">bluetooth_connected</i>
-            </button>
-            <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-              <i className="material-icons">bluetooth_disabled</i>
-            </button>
-          </div>
-        </div>
+      <div>
+        <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
+          <img alt="bleConnect" src={`/images/bleOnIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+        </button>
+        <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
+          <img alt="bleDisconnect" src={`/images/bleOffIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+        </button>
       </div>
     );
   }

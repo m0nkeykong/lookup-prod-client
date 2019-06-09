@@ -21,11 +21,10 @@ const _ = require('lodash');
   1. need to fix the directionsCallback.   - FIXED ***
   2. need to adjust the bluetooth buttons location
   3. needs to see that all is getting saved in DB - FIXED ***
-  4. needs to fix the re-letter on markers after removing one
+  4. needs to fix the re-letter on markers after removing one - FIXED ***
   5. needs to add search - FIXED ***
   6. change saving of marker parameters in an outside var in state - FIXED ***
   7. add check that if the user didnt add adlist 2 points - done allow to build route - FIXED ***
-  8. handle BLE errors (not supported browser, canceled search)
 
 
 // **********************************/
@@ -37,6 +36,7 @@ class CustomTrack extends Component {
     super(props);
     this._map = null;
     this.state = {
+      showHelp: true,
       userResponse: null,
       directionsResponse: null,
       userDetails: [],
@@ -98,6 +98,12 @@ class CustomTrack extends Component {
 
     this.onMarkerMounted = this.onMarkerMounted.bind(this);
     this.handleMarker = this.handleMarker.bind(this);
+
+    this.closeHelp = this.closeHelp.bind(this);
+  }
+
+  closeHelp() {
+    this.setState({ showHelp: false });
   }
 
   handleMarker(marker) {
@@ -155,11 +161,9 @@ class CustomTrack extends Component {
       let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
       wayPts[marker.get('id')] = mrkrwaypt;
 
-      this.setState(prevState => ({
+      this.setState({
         markerPoints: wayPts
-      }));
-
-      console.log(this.state.markerPoints);
+      });
     });
     // -------------------------------------------------------
 
@@ -167,13 +171,12 @@ class CustomTrack extends Component {
     // handle click on marker - remove it from waypoints
     // -------------------------------------------------------
     marker.addListener('click', () => {
-      // unmount marker from map
-      marker.setMap(null);
+      let markersPTR = this.state.markerObjects
 
       // remove marker from markers array
-      for (let i = 0; i < this.state.markerObjects.length; i++) {
-        if (this.state.markerObjects[i].getPosition().equals(marker.getPosition())) {
-          this.state.markerObjects.splice(i, 1);
+      for (let i = 0; i < markersPTR.length; i++) {
+        if (markersPTR[i].getPosition().equals(marker.getPosition())) {
+          markersPTR.splice(i, 1);
         }
       }
 
@@ -192,25 +195,20 @@ class CustomTrack extends Component {
       });
 
       //this loop updates the markers index letters
-      for (let i = 0; i < this.state.markerObjects.length; ++i) {
-        console.log()
-        for (let j = 0; j < wayPts.length; ++j) {
-          let markerObj = { lat: parseFloat(this.state.markerObjects[i].getPosition().lat()), lng: parseFloat(this.state.markerObjects[i].getPosition().lng()) };
-          let wayPtsObj = { lat: parseFloat(wayPts[j].lat), lng: parseFloat(wayPts[j].lng) };
-          if (_.isEqual(markerObj, wayPtsObj)) {
-            console.log("found");
-            this.state.markerObjects[i].setOptions({
-              label: {
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: '10px',
-                text: (wayPts[j].id).toString()
-              }
-            });
+      for (let i = 0; i < markersPTR.length; ++i) {
+        markersPTR[i].set("id", i + 1);
+        markersPTR[i].setOptions({
+          label: {
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '10px',
+            text: nextChar(markersPTR[i].id)
           }
-        }
+        });
       }
 
+      // unmount marker from map
+      marker.setMap(null);
       console.log("marker " + marker.get("id") + " has been removed by user");
     });
     // -------------------------------------------------------
@@ -290,25 +288,25 @@ class CustomTrack extends Component {
   // Handle search address request
   searchAddress() {
     if (this.state.searchInput !== '') {
-    console.log("search requested for: " + this.state.searchInput);
+      console.log("search requested for: " + this.state.searchInput);
 
-    // convert address from user to lat\lng
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.state.searchInput + '&key=' + getGoogleApiKey())
-      .then((response) => {
-        return response.json();
-      })
-      .then((myJson) => {
-        console.log(myJson.results[0].geometry.location);
-        console.log("zooming map on query...");
-        let lat = myJson.results[0].geometry.location.lat;
-        let lng = myJson.results[0].geometry.location.lng;
-        
-        // update map location accordingly
-        this.setState((prevState) => ({
-          ...prevState,
-          mapVars: { longitude: lng, latitude: lat, 'zoom': 19 }
-        }))
-      });
+      // convert address from user to lat\lng
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.state.searchInput + '&key=' + getGoogleApiKey())
+        .then((response) => {
+          return response.json();
+        })
+        .then((myJson) => {
+          console.log(myJson.results[0].geometry.location);
+          console.log("zooming map on query...");
+          let lat = myJson.results[0].geometry.location.lat;
+          let lng = myJson.results[0].geometry.location.lng;
+
+          // update map location accordingly
+          this.setState((prevState) => ({
+            ...prevState,
+            mapVars: { longitude: lng, latitude: lat, 'zoom': 16 }
+          }))
+        });
     } else {
       console.log("User did not enter query for search, alerting");
       alert("Please enter an address to search");
@@ -332,52 +330,53 @@ class CustomTrack extends Component {
     e.persist();
     e.preventDefault();
     if (this.state.markerPoints.length >= 2) {
-    // here, the user asked to start to build the route
-    // split all the markers by points
+      // here, the user asked to start to build the route
+      // split all the markers by points
 
-    let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
+      let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
 
-    let origin = wayPts[0].lat+',';
-    origin += +wayPts[0].lng;
-    wayPts.splice(0, 1);
+      let origin = wayPts[0].lat + ',';
+      origin += +wayPts[0].lng;
+      wayPts.splice(0, 1);
 
-    let ending = wayPts[wayPts.length - 1].lat+',';
-    ending += +wayPts[wayPts.length - 1].lng;
-    wayPts.splice(wayPts.length - 1, 1);
+      let ending = wayPts[wayPts.length - 1].lat + ',';
+      ending += +wayPts[wayPts.length - 1].lng;
+      wayPts.splice(wayPts.length - 1, 1);
 
-    let wpObj = {
-      location: '',
-      stopover: true
-    }
+      let wpObj = {
+        location: '',
+        stopover: true
+      }
 
-    let wpArr = [];
+      let wpArr = [];
 
-    wayPts.forEach((point) => {
-      wpObj.location = point.lat+',';
-      wpObj.location += +point.lng;
-      wpArr.push(wpObj);
-    });
-    
+      wayPts.forEach((point) => {
+        wpObj.location = point.lat + ',';
+        wpObj.location += +point.lng;
+        wpArr.push(wpObj);
+      });
 
 
-    this.setState(
-      (prevState) => ({
-        ...prevState,
-        track: { ...prevState.track,
-          startPoint: origin,
-          endPoint: ending,
-          wayPoints: wpArr
-           }
-      })
-    )
 
-    console.log(origin);
-    console.log(ending);
-    console.log(wpArr);
-    
-    // After track created, set state to load Modal
-    this.setState({ isCustomGenerated: true });
-    this.handleShowModal();
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          track: {
+            ...prevState.track,
+            startPoint: origin,
+            endPoint: ending,
+            wayPoints: wpArr
+          }
+        })
+      )
+
+      console.log(origin);
+      console.log(ending);
+      console.log(wpArr);
+
+      // After track created, set state to load Modal
+      this.setState({ isCustomGenerated: true });
+      this.handleShowModal();
     } else {
       console.log('User entered only 1 point, alerting');
       alert("Whoops! Please enter at least two point to navigate");
@@ -396,8 +395,9 @@ class CustomTrack extends Component {
 
   // Handle the discard modal event
   handleResetModal() {
-    this.setState({ showModal: false, isCustomGenerated: false, directionsResponse: null });
-    this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '', wayPoints: [] } })
+    this.setState({ showModal: false, isCustomGenerated: false, directionsResponse: null, markerObjects: [], markerPoints: [] });
+    this.setState({ track: { startPoint: '', endPoint: '', description: '', travelMode: 'WALKING', title: '', wayPoints: [] } });
+
     this.state.markerObjects.forEach((marker) => {
       marker.setMap(null);
     })
@@ -500,19 +500,44 @@ class CustomTrack extends Component {
   showTrackForm() {
     return (
       <Card.Body>
-        
-          <Card.Title>
-            <h6> Search </h6>
-          </Card.Title>
-          <p id='searchAlert'></p>
-          
-          <InputGroup className="mb-3">
-            <InputGroup.Append>
-              <Button title="Search" onClick={this.searchAddress}> Search </Button>
-            </InputGroup.Append>
-            <Form.Control name="searchInput" type="text" placeholder="Enter Address" onChange={this.handleSearchInputChange}/>
-          </InputGroup>
-        
+
+        <Card.Title>
+          <h6> Search </h6>
+        </Card.Title>
+        <p id='searchAlert'></p>
+
+        <InputGroup className="mb-3">
+          <InputGroup.Append>
+            <Button title="Search" onClick={this.searchAddress}> Search </Button>
+          </InputGroup.Append>
+          <Form.Control name="searchInput" type="text" placeholder="Enter Address" onChange={this.handleSearchInputChange} />
+        </InputGroup>
+
+        <Modal {...this.props}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          show={this.state.showHelp} onHide={this.closeHelp}>
+          <Modal.Header closeButton>
+            <Modal.Title>Instructions</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <img alt="handIcon" src={`/images/searchIcon.png`} style={{ height: '40px', width: '60px' }}></img><br></br>
+            Use the search bar to focus the map on a certain address.<br></br><br></br>
+            <img alt="markerIcon" src={`/images/markerIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+            Use the marker icon to add points/waypoints to your track.<br></br><br></br>
+            <img alt="handIcon" src={`/images/handIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+            Use the hand marker to move the map.<br></br>
+            You can move markers by dragging them.<br></br>
+            To remove a marker, simply click on it.<br></br>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.closeHelp}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         <Form onSubmit={e => this.handleSubmit(e)}>
           <Card.Header>
             <h6> Planning Map </h6>
@@ -549,20 +574,21 @@ class CustomTrack extends Component {
 
                   onZoomChanged={() => {
                     this.setState((prevState) => ({
-                      ...prevState,
                       mapVars: { ...prevState.mapVars, ['zoom']: this._map.state.map.zoom },
                     }))
                   }}
+
                   onDragEnd={() => {
                     this.setState((prevState) => ({
-                      ...prevState,
-                      mapVars: { ...prevState.mapVars, 
+                      mapVars: {
+                        ...prevState.mapVars,
                         ['latitude']: this._map.state.map.center.lat(),
                         ['longitude']: this._map.state.map.center.lng()
-                       },
+                      },
                     }))
-                    }}
-                  >
+                  }}
+                >
+
                   <DrawingManager
                     onLoad={drawingManager => {
                       drawingManager.setOptions({
@@ -573,10 +599,8 @@ class CustomTrack extends Component {
                       });
                     }}
 
-                    // handle marker addition
-                    // ******************************************************************
                     onMarkerComplete={this.handleMarker}
-                  // ******************************************************************
+
                   >
                   </DrawingManager>
                 </GoogleMap>
@@ -633,37 +657,37 @@ class CustomTrack extends Component {
     return (
       <div>
 
-          <div className="map-container">
+        <div className="map-container">
 
-            <GoogleMap>
-              {/* Directions API Request */}
-              {this.state.directionsResponse === null &&
-                <DirectionsService
-                  options={{
-                    origin: this.state.track.startPoint,
-                    destination: this.state.track.endPoint,
-                    waypoints: this.state.track.wayPoints ? this.state.track.wayPoints : null,
-                    avoidTolls: this.state.avoidFerries,
-                    avoidFerries: this.state.avoidFerries,
-                    avoidHighways: this.state.avoidHighways,
-                    travelMode: this.state.track.travelMode,
-                    drivingOptions: {
-                      departureTime: new Date(Date.now()),
-                      trafficModel: 'bestguess'
-                    },
-                    optimizeWaypoints: true
-                  }}
-                  callback={(response) => {
-                    this.setState({ directionsResponse: response })
-                    this.setPoints();
-                  }
-                  }
-            >
-                </DirectionsService>
-              }
-            </GoogleMap>
+          <GoogleMap>
+            {/* Directions API Request */}
+            {this.state.directionsResponse === null &&
+              <DirectionsService
+                options={{
+                  origin: this.state.track.startPoint,
+                  destination: this.state.track.endPoint,
+                  waypoints: this.state.track.wayPoints ? this.state.track.wayPoints : null,
+                  avoidTolls: this.state.avoidFerries,
+                  avoidFerries: this.state.avoidFerries,
+                  avoidHighways: this.state.avoidHighways,
+                  travelMode: this.state.track.travelMode,
+                  drivingOptions: {
+                    departureTime: new Date(Date.now()),
+                    trafficModel: 'bestguess'
+                  },
+                  optimizeWaypoints: true
+                }}
+                callback={(response) => {
+                  this.setState({ directionsResponse: response })
+                  this.setPoints();
+                }
+                }
+              >
+              </DirectionsService>
+            }
+          </GoogleMap>
 
-          </div>
+        </div>
 
       </div>
     )
