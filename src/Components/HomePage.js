@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import Menu from './Menu';
-
+import { originURL } from '../globalService';
 import { Card, Navbar, NavDropdown, Nav, Breadcrumb, Container, Row, Col } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
@@ -23,7 +23,7 @@ class HomePage extends Component {
     console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
-    axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
+    axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
         this.setState({ userDetails: userResponse.data, loading: false });
         console.log(userResponse.data);
