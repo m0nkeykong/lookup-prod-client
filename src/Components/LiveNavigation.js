@@ -109,8 +109,9 @@ class LiveNavigation extends Component {
 
   // Creating track Object with points id's
   createTrack(startPointId, endPointId) {
+    const { track } = this.props.location.generatedTrack;
+    const estimatedDuration = this.state.userDetails.accessibility === 1 ? {nonDisabledTime: {actual: track.estimatedDuration, count: 1}} : {disabledTime: {actual: track.estimatedDuration, count: 1}}
     return new Promise(resolve => {
-      const { track } = this.props.location.generatedTrack;
       const trackObj = {
         startPoint: startPointId,
         endPoint: endPointId,
@@ -120,10 +121,8 @@ class LiveNavigation extends Component {
         title: track.title,
         distance: track.distance,
         rating: track.rating,
-        disabledTime: track.disabledTime !== '' ? track.disabledTime : {},
-        nonDisabledTime: track.nonDisabledTime !== '' ? track.nonDisabledTime : {},
-        // estimatedDuration: track.estimatedDuration,
-        difficultyLevel: track.difficultyLevel !== '' ? track.difficultyLevel : {},
+        ...estimatedDuration,
+        difficultyLevel: track.difficultyLevel !== '' ? {star: 1, countVotes: 1} : {},
         changesDuringTrack: false,
       };
       axios.post(`${originURL}track/insertTrack`, { ...trackObj, })
@@ -173,7 +172,6 @@ class LiveNavigation extends Component {
 
           <Card.Header> 
             <h6> Live Navigation Map </h6> 
-              {console.log("HHHHHGGGGGGGTTTTTTTT")}
               {console.log(this.state.generatedTrack.track)}
               {!this.state.isLoading && 
                 <Map

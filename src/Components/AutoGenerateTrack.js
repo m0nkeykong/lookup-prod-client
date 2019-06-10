@@ -335,7 +335,7 @@ class AutoGenerateTrack extends Component {
         <br/>
 
         <Card.Title>
-          <h6> Additional settings </h6>
+          <h6> Required settings </h6>
         </Card.Title>
 
         <Form.Group>

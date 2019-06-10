@@ -300,9 +300,7 @@ class CustomTrack extends Component {
               <NavLink to={{ pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state }}>
                 <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
               </NavLink>
-
               <Button variant="secondary" onClick={this.handleCloseModal}>Save</Button>
-              {/* @TODO: Save only button */}
               <Button variant="dark" onClick={this.handleResetModal}>Discard</Button>
             </Modal.Footer>
 

@@ -290,7 +290,7 @@ class Map extends Component {
             }}
             //   onBoundsChanged={}
             //   onCenterChanged={}
-            // onClick={this.onGoogleMapClick}
+            //   onClick={this.onGoogleMapClick}
             //   onDblClick={}
             //   options={}
 						// Max Zoom: 0 to 18
@@ -334,29 +334,17 @@ class Map extends Component {
                       ) && (
                         <DirectionsService
                           options={{
-                            // origin: LatLng | String | google.maps.Place,
-                            // destination: LatLng | String | google.maps.Place,
-                            // travelMode: TravelMode,
                             // transitOptions: TransitOptions,
-                            // drivingOptions: DrivingOptions,
                             // unitSystem: UnitSystem,
-                            // waypoints[]: DirectionsWaypoint,
                             // optimizeWaypoints: Boolean,
                             // provideRouteAlternatives: Boolean,
                             avoidFerries: true,
                             avoidHighways: true,
                             avoidTolls: true,
-                            // region: String
-                            // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
-                            // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
                             waypoints: this.props.track.wayPoints ? this.props.track.wayPoints : null,
                             // travelMode: this.props.track.type.toUpperCase() }}
-                            // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
-                            // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
                             origin: this.props.track.startPoint,
                             destination: this.props.track.endPoint,
-                            // waypoints: this.getMiddlePoints(this.props.track.middlePoints),
-                            // travelMode: this.props.track.type.toUpperCase() }}
                             travelMode: this.props.track.travelMode,
                             drivingOptions: {
                               departureTime: new Date(Date.now()),
