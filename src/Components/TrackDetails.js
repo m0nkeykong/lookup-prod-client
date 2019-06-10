@@ -207,7 +207,7 @@ class TrackDetails extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span class="fa fa-star colorStar"></span>)
+        html.push(<span class="fa fa-star colorStarOrange"></span>)
       else
         html.push(<span class="fa fa-star"></span>)
 

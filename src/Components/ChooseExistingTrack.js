@@ -42,16 +42,19 @@ class ChooseExistingTrack extends Component {
     var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
 
     var checkedStar = "NO";
-    if(this.refs.star1.checked)
-      checkedStar = "1";
-    if(this.refs.star2.checked)
-      checkedStar = "2";
-    if(this.refs.star3.checked)
-      checkedStar = "3";
-    if(this.refs.star4.checked)
-      checkedStar = "4";
-    if(this.refs.star5.checked)
-      checkedStar = "5";
+    console.log("REUT:");
+    if(this.refs.star1 === 'undefined'){
+      if(this.refs.star1.checked)
+        checkedStar = "1";
+      if(this.refs.star2.checked)
+        checkedStar = "2";
+      if(this.refs.star3.checked)
+        checkedStar = "3";
+      if(this.refs.star4.checked)
+        checkedStar = "4";
+      if(this.refs.star5.checked)
+        checkedStar = "5";
+    }
 
     // TODO: parse city to upper case and lower case:
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
@@ -134,13 +137,24 @@ class ChooseExistingTrack extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span class="fa fa-star colorStar"></span>)
+        html.push(<span class="fa fa-star colorStarOrange"></span>)
       else
         html.push(<span class="fa fa-star"></span>)
 
     }
     return html;
   } 
+
+  getStarsForAccesability(){
+    let html=[];
+
+    for (let i = 0; i < 3; i++)
+        html.push(<span class="fa fa-star colorStarOrange starAccesability"></span>)
+    for (let i = 0; i < 2; i++)
+      html.push(<span class="fa fa-star colorStarGrey starAccesability"></span>)
+
+    return html;
+  }
 
   getTimeOfTrack(disabledTime,nonDisabledTime){
     let html=[];
@@ -294,18 +308,7 @@ class ChooseExistingTrack extends Component {
                   (
                     <div className="container">
                     <h6>Choose Difficulty Level</h6>
-                      <div className="row rating">     
-                          <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="4_stars">4 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="3_stars">3 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="2_stars">2 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="1_stars">1 star</label>
-                          <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="0_stars">0 star</label>
-                      </div>
+                    <p>{this.getStarsForAccesability()}</p>
                     </div>
                   ) 
                   :
@@ -335,7 +338,7 @@ class ChooseExistingTrack extends Component {
                 <div className="w-100 mb-md-4"></div>
                 <div className="col-12 mx-auto">
                     <button className='btn btn-primary' type='submit'>
-                      Build Route
+                      Search Now
                     </button>
                 </div>
               </div>
