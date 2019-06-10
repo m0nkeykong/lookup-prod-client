@@ -62,8 +62,17 @@ address{
 
 /* form stars css: */
 
-.colorStar{
+.colorStarOrange{
     color: orange;
+}
+
+.colorStarGrey{
+    color:#c6c2c2;
+}
+
+.starAccesability{
+    font-size: x-large !important;
+    margin: 0px 5px 0px 5px !important;
 }
 
 .rating {
