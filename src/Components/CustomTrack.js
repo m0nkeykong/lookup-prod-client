@@ -332,7 +332,7 @@ class CustomTrack extends Component {
     if (this.state.markerPoints.length >= 2) {
       // here, the user asked to start to build the route
       // split all the markers by points
-
+      
       let wayPts = JSON.parse(JSON.stringify(this.state.markerPoints));
 
       let origin = wayPts[0].lat + ',';
@@ -343,19 +343,18 @@ class CustomTrack extends Component {
       ending += +wayPts[wayPts.length - 1].lng;
       wayPts.splice(wayPts.length - 1, 1);
 
-      let wpObj = {
-        location: '',
-        stopover: true
-      }
+
 
       let wpArr = [];
 
-      wayPts.forEach((point) => {
-        wpObj.location = point.lat + ',';
-        wpObj.location += +point.lng;
-        wpArr.push(wpObj);
-      });
 
+      for (let i = 0; i < wayPts.length; ++i) {
+        let wpObj = {
+          location: wayPts[i].lat + ',' + wayPts[i].lng,
+          stopover: true
+        }
+        wpArr.push(wpObj);
+      };
 
 
       this.setState(
@@ -456,8 +455,7 @@ class CustomTrack extends Component {
             show={this.state.showModal}
             onHide={this.handleCloseModal}
             aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
+            centered>
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
                 Generated Track Details
@@ -513,7 +511,7 @@ class CustomTrack extends Component {
           <Form.Control name="searchInput" type="text" placeholder="Enter Address" onChange={this.handleSearchInputChange} />
         </InputGroup>
 
-        <Modal {...this.props}
+        <Modal
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
