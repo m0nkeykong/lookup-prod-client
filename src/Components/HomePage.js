@@ -7,13 +7,15 @@ import { Card, Navbar, NavDropdown, Nav, Breadcrumb, Container, Row, Col } from 
 import { BeatLoader } from 'react-spinners';
 import './style/TrackDetails.css'
 import './style/HomePage.css'
+import { rank, accessibility } from '../MISC';
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tracks: [],
-      userDetails: []
+      userDetails: [],
+      isLoading: true
     }
 
   }
@@ -25,7 +27,7 @@ class HomePage extends Component {
     // Get the user details from database
     axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
-        this.setState({ userDetails: userResponse.data, loading: false });
+        this.setState({ userDetails: userResponse.data, isLoading: false });
         console.log(userResponse.data);
       })
       .catch(error => {
@@ -35,7 +37,7 @@ class HomePage extends Component {
 
 
   render() {
-    
+    const userDetails = { ...this.state.userDetails };
     return (
       <div>
         {/* Page Menu */}
@@ -46,7 +48,22 @@ class HomePage extends Component {
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item active>Home</Breadcrumb.Item>
         </Breadcrumb>
+        {!this.state.isLoading &&
+          <div>
+          Hello {userDetails.name}
+          Profile Picture {userDetails.profilePicture}
+          Accessibility {userDetails.accessibility}
 
+          Created tracks: {userDetails.trackRecords.length === 0 ? 'Click here to build your first track.' : `${userDetails.trackRecords.length}`}
+          Favorite tracks: {userDetails.favoriteTracks.length === 0 ? '0' : `${userDetails.favoriteTracks.length}`}
+
+          Your Rank: {rank[userDetails.rank]}
+          Total Distance: {userDetails.totalDistance}
+          
+          Progress Bar: Baby, Tyro, Warrior, Knight, Royalty
+          About Levels
+          </div>
+      }
         <Container>
           <Row>
             <Col style={{ textAlign: 'center', marginTop: '15px' }}>

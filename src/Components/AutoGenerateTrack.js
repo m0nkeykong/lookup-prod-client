@@ -270,11 +270,11 @@ class AutoGenerateTrack extends Component {
           {console.log("GENERATED TRACK IS HERE:")}
           {console.log(this.state)}
               <NavLink to= {{pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state}}>
-                <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
+                {this.state.directionsResponse && <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>}
+                {this.state.directionsResponse === null && <Button disabled variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>}
               </NavLink>            
 
-              <Button variant="secondary" onClick={this.handleCloseModal}>Save</Button>
-            {/* @TODO: Save only button */}
+              <Button variant="secondary" onClick={this.handleCloseModal}>Edit</Button>
               <Button variant="dark" onClick={this.handleResetModal}>Discard</Button>
           </Modal.Footer>
 
@@ -335,7 +335,7 @@ class AutoGenerateTrack extends Component {
         <br/>
 
         <Card.Title>
-          <h6> Additional settings </h6>
+          <h6> Required settings </h6>
         </Card.Title>
 
         <Form.Group>

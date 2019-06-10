@@ -7,6 +7,7 @@ import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import {PostAsyncRequest, getUpdateTrackTimeURL, originURL,fetchDataHandleError} from '../globalService';
 import { Card, Navbar, Nav,Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
+import { rank, accessibility } from '../MISC';
 import Menu from './Menu';
 import './style/TrackDetails.css'
 
@@ -74,7 +75,7 @@ class PostNavigation extends Component {
       // @TODO: Get the total distance user navigated
       axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
         .then(response => {
-          self.setState({ isRankUpdated: true });
+          self.setState({ isRankUpdated: true, userDetails: response.data });
           console.log(response.data);
           // resolve(self.userid);
         })
@@ -170,7 +171,12 @@ class PostNavigation extends Component {
                 className="tring" >
                 <TiArrowBackOutline size={29} color='black'/></NavLink>
             </div>
-
+          <h6>
+            Your rank is: {this.state.isRankUpdated ? rank[this.state.userDetails.rank] : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
+          </h6>
+          <h6>
+            Total distance: {this.state.isRankUpdated ? this.state.userDetails.totalDistance : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
+          </h6>
 
           <form onSubmit={this.onSubmit}>
           
