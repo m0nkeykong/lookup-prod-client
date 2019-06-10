@@ -100,7 +100,7 @@ class Menu extends Component {
                     <Nav.Link href='home'>Home</Nav.Link>
                     <Nav.Link href='profile'>Profile Settings</Nav.Link>
                     <Nav.Link href="mytracks">My Tracks</Nav.Link>
-                    <Nav.Link href="favoritetracks">Favorite Tracks</Nav.Link>
+                    <Nav.Link href="favorite">Favorite Tracks</Nav.Link>
                     {/* <Nav.Link href="search">Serach Tracks</Nav.Link> */}
                     <Nav.Link href="auto">Generate Auto Track</Nav.Link>
                     <Nav.Link href="custom">Generate Custom Track</Nav.Link>

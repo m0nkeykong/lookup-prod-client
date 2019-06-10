@@ -27,6 +27,7 @@ class HomePage extends Component {
     // Get the user details from database
     axios.get(`${originURL}user/getAccountDetails/${this.userid}`)
       .then(userResponse => {
+        userResponse.data.createdDate = userResponse.data.createdDate.split('T')[0];
         this.setState({ userDetails: userResponse.data, isLoading: false });
         console.log(userResponse.data);
       })
@@ -49,20 +50,58 @@ class HomePage extends Component {
           <Breadcrumb.Item active>Home</Breadcrumb.Item>
         </Breadcrumb>
         {!this.state.isLoading &&
-          <div>
-          Hello {userDetails.name}
-          Profile Picture {userDetails.profilePicture}
-          Accessibility {userDetails.accessibility}
 
-          Created tracks: {userDetails.trackRecords.length === 0 ? 'Click here to build your first track.' : `${userDetails.trackRecords.length}`}
-          Favorite tracks: {userDetails.favoriteTracks.length === 0 ? '0' : `${userDetails.favoriteTracks.length}`}
+          (
+            <div class="container">
+            <div class="row">
+              <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+                 <div class="well profile">
+                      <div class="col-sm-12">
+                          <div class="col-xs-12 col-sm-8">
+                          <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '52px', width: '52px', position: 'absolute', right: '0', borderRadius: '50%' }}></img>
 
-          Your Rank: {rank[userDetails.rank]}
-          Total Distance: {userDetails.totalDistance}
-          
-          Progress Bar: Baby, Tyro, Warrior, Knight, Royalty
-          About Levels
+                              <h2>{userDetails.name}</h2>
+
+                              <p><strong>Acount Created Date: </strong> {userDetails.createdDate} </p>
+                              <p><strong>Email: </strong> {userDetails.email} </p>
+                              <p><strong>Accessibility: </strong> {userDetails.accessibility === 1 ? 'Not Disabled' : 'Disabled'} </p>
+                              <p><strong>Rank: </strong> {' ' + rank[userDetails.rank]}</p>
+                              <p><strong>Birth Day Date: </strong> {userDetails.birthDay}</p>
+                          </div>             
+                          <div class="col-xs-12 col-sm-4 text-center">
+                              <figure>
+                                  <figcaption class="ratings">
+
+
+                                  </figcaption>
+                              </figure>
+                          </div>
+                      </div>            
+                      <div class="col-xs-12 divider text-center">
+                          <div class="col-xs-12 col-sm-4 emphasis">
+                              <h2><strong>{userDetails.totalDistance}m </strong></h2>                    
+                              <p><small>Total Distance</small></p>
+                              <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Choose & Navigate Track </button>
+                          </div>
+                          <div class="col-xs-12 col-sm-4 emphasis">
+                              <h2><strong>{userDetails.trackRecords.length === 0 ? 'Click here to build your first track.' : `${userDetails.trackRecords.length}`}</strong></h2>                    
+                              <p><small>Created tracks</small></p>
+                              <button class="btn btn-info btn-block"><span class="fa fa-user"></span> Generate New Track </button>
+                          </div>
+                          <div class="col-xs-12 col-sm-4 emphasis">
+                              <h2><strong> {userDetails.favoriteTracks.length === 0 ? '0' : `${userDetails.favoriteTracks.length}`}</strong></h2>                    
+                              <p><small>Favorite tracks</small></p>
+                                <button class="btn btn-primary btn-block"><span class="fa fa-gear"></span> View Favorite List </button>
+                          </div>
+                      </div>
+                 </div>                 
+              </div>
+            </div>
           </div>
+          )
+
+          // Progress Bar: Baby, Tyro, Warrior, Knight, Royalty
+          // About Levels
       }
         <Container>
           <Row>

@@ -13,7 +13,8 @@ class LiveNavigation extends Component {
     this.state = {
       userDetails: [],
       isLoading: true,
-      generatedTrack: this.props.location.generatedTrack
+      isLocation: false,
+      generatedTrack: this.props.location.generatedTrack ? this.props.location.generatedTrack: '' 
     }
     
     this.fetchData = this.fetchData.bind(this);
@@ -26,19 +27,22 @@ class LiveNavigation extends Component {
 
   }
   
-  // @TODO: Handle the error when entering directly to http://localhost:3001/liveNavigation
   async componentDidMount(){
     console.log(this.props);
     // If is it new route - redirected from auto\custom generate so save data in db, just navigate
-    if(this.state.generatedTrack.isGenerated === true || this.state.generatedTrack.isCustomGenerated === true){
-      await this.setState({ isLoading: true });
-      await this.fetchData();
+    if(this.props.location.generatedTrack != null){
+      this.setState({ isLocation: true });
+      if(this.state.generatedTrack.isGenerated === true || this.state.generatedTrack.isCustomGenerated === true){
+        await this.setState({ isLoading: true });
+        await this.fetchData();
+      }
+      // Existing track - do not save data in db, just navigate
+      else{
+        await this.getUserDetails();
+        await this.setState({ isLoading: false });
+      }
     }
-    // Existing track - do not save data in db, just navigate
-    else{
-      await this.getUserDetails();
-      await this.setState({ isLoading: false });
-    }
+
   }
   
   // Fetching all the needed data 
@@ -122,7 +126,7 @@ class LiveNavigation extends Component {
         distance: track.distance,
         rating: track.rating,
         ...estimatedDuration,
-        difficultyLevel: track.difficultyLevel !== '' ? {star: 1, countVotes: 1} : {},
+        difficultyLevel: track.difficultyLevel !== '' ? {star: 1, countVotes: 1} : {star: track.difficultyLevel},
         changesDuringTrack: false,
       };
       axios.post(`${originURL}track/insertTrack`, { ...trackObj, })
@@ -151,34 +155,47 @@ class LiveNavigation extends Component {
 
 
   render() {
-    const isChoosed = this.state.generatedTrack.isGenerated === false && this.state.generatedTrack.isCustomGenerated === false;
+
     return (
       <div>
         <Card className="text-center">
 
           <Menu currentPage={"Live Navigation"}> </Menu>
-          
-          <Breadcrumb>
-            <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
-            <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
-            {/* Check if come from auto generated page*/}
-            {this.state.generatedTrack.isGenerated === true && <Breadcrumb.Item href="/auto">Auto</Breadcrumb.Item>}
-            {/* Check if come from custom generated page */}
-            {this.state.generatedTrack.isCustomGenerated === true && <Breadcrumb.Item href="/custom">Custom</Breadcrumb.Item>} 
-            {/* Check if come from choose existing page */}
-            { isChoosed && <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>} 
-            <Breadcrumb.Item active>Live Navigation</Breadcrumb.Item>
-          </Breadcrumb>
 
-          <Card.Header> 
-            <h6> Live Navigation Map </h6> 
-              {console.log(this.state.generatedTrack.track)}
-              {!this.state.isLoading && 
-                <Map
-                track={this.state.generatedTrack.track}>
-                </Map>
+          {this.state.isLocation === true ? 
+            <div>
+              <Breadcrumb>
+                <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
+                <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+                {/* Check if come from auto generated page*/}
+                {this.state.generatedTrack.isGenerated === true && <Breadcrumb.Item href="/auto">Auto</Breadcrumb.Item>}
+                {/* Check if come from custom generated page */}
+                {this.state.generatedTrack.isCustomGenerated === true && <Breadcrumb.Item href="/custom">Custom</Breadcrumb.Item>} 
+                {/* Check if come from choose existing page */}
+                <Breadcrumb.Item active>Live Navigation</Breadcrumb.Item>
+              </Breadcrumb>
+
+              <Card.Header> 
+                <h6> Live Navigation Map </h6> 
+                  {console.log(this.state.generatedTrack.track)}
+                  {!this.state.isLoading && 
+                    <Map
+                    track={this.state.generatedTrack.track}>
+                    </Map>
+                  }
+              </Card.Header>
+            </div> : 
+            // @TODO: Implement a photo handling error message
+                <div>
+                <footer className="blockquote-footer">
+                  <span style={{ color: '#cc0000' }}> Error Message: </span> <cite title="Source Title"> 
+                  <h4> Before we start, perhaps you should decide where you want to go </h4> 
+                  <h5>  Please select or create a route first. </h5>
+                  </cite>
+
+                </footer>
+                </div>
               }
-          </Card.Header>
 
           <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
