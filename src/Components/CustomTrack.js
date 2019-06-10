@@ -404,7 +404,7 @@ class CustomTrack extends Component {
 
   // Generated track filled form
   getTrackDetails() {
-    console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getTrackDetails()");
+    console.log("Entered <CustomeGenerateTrack></CustomeGenerateTrack> getTrackDetails()");
     const response = this.state.directionsResponse;
     var leg = '';
     if (response !== null) {
@@ -751,7 +751,7 @@ class CustomTrack extends Component {
                   break;
 
                 default:
-                  console.log('<AutoGenerateTeack></AutoGenerateTeack> setPoints() Incorrect address');
+                  console.log('<CustomGenerateTeack></CustomGenerateTeack> setPoints() Incorrect address');
                   break;
               }
             },
