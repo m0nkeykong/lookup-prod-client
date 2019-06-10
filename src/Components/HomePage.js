@@ -58,9 +58,9 @@ class HomePage extends Component {
           Favorite tracks: {userDetails.favoriteTracks.length === 0 ? '0' : `${userDetails.favoriteTracks.length}`}
 
           Your Rank: {rank[userDetails.rank]}
-          Progress Bar: Baby, Tyro, Warrior, Knight, Royalty
           Total Distance: {userDetails.totalDistance}
-  
+          
+          Progress Bar: Baby, Tyro, Warrior, Knight, Royalty
           About Levels
           </div>
       }
