@@ -5,10 +5,8 @@ import Geocode from 'react-geocode';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, DirectionsService, DrawingManager } from '@react-google-maps/api';
 import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup, Alert } from 'react-bootstrap';
-import IoIosLocation from 'react-icons/lib/io/ios-location';
-import { fetchDataHandleError, originURL } from '../globalService';
+import { getGoogleApiKey, fetchDataHandleError, originURL } from '../globalService';
 import LiveNavigation from './LiveNavigation';
-import { getGoogleApiKey } from '../globalService';
 import './style/AutoGenerateTrack.css';
 import Menu from './Menu';
 import { lookup } from 'dns';
@@ -423,13 +421,6 @@ class CustomTrack extends Component {
                 <ListGroup.Item> <span className="autoSpan"> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {leg.duration.text} </ListGroup.Item>
               </ListGroup>
-
-              {/*
-              <ProgressBar variant="info" animated now={100} />  
-              <Button variant="outline-success">Save And Start Live Navigation</Button>
-              <Button variant="outline-primary">Start Live Navigation Without Save</Button>
-              <Button variant="outline-secondary">Save Track</Button>
-              */}
             </div>
           </div>
         )

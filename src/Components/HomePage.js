@@ -52,12 +52,12 @@ class HomePage extends Component {
         {!this.state.isLoading &&
 
           (
-            <div class="container">
-            <div class="row">
-              <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
-                 <div class="well profile">
-                      <div class="col-sm-12">
-                          <div class="col-xs-12 col-sm-8">
+            <div className="container">
+            <div className="row">
+              <div className="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+                 <div className="well profile">
+                      <div className="col-sm-12">
+                          <div className="col-xs-12 col-sm-8">
                           <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '52px', width: '52px', position: 'absolute', right: '0', borderRadius: '50%' }}></img>
 
                               <h2>{userDetails.name}</h2>
@@ -68,30 +68,30 @@ class HomePage extends Component {
                               <p><strong>Rank: </strong> {' ' + rank[userDetails.rank]}</p>
                               <p><strong>Birth Day Date: </strong> {userDetails.birthDay}</p>
                           </div>             
-                          <div class="col-xs-12 col-sm-4 text-center">
+                          <div className="col-xs-12 col-sm-4 text-center">
                               <figure>
-                                  <figcaption class="ratings">
+                                  <figcaption className="ratings">
 
 
                                   </figcaption>
                               </figure>
                           </div>
                       </div>            
-                      <div class="col-xs-12 divider text-center">
-                          <div class="col-xs-12 col-sm-4 emphasis">
+                      <div className="col-xs-12 divider text-center">
+                          <div className="col-xs-12 col-sm-4 emphasis">
                               <h2><strong>{userDetails.totalDistance}m </strong></h2>                    
                               <p><small>Total Distance</small></p>
-                              <button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Choose & Navigate Track </button>
+                              <button className="btn btn-success btn-block"><span className="fa fa-plus-circle"></span> Choose & Navigate Track </button>
                           </div>
-                          <div class="col-xs-12 col-sm-4 emphasis">
+                          <div className="col-xs-12 col-sm-4 emphasis">
                               <h2><strong>{userDetails.trackRecords.length === 0 ? 'Click here to build your first track.' : `${userDetails.trackRecords.length}`}</strong></h2>                    
                               <p><small>Created tracks</small></p>
-                              <button class="btn btn-info btn-block"><span class="fa fa-user"></span> Generate New Track </button>
+                              <button className="btn btn-info btn-block"><span className="fa fa-user"></span> Generate New Track </button>
                           </div>
-                          <div class="col-xs-12 col-sm-4 emphasis">
+                          <div className="col-xs-12 col-sm-4 emphasis">
                               <h2><strong> {userDetails.favoriteTracks.length === 0 ? '0' : `${userDetails.favoriteTracks.length}`}</strong></h2>                    
                               <p><small>Favorite tracks</small></p>
-                                <button class="btn btn-primary btn-block"><span class="fa fa-gear"></span> View Favorite List </button>
+                                <button className="btn btn-primary btn-block"><span className="fa fa-gear"></span> View Favorite List </button>
                           </div>
                       </div>
                  </div>                 
