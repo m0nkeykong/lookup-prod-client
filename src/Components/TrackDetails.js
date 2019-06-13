@@ -67,7 +67,7 @@ class TrackDetails extends Component {
       console.log("DATA:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
+      self.addTrack(data.track._id,data.track.title, data.track.travelMode, data.track.difficultyLevel.star, data.reports, data.userDetails,
         data.startPoint, data.endPoint, data.wayPoints, data.track.description,data.track.disabledTime,data.track.nonDisabledTime );        
     })
 
