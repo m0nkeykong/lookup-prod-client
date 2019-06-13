@@ -294,13 +294,17 @@ class Map extends Component {
 // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
 getWayPoints(wayPoints){
+
   let html=[];
   console.log("wayPoints:");
   console.log(wayPoints);
 
   if(wayPoints.length != 0){
     for (let i = 0; i < wayPoints.length; i++) {
-      html.push({location: { lat: wayPoints[i].latitude, lng: wayPoints[i].longitude }});
+      let split = wayPoints[i].location.split(" ");
+      console.log("G:");
+      console.log({location: { lat: parseFloat(split[1],10), lng: parseFloat(split[3],10)}});
+      html.push({location: { lat: parseFloat(split[1],10), lng: parseFloat(split[3],10)}});
     }
   }
   return html;
@@ -386,8 +390,8 @@ render() {
                   // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longitude },
                   // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longitude },
                   // waypoints: this.props.track.wayPoints ? this.getWayPoints(this.props.track.wayPoints) : null,
-                  // waypoints: this.getWayPoints(this.props.track.wayPoints),
-                  waypoints: {location: "lat: 32.08675206, lng: 34.78150114"},
+                  waypoints: this.getWayPoints(this.props.track.wayPoints),
+                  // waypoints: {location: "{lat: 32.06183822, lng: 34.87367123}"},
                   // travelMode: this.props.track.type.toUpperCase() }}
                   // origin: { lat: this.props.track.startPoint.latitude, lng: this.props.track.startPoint.longtitude },
                   // destination: { lat: this.props.track.endPoint.latitude, lng: this.props.track.endPoint.longtitude },
