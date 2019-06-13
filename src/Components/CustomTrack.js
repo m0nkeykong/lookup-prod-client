@@ -102,6 +102,19 @@ class CustomTrack extends Component {
 
   closeHelp() {
     this.setState({ showHelp: false });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.setState(
+          (prevState) => ({
+            mapVars: { zoom: 13, latitude: pos.coords.latitude, longitude: pos.coords.longitude },
+          }), () => {
+            console.log(this.state.mapVars);
+          }
+        );
+      }, (err) => {
+        console.error(`ERROR(${err.code}): ${err.message}`);
+      });
+    }
   }
 
   handleMarker(marker) {

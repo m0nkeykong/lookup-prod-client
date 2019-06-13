@@ -52,11 +52,13 @@ class BLE extends Component {
   // connect button functionallity (open available bluetooth device list)                  
   connectButton = () => {
     this.BLEController.connect();
+    //sessionStorage.setItem('isBLEConnected', true);
   };
 
   // disconnect button functionallity (disconnet component)               
   disconnectButton = () => {
     this.BLEController.disconnect();
+    //sessionStorage.setItem('isBLEConnected', false);
   };
 
   render() {
