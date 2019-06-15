@@ -43,7 +43,9 @@ class ChooseExistingTrack extends Component {
 
     var checkedStar = "NO";
     console.log("REUT:");
-    if(this.refs.star1 === 'undefined'){
+    console.log(this.refs.star1);
+    console.log(this.refs.star1 === 'undefined');
+    if( typeof this.refs.star1 !== 'undefined'){
       if(this.refs.star1.checked)
         checkedStar = "1";
       if(this.refs.star2.checked)
@@ -149,9 +151,9 @@ class ChooseExistingTrack extends Component {
     let html=[];
 
     for (let i = 0; i < 3; i++)
-        html.push(<span class="fa fa-star colorStarOrange starAccesability"></span>)
+        html.push(<span className="fa fa-star colorStarOrange starAccesability"></span>)
     for (let i = 0; i < 2; i++)
-      html.push(<span class="fa fa-star colorStarGrey starAccesability"></span>)
+      html.push(<span className="fa fa-star colorStarGrey starAccesability"></span>)
 
     return html;
   }

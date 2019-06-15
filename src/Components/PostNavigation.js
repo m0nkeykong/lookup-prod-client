@@ -7,7 +7,6 @@ import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import {PostAsyncRequest, getUpdateTrackTimeURL, originURL,fetchDataHandleError} from '../globalService';
 import { Card, Navbar, Nav,Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
-import { rank, accessibility } from '../MISC';
 import Menu from './Menu';
 import './style/TrackDetails.css'
 
@@ -45,6 +44,9 @@ class PostNavigation extends Component {
 
     // TODO: call route for update RANK
     // TODO: call route for update actual time
+    // console.log("REPORT COMPO:");
+    // console.log(this.state)
+
   }
 
   // Fetching the user data 
@@ -75,7 +77,7 @@ class PostNavigation extends Component {
       // @TODO: Get the total distance user navigated
       axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
         .then(response => {
-          self.setState({ isRankUpdated: true, userDetails: response.data });
+          self.setState({ isRankUpdated: true });
           console.log(response.data);
           // resolve(self.userid);
         })
@@ -129,11 +131,8 @@ class PostNavigation extends Component {
     console.log(this.state.userDetails._id);
     console.log("REPORT:");
     console.log(this.state.addReport);
-    // add report if exist
 
-    if(this.state.addReport.length !== 0 ||
-        typeof this.state.addReport !== "undefined")
-    {
+    if(this.state.addReport.length !== 0){
         let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
         var reportId = await PostAsyncRequest('reports/insertReport', data1);
 
@@ -145,7 +144,10 @@ class PostNavigation extends Component {
   }
 
   render() {
-    
+    console.log("RENDER:");
+    console.log(this.state);
+    console.log(this.props.location.idOfTrack);
+
     return (
       <div>
         <div className="postContainer">
@@ -165,18 +167,14 @@ class PostNavigation extends Component {
             <NavLink to=
             //navigate to TrackDetails via TemplateComponent with the params
             // TODO: dont forgot to send the id of track 
-            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`}}
+            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`,
+              idOfTrack:this.props.location.idOfTrack}}
                 activeStyle={this.active} 
                 style={{padding:'6px', verticalAlign:'baseline'}}
                 className="tring" >
                 <TiArrowBackOutline size={29} color='black'/></NavLink>
             </div>
-          <h6>
-            Your rank is: {this.state.isRankUpdated ? rank[this.state.userDetails.rank] : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
-          </h6>
-          <h6>
-            Total distance: {this.state.isRankUpdated ? this.state.userDetails.totalDistance : <div className='sweet-loading'> <BeatLoader color={'#123abc'} /> </div>}
-          </h6>
+
 
           <form onSubmit={this.onSubmit}>
           

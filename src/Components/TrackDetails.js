@@ -64,11 +64,11 @@ class TrackDetails extends Component {
     .then((res) => {        
       return res.json();      
     }).then((data) => { 
-      console.log("DATA:");
+      console.log("GET TRACK DETAILS:");
       console.log(data);       
       var self=this;      
-      self.addTrack(data.track._id,data.track.title, data.track.type, data.track.difficultyLevel.star, data.reports, data.userDetails,
-        data.startPoint, data.endPoint, data.wayPoints, data.track.description,data.track.disabledTime,data.track.nonDisabledTime );        
+      self.addTrack(data.track._id,data.track.title, data.track.travelMode, data.track.difficultyLevel.star, data.reports, data.userDetails,
+        data.startPoint, data.endPoint, data.track.wayPoints, data.track.description,data.track.disabledTime,data.track.nonDisabledTime );        
     })
 
   }
