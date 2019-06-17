@@ -25,6 +25,7 @@ class BLEController {
         this.setCharacteristicUuid(characteristicUuid);
         this.setReceiveSeparator(receiveSeparator);
         this.setSendSeparator(sendSeparator);
+
     }
 
     /**
@@ -116,7 +117,6 @@ class BLEController {
                 this._boundHandleCharacteristicValueChanged);
                 this._characteristic = null;
         }
-
         this._device = null;
     }
 
