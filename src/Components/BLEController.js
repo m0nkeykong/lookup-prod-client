@@ -25,6 +25,7 @@ class BLEController {
         this.setCharacteristicUuid(characteristicUuid);
         this.setReceiveSeparator(receiveSeparator);
         this.setSendSeparator(sendSeparator);
+
     }
 
     /**
@@ -102,7 +103,6 @@ class BLEController {
      *                   be started or rejected if something went wrong
      */
     connect = () => {
-        sessionStorage.setItem('isBLEConnected', true);
         return this._connectToDevice(this._device);
     }
 
@@ -117,7 +117,6 @@ class BLEController {
                 this._boundHandleCharacteristicValueChanged);
                 this._characteristic = null;
         }
-        sessionStorage.setItem('isBLEConnected', false);
         this._device = null;
     }
 

@@ -3,6 +3,9 @@ import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import './style//LiveNavigation.css';
 import BLE from './BLE';
 
@@ -100,18 +103,23 @@ class Menu extends Component {
                     <Nav.Link href='home'>Home</Nav.Link>
                     <Nav.Link href='profile'>Profile Settings</Nav.Link>
                     <Nav.Link href="mytracks">My Tracks</Nav.Link>
-                    <Nav.Link href="favorite">Favorite Tracks</Nav.Link>
+                    <Nav.Link href="favorite">Favorites</Nav.Link>
                     {/* <Nav.Link href="search">Serach Tracks</Nav.Link> */}
-                    <Nav.Link href="auto">Generate Auto Track</Nav.Link>
-                    <Nav.Link href="custom">Generate Custom Track</Nav.Link>
-                    <Nav.Link href="choose">Choose Existing Track</Nav.Link>
+                    <Nav.Link href="auto">Fast Travel</Nav.Link>
+                    <Nav.Link href="custom">Custom Route</Nav.Link>
+                    <Nav.Link href="choose">Navigate Existing Track</Nav.Link>
                     <Nav.Link href="contact">Contact us</Nav.Link>
                 </Nav>
-                <BLE>
-                </BLE>
                 </Navbar.Collapse>
             </Navbar>
-
+          <Grid container justify="center">
+            <Grid item>
+              <Tooltip title="BLE" placement="top">
+                <BLE>
+                </BLE>
+              </Tooltip>
+            </Grid>
+          </Grid>
             </Card.Header>
         </Card>
     );
