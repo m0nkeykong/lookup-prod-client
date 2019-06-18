@@ -179,13 +179,19 @@ class ChooseExistingTrack extends Component {
   }
 
   viewTracks(track,i) {
-    if(track.title == ''){
+console.log("RANK");
+console.log(this.state.userDetails.rank);
+console.log(track);
+    if (track.title == ''){
       console.log("there are no tracks to display !");
       return (
         <div>
           <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
         </div>
       )
+    }
+    else if (this.state.userDetails.rank < 2 & track.difficultyLevel == 5 ){
+        return (<div></div>)
     }
     else{
      
