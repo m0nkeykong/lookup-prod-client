@@ -239,8 +239,8 @@ class Login extends Component {
                                 <a href="https://github.com/reutleib" target="_blank"> <h5>Reut Leib</h5> </a><br></br>
                             </div>
                             <div style={{ height: '350px', width: '100%', margin: '0 auto', marginTop: '40px' }}>
-                                <p>Here we need to add some test, all rights resereved, something like that<br/> 
-                                <br/>© 2019 - The Dept. of Software Engineering, Shenkar: Engineering. Design. Art 
+                                <p>This product is the property of the developers listed above.<br/> 
+                                <br/>© 2019 - The Dept. of Software Engineering, Shenkar: Engineering. Design. Art.
                                 </p>
                             </div>
                         </div>
