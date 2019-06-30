@@ -21,7 +21,9 @@ class Map extends Component {
       response: null,
       timestamp: 0,
       currStep: 0,
-      startedNavigation: false
+      startedNavigation: false,
+      isLoadingIdOfTrack: true,
+      idOfTrack: this.props.idOfTrack
     }
 
     // ****** bluetooth variables ******
@@ -71,7 +73,7 @@ class Map extends Component {
       .then(response => {
         this.setState({ userDetails: response.data });
         this.onLoadPosition();
-        this.setState({ loading: true });
+        this.setState({ loading: true, isLoadingIdOfTrack: false });
 
         console.log(response.data);
       })
