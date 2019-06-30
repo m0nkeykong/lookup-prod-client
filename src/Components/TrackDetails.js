@@ -274,7 +274,7 @@ class TrackDetails extends Component {
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
-            <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+            <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
 
 
               <div class="row">

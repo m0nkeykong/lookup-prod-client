@@ -72,9 +72,15 @@
 }
 
 .typeTrack{
+  text-align: center;
   margin-top: 20px;
   margin-bottom: -15px;
 }
+
+.starCenter{
+  text-align: center;
+}
+
   /*
     Image credits:
     uifaces.com (http://uifaces.com/authorized)
