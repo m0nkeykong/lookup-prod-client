@@ -226,11 +226,14 @@ class Map extends Component {
       for (let i = 0; i < wayPoints.length; i++) {
         let parseString = wayPoints[i].location.split(",");
         let lat = parseString[0];
-
+        let lng = parseString[1];
+        console.log("lat:");
         console.log(lat);
-        console.log(typeof lat);
-        console.log(wayPoints[i].location);
+        console.log("lng:");
+        console.log(lng);
+        // console.log(wayPoints[i].location);
 
+        // html.push({ location: { lat: lat, lng: lng } });
         // html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
         html.push({ location: `${wayPoints[i].location}` });
       }
