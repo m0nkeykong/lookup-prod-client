@@ -162,8 +162,7 @@ class LiveNavigation extends Component {
       <div>
         <Card>
 
-          <Menu currentPage={"Live Navigation"}> </Menu> &&
-          (
+          <Menu currentPage={"Live Navigation"}> </Menu>
           {this.state.isLocation === true ? 
             <div>
               <Breadcrumb>
@@ -198,7 +197,6 @@ class LiveNavigation extends Component {
                 </footer>
                 </div>
               }
-          )
           <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
       </div>

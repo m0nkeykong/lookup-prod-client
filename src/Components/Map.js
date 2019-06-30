@@ -129,9 +129,6 @@ class Map extends Component {
           this.setState({ UpdatedPosition: { lat: lat, lng: lng } });
 
           // Create new 'p' elemnt to print updated location
-          this.newElement = document.createElement('p');
-          this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;
-          this.newLocation.appendChild(this.newElement);
           console.log("watching");
 
           // *** Bluetooth ***
