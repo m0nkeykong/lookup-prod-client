@@ -60,7 +60,9 @@ class TrackDetails extends Component {
 
   getTrackById(trackId){
     fetch(getTrackByIdURL(trackId))
-    .then((res) => {        
+    .then((res) => {   
+      console.log("RESSSS !!!");
+      console.log(res);     
       return res.json();      
     }).then((data) => { 
       console.log("GET TRACK DETAILS:");

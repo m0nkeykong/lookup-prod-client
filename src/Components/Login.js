@@ -7,6 +7,7 @@ import { getGoogleLoginApiKey } from '../globalService';
 import google from './style/Login.css'
 import { Modal, Button, Form, Jumbotron, Container, Image } from 'react-bootstrap';
 import { originURL } from '../globalService';
+import styles from './style/grayscale.css';
 
 class Login extends Component {
     constructor(props) {
@@ -188,7 +189,7 @@ class Login extends Component {
                                 <h2 className="text-white-50 mx-auto mt-2 mb-5">An alternative navigation system which provides the user with safe directions by vibrations</h2>
                                 <GoogleLogin
                                     render={renderProps => (
-                                        <button onClick={renderProps.onClick} className="btn btn-primary js-scroll-trigger">Login with <i class="large google icon"></i></button>
+                                        <button onClick={renderProps.onClick} className="btnLogin btn-primaryLogin js-scroll-trigger">Login with <i className="large google icon"></i></button>
                                     )}
                                     clientId={getGoogleLoginApiKey()}
                                     buttonText="Login"
@@ -199,14 +200,14 @@ class Login extends Component {
                         </div>
                     </header>
                 </div>
-                <div>
-                    <body>
+                
+                    <div>
                         <section id="projects" className="projects-section bg-light">
                             <div className="container">
                                 <div className="row align-items-center no-gutters mb-4 mb-lg-5">
                                     <div className="col-xl-8 col-lg-7">
                                         <div className="embed-responsive embed-responsive-16by9">
-                                            <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowfullscreen style={{height: '100%', width: '100%'}}></iframe>
+                                            <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowFullScreen style={{height: '100%', width: '100%'}}></iframe>
                                         </div>
                                     </div>
                                     <div className="col-xl-4 col-lg-5">
@@ -218,7 +219,7 @@ class Login extends Component {
                                 </div>
                             </div>
                         </section>
-                        <section id="signup" class="signup-section">
+                        <section id="signup" className="signup-section">
                             <div className="container">
                                 <div className="row">
                                     <div className="col-md-10 col-lg-8 mx-auto text-center">
@@ -266,7 +267,7 @@ class Login extends Component {
                                 </div>
                             </div>
                         </section>
-                    </body>
+                    
                 </div>
                 <div>
                     <footer className="bg-black small text-center text-white-50">
