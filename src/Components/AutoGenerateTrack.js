@@ -11,6 +11,7 @@ import LiveNavigation from './LiveNavigation';
 import {getGoogleApiKey} from '../globalService';
 import './style/AutoGenerateTrack.css';
 import Menu from './Menu';
+import { rank, accessibility, disabledFactor } from '../MISC';
 import { Icon } from 'semantic-ui-react'
 
 var EventEmitter = require('events');
@@ -197,10 +198,39 @@ class AutoGenerateTrack extends Component {
     console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getGeneratedTrackDetails()");
     const response = this.state.directionsResponse;
     var leg = ''; 
+    var estimatedTime = 0;
+    var d = 0;
+
 		if (response !== null) {
       if (response.status === 'OK') {
         leg = response.routes[0].legs[0];
         console.log(leg);
+
+        if(leg.duration.value){
+          if (this.state.userDetails.accessibility !== 'Disabled'){
+            let tempDuration = parseFloat(leg.duration.value);
+            d =  tempDuration * disabledFactor;
+            console.log("UPDATED TIME");
+            console.log(d);
+          } 
+          else{
+            d = parseFloat(leg.duration.value);
+            console.log("UPDATED TIME2");
+            console.log(d);
+          }
+          
+          var h = Math.floor(d / 3600);
+          var m = Math.floor(d % 3600 / 60);
+          var s = Math.floor(d % 3600 % 60);
+      
+          var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+          var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+          var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+  
+          estimatedTime = hDisplay + mDisplay + sDisplay; 
+          this.setState({ track: {estimatedDuration: estimatedTime} });
+        }
+
         return(
           <div>
             <div>
@@ -211,7 +241,7 @@ class AutoGenerateTrack extends Component {
                 <ListGroup.Item> <span className="autoSpan"> From: </span> {leg.start_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> To: </span> {leg.end_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
-                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {leg.duration.text} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {estimatedTime.toString()} </ListGroup.Item>
              </ListGroup>
               
               {/*

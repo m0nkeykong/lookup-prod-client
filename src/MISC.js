@@ -10,3 +10,5 @@ export const accessibility = {
     1: 'NotDisabled',
     2: 'Disabled'
 }
+
+export const disabledFactor = 1.5917541;

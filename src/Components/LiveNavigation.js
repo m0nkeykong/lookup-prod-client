@@ -5,6 +5,7 @@ import { fetchDataHandleError, originURL } from '../globalService';
 import './style/LiveNavigation.css';
 import Map from './Map';
 import Menu from './Menu';
+import { Header, Segment, Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
 
 class LiveNavigation extends Component {
   constructor(props) {
@@ -187,14 +188,13 @@ class LiveNavigation extends Component {
               </Card.Header>
             </div> : 
             // @TODO: Implement a photo handling error message
-                <div>
-                <footer className="blockquote-footer">
-                  <span style={{ color: '#cc0000' }}> Error Message: </span> <cite title="Source Title"> 
-                  <h4> Before we start, perhaps you should decide where you want to go </h4> 
-                  <h5>  Please select or create a route first. </h5>
-                  </cite>
-
-                </footer>
+                <div className="text-center">
+                <Segment placeholder>
+                <Header icon>
+                  <Icon name='pdf file outline' />
+                  No documents are listed for this customer.
+                </Header>
+              </Segment>
                 </div>
               }
           <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>

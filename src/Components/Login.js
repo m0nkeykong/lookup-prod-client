@@ -195,27 +195,11 @@ class Login extends Component {
 
                         The system will provide a safe solution for navigating an urban area by means of a non-motorized vehicle, <br />
                         from place of origin to destination without user distraction. <br />
-                    </div>{/*
+                    </div>
                     <div style={{ height: '400px', width: '80%', margin: '0 auto', marginTop: '40px'}}> 
                         <iframe src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" width="100%" height="100%"></iframe>
                     </div>
-                    <div>
-                    Documentation: https://www.npmjs.com/package/react-video-js-player
-                    <VideoPlayer
-                        controls={true}
-                        src={'https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview'}
-                        poster={this.state.video.poster}
-                        width="720"
-                        height="420"
-                        onReady={this.onPlayerReady.bind(this)}
-                        onPlay={this.onVideoPlay.bind(this)}
-                        onPause={this.onVideoPause.bind(this)}
-                        onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
-                        onSeeking={this.onVideoSeeking.bind(this)}
-                        onSeeked={this.onVideoSeeked.bind(this)}
-                        onEnd={this.onVideoEnd.bind(this)}
-                    />
-                </div>*/}
+
                     <h6 style={{ display: 'block', marginTop: '40px'}}>Supported Browsers:
                     </h6>                 
                     <div style={{ backgroundImage: `url(./images/supportedBrawsers.png)`, backgroundSize: 'cover', margin: '0 auto', height: '70px', width: '350px'}}><br/>
