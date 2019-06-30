@@ -504,7 +504,7 @@ class CustomTrack extends Component {
               <NavLink to={{ pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state }}>
                 <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
               </NavLink>
-              <Button variant="secondary" onClick={this.handleCloseModal}>Save</Button>
+              <Button variant="secondary" onClick={this.handleCloseModal}>Edit</Button>
               <Button variant="dark" onClick={this.handleResetModal}>Discard</Button>
             </Modal.Footer>
 
@@ -572,9 +572,9 @@ class CustomTrack extends Component {
                 googleMapsApiKey={getGoogleApiKey()}
                 onError={this.onLoadScriptError}
                 onLoad={this.onLoadScriptSuccess}
-                language="English"
+                language="en"
                 version="3.36"
-                region="US"
+                region="us"
                 libraries={this.mode}
               >
                 <GoogleMap ref={map => this._map = map}
