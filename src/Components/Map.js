@@ -10,20 +10,6 @@ import BluetoothTerminal from './BLEController';
 import { originURL } from '../globalService';
 import { NavLink} from "react-router-dom";
 
-
-
-/*
-TDL:
-אל תשכח להוסיף בקוד שכשמסלול מסתיים - צריך לעדכן את הדאטאבייס
-אלו הנתונים שצריך לעדכן:
-changesDuringTrack
-difficultyLevel
-actualDuration
-rating
-ובכללי להציג את הנתונים האלה:
-actualDuration, difficultyLevel, changesDuringTrack, distance(meters), rating, difficultyLevel, reports, travelMode, startPoint-endPoint
-*/
-
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -156,10 +142,6 @@ class Map extends Component {
     // NotificationManager.error(message, title, timeOut, callback, priority);
   }
   
-  // componentWillUnmount() {
-  // }
-
-
 	// directionsCallback = response => {
   directionsCallback(response){
 		console.log("in direectionsCallBack");
@@ -210,7 +192,7 @@ class Map extends Component {
           // Create new 'p' elemnt to print updated location
           this.newElement = document.createElement('p');
           this.newElement.innerHTML = `Location fetched <a href="https://maps.google.com/maps?&z=15&q=${pos.coords.latitude}+${pos.coords.longitude}&ll=${pos.coords.latitude}+${pos.coords.longitude}" target="_blank">${pos.coords.latitude},${pos.coords.longitude}</a>`;          
-          this.newLocation.appendChild(this.newElement);
+          // this.newLocation.appendChild(this.newElement);
           console.log("watching");
 
 
@@ -284,17 +266,8 @@ class Map extends Component {
     }
   }
 
-  // componentDidMount(){
-  // }
-
-
-//   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
-//     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
-
-// {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
 getWayPoints(wayPoints){
-
   let html=[];
   console.log("wayPoints:");
   console.log(wayPoints);
@@ -335,7 +308,7 @@ render() {
             language="en"
             version="3.36"
             region="en"
-              libraries={this.mode}
+              // libraries={this.mode}
           >
           <div className="map-container">
             <GoogleMap
