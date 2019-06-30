@@ -196,6 +196,7 @@ class AutoGenerateTrack extends Component {
   // Generated track filled form
   getGeneratedTrackDetails(){
     console.log("Entered <AutoGenerateTrack></AutoGenerateTrack> getGeneratedTrackDetails()");
+    var self = this;
     const response = this.state.directionsResponse;
     var leg = ''; 
     var estimatedTime = 0;
@@ -209,7 +210,7 @@ class AutoGenerateTrack extends Component {
         if(leg.duration.value){
           if (this.state.userDetails.accessibility == 'Disabled'){
             let tempDuration = parseFloat(leg.duration.value);
-            d =  tempDuration * disabledFactor;
+            d = tempDuration * disabledFactor;
             console.log("UPDATED TIME");
             console.log(d);
           } 
@@ -228,7 +229,7 @@ class AutoGenerateTrack extends Component {
           var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
   
           estimatedTime = hDisplay + mDisplay + sDisplay; 
-          this.setState({ track: {estimatedDuration: estimatedTime} });
+          // this.setState({ track: {estimatedDuration: estimatedTime} });
         }
 
         return(

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
 import './style/LiveNavigation.css';
 import Map from './Map';
+import { rank, accessibility, disabledFactor } from '../MISC';
 import Menu from './Menu';
 import { Header, Segment, Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
 
@@ -26,7 +27,6 @@ class LiveNavigation extends Component {
     this.createTrack = this.createTrack.bind(this);
     this.addTrackRecord = this.addTrackRecord.bind(this);
 
-
   }
   
   async componentDidMount(){
@@ -45,7 +45,6 @@ class LiveNavigation extends Component {
       }
 
     }}
-
 
   
   // Fetching all the needed data 
@@ -117,7 +116,7 @@ class LiveNavigation extends Component {
   // Creating track Object with points id's
   createTrack(startPointId, endPointId) {
     const { track } = this.props.location.generatedTrack;
-    const estimatedDuration = this.state.userDetails.accessibility === 1 ? {nonDisabledTime: {actual: track.estimatedDuration, count: 1}} : {disabledTime: {actual: track.estimatedDuration, count: 1}}
+    const estimatedDuration = this.state.userDetails.accessibility === 1 ? {nonDisabledTime: {actual: track.estimatedDuration, count: 1}} : {disabledTime: {actual: parseFloat(track.estimatedDuration) * disabledFactor, count: 1}}
     return new Promise(resolve => {
       const trackObj = {
         startPoint: startPointId,
