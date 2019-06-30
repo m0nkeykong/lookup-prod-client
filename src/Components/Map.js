@@ -215,15 +215,88 @@ class Map extends Component {
 
   // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
+  getStartPoint(startPoint){
+
+      // console.log("startPoint");
+      // console.log(startPoint);
+      // console.log(`startPoint: ${startPoint}`);
+      let html = "";
+  
+      if (startPoint.length != 0) {
+          let lat = parseFloat(startPoint.lat);
+          let lng = parseFloat(startPoint.lng);
+          // console.log(startPoint);
+        
+      // console.log("startPoint html");
+      html = `${lat},${lng}`;
+      // console.log(html); 
+    }
+    return html;
+  }
+
+  getEndPoint(endPoint){
+
+      // console.log("endPoint");
+      // console.log(endPoint);
+      // console.log(`endPoint: ${endPoint}`);
+      let html = "";
+
+      if (endPoint.length != 0) {
+          let lat = parseFloat(endPoint.lat);
+          let lng = parseFloat(endPoint.lng);
+          // console.log(endPoint);
+        
+      // console.log("endPoint html");
+      html = `${lat},${lng}`;
+      // console.log(html); 
+      // console.log("type of:");
+      // console.log(typeof html);
+    }
+    return html;
+  }
+
+  // getWayPoints(wayPoints) {
+  //   console.log("wayPoints");
+  //   console.log(wayPoints);
+  //   let html = [];
+  //   console.log(`wayPoints: ${wayPoints}`);
+
+
+  //   if (wayPoints.length != 0) {
+  //     for (let i = 0; i < wayPoints.length; i++) {
+  //       let parseString = wayPoints[i].location.split(",");
+  //       let lat = parseFloat(parseString[0]);
+  //       let lng = parseFloat(parseString[1]);
+  //       let parseLocation = parseFloat(wayPoints[i].location);
+  //       console.log("wayPoints[i].stopover:");
+  //       console.log(wayPoints[i].stopover);
+  //       html.push({ location: `${wayPoints[i].stopover}` ,stopover: wayPoints[i].stopover});
+  //     }
+  //   }
+  //   console.log("HTML waypoint___________________");
+  //   console.log(html);
+  //   return html;
+  // }
+
   getWayPoints(wayPoints) {
+    console.log("wayPoints");
+    console.log(wayPoints);
     let html = [];
     console.log(`wayPoints: ${wayPoints}`);
 
     if (wayPoints.length != 0) {
       for (let i = 0; i < wayPoints.length; i++) {
-        html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
+        let parseString = wayPoints[i].location.split(",");
+        let lat = parseFloat(parseString[0]);
+        let lng = parseFloat(parseString[1]);
+        let parseLocation = parseFloat(wayPoints[i].location);
+        console.log("wayPoints[i].stopover:");
+        console.log(wayPoints[i].stopover);
+        html.push({ location: `${wayPoints[i].location}` ,stopover: wayPoints[i].stopover});
       }
     }
+    console.log("HTML waypoint___________________");
+    console.log(html);
     return html;
   }
 
@@ -278,19 +351,25 @@ class Map extends Component {
                     icon={`/images/map-marker-icon3.png`}
                   >
                   </Marker>
-                  
+                  {console.log("TRACKKKKKKKK _---------_____------")}
+                  {console.log(this.props.track)}
+                  {console.log(this.props.isFromTrackDetails)}
+                  {console.log(typeof this.props.track.startPoint.city)}
                   {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
-                  {typeof this.props.track.startPoint.city !== "undefined" ?
+                  {this.props.isFromTrackDetails === true ?
                     (
                       (
                         this.state.response === null
                       ) && (
                         <DirectionsService
                           options={{
-                            origin: this.props.track.startPoint.city,
-                            destination: this.props.track.endPoint.city,
+                            avoidFerries: true,
+                            avoidHighways: true,
+                            avoidTolls: true,
                             waypoints: this.getWayPoints(this.props.track.wayPoints),
                             travelMode: this.props.track.travelMode.toUpperCase(),
+                            origin: this.getStartPoint(this.props.track.startPointObj),
+                            destination: this.getEndPoint(this.props.track.endPointObj),
                             drivingOptions: {
                               departureTime: new Date(Date.now()),
                               trafficModel: 'bestguess'

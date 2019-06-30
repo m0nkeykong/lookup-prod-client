@@ -258,16 +258,7 @@ class TrackDetails extends Component {
           <TiArrowBackOutline size={29} color='black'/></NavLink>
       </div>
 
-      <div className="col-12" style={{margin:'auto'}}>
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
-          idOfTrack: track.idOfTrack,
-          track:this.buildTrack(track)}}
-          activeStyle={this.active} 
-          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-          className="btn btn-primary" >Start Navigator</NavLink>
-      </div>
+     
 
           <div className="col-12 px-4">
 
@@ -317,6 +308,7 @@ class TrackDetails extends Component {
             <Map 
             track={this.buildTrack(track)}
             idOfTrack={track._id}
+            isFromTrackDetails={true}
             >
             </Map>
 
@@ -354,3 +346,14 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
+
+ // <div className="col-12" style={{margin:'auto'}}>
+      //   <NavLink to=
+      //   //navigate to TrackDetails via TemplateComponent with the params
+      //   {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
+      //     idOfTrack: track.idOfTrack,
+      //     track:this.buildTrack(track)}}
+      //     activeStyle={this.active} 
+      //     style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+      //     className="btn btn-primary" >Start Navigator</NavLink>
+      // </div>
