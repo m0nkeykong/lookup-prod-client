@@ -15,12 +15,13 @@ class Menu extends Component {
 
     this.state = {
       userDetails: [],
-      loading: true
+      loading: true,
+      userClose: false
     }
     
     this.fetchData = this.fetchData.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
-
+    this.userCloseToggle = this.userCloseToggle.bind(this);
   }
   
   async componentDidMount(){
@@ -57,7 +58,9 @@ class Menu extends Component {
     });
   }
 
-  
+  userCloseToggle(){
+    this.setState(prevState => ({ userClose: !prevState.userClose}));
+  }
 
   render() {
     return (
@@ -92,18 +95,17 @@ class Menu extends Component {
                 }
             </Navbar.Brand>
 
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Toggle onClick={this.userCloseToggle} aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                <div >
+                { this.state.userClose &&<div >
                     <p style={{ fontSize: '120%', textAlign: 'center', paddingTop: '8px', position: 'relative' }}>Hello, {this.state.userDetails.name}
-                  <NavLink
+                   <NavLink
                   to={{ pathname: `${process.env.PUBLIC_URL}/` }}
                   style={{ position: 'absolute', right: '0' }}>
                   <Button circular icon='user close'></Button>
                 </NavLink>
                   </p>
-
-                </div>
+                </div>}
                 <Nav className="mr-auto" style={{ fontSize: '120%', lineHight: '160%' }}>
                     <Nav.Link href='home'><Icon color='teal' size='big' name='home' /> Home</Nav.Link>
                     <Nav.Link href='profile'><Icon color='teal' size='big' name='setting' /> Profile Settings</Nav.Link>

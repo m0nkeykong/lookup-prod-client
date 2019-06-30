@@ -39,7 +39,7 @@ class HomePage extends Component {
   render() {
     const userDetails = { ...this.state.userDetails };
     return (
-      <div style={{margin: '0'}}>
+      <div style={{ margin: '0'}}>
         {/* Page Menu */}
         <Menu currentPage={"Home"}> </Menu>
 
@@ -51,19 +51,21 @@ class HomePage extends Component {
 
         {!this.state.isLoading &&
           (
-            <div style={{ width: '350px', padding: '20px', position: 'relative' }}>
+            <div style={{ width: '350px',  position: 'relative', margin: '0 auto'}}>
               <h2 style={{ textAlign: 'center' }}>{userDetails.name}</h2>
               <NavLink
                 to={{ pathname: `${process.env.PUBLIC_URL}/profile` }}
-                style={{ position: 'absolute', right: '0' }}>
+                style={{ position: 'absolute', right: '15px' }}>
                 <Button circular icon='settings'></Button>
               </NavLink>
               <Image style={{ paddingBottom: '10px' }} src={this.state.userDetails.profilePicture} size='tiny' circular centered />
+              <div style={{ paddingLeft: '20px' }}>
               <p><strong><List.Icon name='users' size='large' /> Acount Created Date: </strong> {userDetails.createdDate} </p>
               <p><strong><List.Icon name='mail' size='large'/> Email: </strong> {userDetails.email} </p>
               <p><strong><List.Icon name='universal access' size='large'/> Accessibility: </strong> {userDetails.accessibility === 1 ? 'Not Disabled' : 'Disabled'} </p>
               <p><strong><List.Icon name='smile' size='large'/> Rank: </strong> {' ' + rank[userDetails.rank]}</p>
               <p><strong><List.Icon name='birthday' size='large'/> Birth Day Date: </strong> {userDetails.birthDay}</p>
+              </div>
               <div style={{ margin: '0 auto', textAlign: 'center', width: '350px', height: '175px' }}>
                 <Statistic color={'green'} style={{ paddingTop: '25px' }}>
                   <Statistic.Value>{userDetails.trackRecords.length}<Icon name='check' /></Statistic.Value>
@@ -118,7 +120,6 @@ class HomePage extends Component {
                     Search tracks
               </NavLink>
                 </Button>
-
               </div>
             </div>
           )
