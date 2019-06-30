@@ -286,7 +286,7 @@ class TrackDetails extends Component {
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="active"><h4 class="reviews text-capitalize">Reports</h4></li>
                         </ul>    
-                        {track.reports.length == 0 ? 
+                        {track.reports.length === 0 ? 
                           (
                             <div class="tab-content">
                               <div class="tab-pane active" id="reports-logout">  

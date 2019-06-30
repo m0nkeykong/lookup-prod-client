@@ -3,19 +3,14 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import IoMap from 'react-icons/lib/io/map';
-import {getAllTracksURL, getTracksByCityURL, PostRequest} from '../globalService'
-import { NavLink , Link} from "react-router-dom";
+import {getAllTracksURL, getTracksByCityURL} from '../globalService'
+import { NavLink } from "react-router-dom";
 import { Card, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
-import Map from './Map'
 import Menu from './Menu'
 import axios from 'axios';
 import FavoriteButton from './FavoriteButton';
 import { Button } from 'semantic-ui-react'
-
-
-
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -71,10 +66,10 @@ class ChooseExistingTrack extends Component {
       console.log(data);  
       var self=this; 
       this.state.tracks = [];
-      if( data[0].length == 0){
+      if( data[0].length === 0){
           self.addTracks('','','','','','','',''); 
       }  
-      if( data[0].message == "No tracks found"){
+      if( data[0].message === "No tracks found"){
         self.addTracks('','','','','','','',''); 
     }    
       else{
@@ -129,7 +124,7 @@ class ChooseExistingTrack extends Component {
   }
 
   getIconType(type){
-    if(type == 'Walking')
+    if(type === 'Walking')
       return <MdDirectionsWalk size={20} color="black" />;
     else
       return <IoAndroidBicycle size={20} color="black" />;
@@ -168,7 +163,7 @@ class ChooseExistingTrack extends Component {
     let num;
     
     // if user is nonDisabledTime
-    if(this.state.userDetails.accessibility == 0)
+    if(this.state.userDetails.accessibility === 0)
       num = nonDisabledTime.actual;
     else
       num = disabledTime.actual;
@@ -185,7 +180,7 @@ class ChooseExistingTrack extends Component {
   viewTracks(track,i) {
     console.log("TRACKTTTT:");
     console.log(track);
-    if (track.title == ''){
+    if (track.title === ''){
       console.log("there are no tracks to display !");
       return (
         <div>
@@ -193,7 +188,7 @@ class ChooseExistingTrack extends Component {
         </div>
       )
     }
-    else if (this.state.userDetails.rank < 2 & track.difficultyLevel == 5 ){
+    else if (this.state.userDetails.rank < 2 & track.difficultyLevel === 5 ){
         return (<div></div>)
     }
     else{
@@ -321,7 +316,7 @@ class ChooseExistingTrack extends Component {
                 </div>
                 
                 {
-                  this.state.userDetails.accessibility == '2' ?
+                  this.state.userDetails.accessibility === '2' ?
                   (
                     <div className="container">
                     <h6>Choose Difficulty Level</h6>

@@ -3,10 +3,9 @@ import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import Menu from './Menu';
 import { originURL } from '../globalService';
-import { Breadcrumb, Row, Col, Container } from 'react-bootstrap';
-import { BeatLoader } from 'react-spinners';  
-import { rank, accessibility } from '../MISC';
-import { Header, Segment, Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
+import { Breadcrumb } from 'react-bootstrap';
+import { rank } from '../MISC';
+import { Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
 
 class HomePage extends Component {
   constructor(props) {

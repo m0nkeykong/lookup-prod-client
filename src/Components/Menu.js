@@ -8,7 +8,6 @@ import BLE from './BLE';
 import { Icon, Button } from 'semantic-ui-react'
 import { NavLink } from "react-router-dom";
 
-
 class Menu extends Component {
   constructor(props) {
     super(props);

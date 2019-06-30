@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { rank, accessibility } from '../MISC';
+import { rank } from '../MISC';
 import { Button, Form, Alert, Breadcrumb} from 'react-bootstrap';
 import { originURL } from '../globalService';
 

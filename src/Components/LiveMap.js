@@ -3,10 +3,7 @@ import Map from './Map';
 import Menu from './Menu';
 import axios from 'axios';
 import TamplateComponent from './TemplateComponent';
-import { Card, Navbar, NavDropdown, Nav, Breadcrumb } from 'react-bootstrap';
-import { BeatLoader } from 'react-spinners';
-import { NavLink} from "react-router-dom";
-
+import { Card, Breadcrumb } from 'react-bootstrap';
 
  class LiveMap extends Component {
   constructor(props) {

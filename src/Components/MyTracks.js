@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { rank, accessibility } from '../MISC';
-import { Card, Icon, Image, Label, Button } from 'semantic-ui-react'
+import { Card, Icon, Label, Button } from 'semantic-ui-react'
 import { originURL, getGoogleApiKey } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
 import './style/FavoriteList.css';
@@ -14,8 +13,6 @@ import {
 } from 'react-static-google-map';
 import Menu from './Menu';
 import FavoriteButton from './FavoriteButton';
-
-const _ = require('lodash');
 
 class MyTracks extends Component {
   constructor(props) {
