@@ -215,8 +215,71 @@ class Map extends Component {
 
   // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
+  getStartPoint(startPoint){
+
+      // console.log("startPoint");
+      // console.log(startPoint);
+      // console.log(`startPoint: ${startPoint}`);
+      let html = "";
+  
+      if (startPoint.length != 0) {
+          let lat = parseFloat(startPoint.lat);
+          let lng = parseFloat(startPoint.lng);
+          // console.log(startPoint);
+        
+      // console.log("startPoint html");
+      html = `${lat},${lng}`;
+      // console.log(html); 
+    }
+    return html;
+  }
+
+  getEndPoint(endPoint){
+
+      // console.log("endPoint");
+      // console.log(endPoint);
+      // console.log(`endPoint: ${endPoint}`);
+      let html = "";
+
+      if (endPoint.length != 0) {
+          let lat = parseFloat(endPoint.lat);
+          let lng = parseFloat(endPoint.lng);
+          // console.log(endPoint);
+        
+      // console.log("endPoint html");
+      html = `${lat},${lng}`;
+      // console.log(html); 
+      // console.log("type of:");
+      // console.log(typeof html);
+    }
+    return html;
+  }
+
+  // getWayPoints(wayPoints) {
+  //   console.log("wayPoints");
+  //   console.log(wayPoints);
+  //   let html = [];
+  //   console.log(`wayPoints: ${wayPoints}`);
+
+
+  //   if (wayPoints.length != 0) {
+  //     for (let i = 0; i < wayPoints.length; i++) {
+  //       let parseString = wayPoints[i].location.split(",");
+  //       let lat = parseFloat(parseString[0]);
+  //       let lng = parseFloat(parseString[1]);
+  //       let parseLocation = parseFloat(wayPoints[i].location);
+  //       console.log("wayPoints[i].stopover:");
+  //       console.log(wayPoints[i].stopover);
+  //       html.push({ location: `${wayPoints[i].stopover}` ,stopover: wayPoints[i].stopover});
+  //     }
+  //   }
+  //   console.log("HTML waypoint___________________");
+  //   console.log(html);
+  //   return html;
+  // }
+
   getWayPoints(wayPoints) {
-    console.log("HAAAAAA");
+    console.log("wayPoints");
     console.log(wayPoints);
     let html = [];
     console.log(`wayPoints: ${wayPoints}`);
@@ -225,20 +288,15 @@ class Map extends Component {
     if (wayPoints.length != 0) {
       for (let i = 0; i < wayPoints.length; i++) {
         let parseString = wayPoints[i].location.split(",");
-        let lat = parseString[0];
-        let lng = parseString[1];
-        console.log("lat:");
-        console.log(lat);
-        console.log("lng:");
-        console.log(lng);
-        // console.log(wayPoints[i].location);
-
-        // html.push({ location: { lat: lat, lng: lng } });
-        // html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
-        html.push({ location: `${wayPoints[i].location}` });
+        let lat = parseFloat(parseString[0]);
+        let lng = parseFloat(parseString[1]);
+        let parseLocation = parseFloat(wayPoints[i].location);
+        console.log("wayPoints[i].stopover:");
+        console.log(wayPoints[i].stopover);
+        html.push({ location: `${wayPoints[i].location}` ,stopover: wayPoints[i].stopover});
       }
     }
-    console.log("HTML ___________________");
+    console.log("HTML waypoint___________________");
     console.log(html);
     return html;
   }
@@ -296,9 +354,7 @@ class Map extends Component {
                   </Marker>
                   {console.log("REUTTTTTTTTTT")}
                   {console.log(this.props.track)}
-                  {console.log(this.props.track.wayPoints[0])}
-                  {console.log(this.props.track.wayPoints[0]._id)}
-                  {console.log(this.props.track.wayPoints)}
+                  {console.log(this.getWayPoints(this.props.track.wayPoints))}
                   {typeof this.props.track.wayPoints[0]._id !== "undefined" ?
                     (
                       (
@@ -306,10 +362,18 @@ class Map extends Component {
                       ) && (
                         <DirectionsService
                           options={{
-                            origin: this.props.track.startPoint.city,
-                            destination: this.props.track.endPoint.city,
+                            avoidFerries: true,
+                            avoidHighways: true,
+                            avoidTolls: true,
+                            // origin: "32.0856379,34.777242",
+                            // destination: "32.0892991,34.7800542",
                             waypoints: this.getWayPoints(this.props.track.wayPoints),
+                            // waypoints: [{location: "32.08983833446587, 34.779908375488276", stopover: true}],
                             travelMode: this.props.track.travelMode.toUpperCase(),
+                            origin: this.getStartPoint(this.props.track.startPointObj),
+                            destination: this.getEndPoint(this.props.track.endPointObj),
+                            // waypoints: this.getWayPoints(this.props.track.wayPoints),
+                            // travelMode: this.props.track.travelMode.toUpperCase(),
                             drivingOptions: {
                               departureTime: new Date(Date.now()),
                               trafficModel: 'bestguess'
@@ -373,6 +437,9 @@ class Map extends Component {
 
 
 export default Map;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // import React, { Component } from 'react';
 // import './style/CustomTrack.css';
@@ -803,3 +870,34 @@ export default Map;
 // typeof this.props.track.wayPoints.length !== 0 &&
 //                     this.props.track.wayPoints[0]
 //                    ?
+
+
+
+
+// getWayPoints(wayPoints) {
+//   console.log("HAAAAAA");
+//   console.log(wayPoints);
+//   let html = [];
+//   console.log(`wayPoints: ${wayPoints}`);
+
+
+//   if (wayPoints.length != 0) {
+//     for (let i = 0; i < wayPoints.length; i++) {
+//       let parseString = wayPoints[i].location.split(",");
+//       let lat = parseString[0];
+//       let lng = parseString[1];
+//       console.log("lat:");
+//       console.log(lat);
+//       console.log("lng:");
+//       console.log(lng);
+//       console.log(wayPoints[i].location);
+//       // html.push({ location: { lat: lat, lng: lng } });
+//       // html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
+//       html.push({ location: { lat: 32.0894025305518, lng: 34.77991687548831 } });
+//       // html.push({ location: `${wayPoints[i].location}` });
+//     }
+//   }
+//   console.log("HTML ___________________");
+//   console.log(html);
+//   return [];
+// }
