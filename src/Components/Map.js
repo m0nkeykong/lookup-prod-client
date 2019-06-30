@@ -126,7 +126,7 @@ class Map extends Component {
 
           // if (pos.coords.accuracy < 100) navigator.geolocation.clearWatch(this.watchID);
           this.setState({ timestamp: pos.timestamp });
-
+          this.setState({ UpdatedPosition: {lat: lat, lng: lng}});
           // Create new 'p' elemnt to print updated location
           console.log("watching");
 
