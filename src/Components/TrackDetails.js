@@ -111,13 +111,13 @@ class TrackDetails extends Component {
    if(reports.length !== 0){
     for (let i = 0; i < reports.length; i++) {
       html.push(
-        <ul class="media-list">
-          <li class="media">
-              <img class="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
-            <div class="media-body">
-              <div class="well well-lg">
-                  <h5 class="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
-                  <p class="media-report">
+        <ul className="media-list">
+          <li className="media">
+              <img className="media-object img-circle" src={userDetails[i].profilePicture} alt="profile"></img>
+            <div className="media-body">
+              <div className="well well-lg">
+                  <h5 className="media-heading text-uppercase nameTitle">{userDetails[i].name}</h5>
+                  <p className="media-report">
                     {reports[i].report}
                   </p>
               </div>              
@@ -129,7 +129,7 @@ class TrackDetails extends Component {
    }
    else{
     html.push(
-      <p class="media-report"></p>
+      <p className="media-report"></p>
     );
    }
     return html;
@@ -192,9 +192,9 @@ class TrackDetails extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span class="fa fa-star colorStarOrange"></span>)
+        html.push(<span className="fa fa-star colorStarOrange"></span>)
       else
-        html.push(<span class="fa fa-star"></span>)
+        html.push(<span className="fa fa-star"></span>)
 
     }
     return html;
@@ -258,16 +258,7 @@ class TrackDetails extends Component {
           <TiArrowBackOutline size={29} color='black'/></NavLink>
       </div>
 
-      <div className="col-12" style={{margin:'auto'}}>
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
-          idOfTrack: track.idOfTrack,
-          track:this.buildTrack(track)}}
-          activeStyle={this.active} 
-          style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-          className="btn btn-primary" >Start Navigator</NavLink>
-      </div>
+     
 
           <div className="col-12 px-4">
 
@@ -279,17 +270,17 @@ class TrackDetails extends Component {
             <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
 
 
-              <div class="row">
-                <div class="col-sm-12 col-md-5" id="logout" style={{ margin:`20px auto`}}>
+              <div className="row">
+                <div className="col-sm-12 col-md-5" id="logout" style={{ margin:`20px auto`}}>
                     
-                    <div class="report-tabs">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><h4 class="reviews text-capitalize">Reports</h4></li>
+                    <div className="report-tabs">
+                        <ul className="nav nav-tabs" role="tablist">
+                            <li className="active"><h4 className="reviews text-capitalize">Reports</h4></li>
                         </ul>    
                         {track.reports.length === 0 ? 
                           (
-                            <div class="tab-content">
-                              <div class="tab-pane active" id="reports-logout">  
+                            <div className="tab-content">
+                              <div className="tab-pane active" id="reports-logout">  
                                 <p> - No reports to display - </p>
                               </div>  
                             </div>
@@ -297,8 +288,8 @@ class TrackDetails extends Component {
                           ) 
                           :
                           (
-                            <div class="tab-content">
-                              <div class="tab-pane active" id="reports-logout">  
+                            <div className="tab-content">
+                              <div className="tab-pane active" id="reports-logout">  
                                 {this.getReports(track.reports,track.userDetails)}
                               </div>  
                             </div>
@@ -317,6 +308,7 @@ class TrackDetails extends Component {
             <Map 
             track={this.buildTrack(track)}
             idOfTrack={track._id}
+            isFromTrackDetails={true}
             >
             </Map>
 
@@ -354,3 +346,14 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
+
+ // <div className="col-12" style={{margin:'auto'}}>
+      //   <NavLink to=
+      //   //navigate to TrackDetails via TemplateComponent with the params
+      //   {{pathname: `${process.env.PUBLIC_URL}/liveMap`, 
+      //     idOfTrack: track.idOfTrack,
+      //     track:this.buildTrack(track)}}
+      //     activeStyle={this.active} 
+      //     style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+      //     className="btn btn-primary" >Start Navigator</NavLink>
+      // </div>
