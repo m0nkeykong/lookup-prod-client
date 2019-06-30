@@ -253,7 +253,7 @@ class TrackDetails extends Component {
     var minutes = (hours - rhours) * 60;
     var rminutes = Math.round(minutes);
 
-    html.push(<span class="">{rhours}:{rminutes}</span>)
+    html.push(<span className="">{rhours}:{rminutes}</span>)
     return html;
   }
 

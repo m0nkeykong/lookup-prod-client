@@ -308,7 +308,6 @@ render() {
             language="en"
             version="3.36"
             region="en"
-              libraries={this.mode}
           >
           <div className="map-container">
             <GoogleMap
@@ -328,12 +327,6 @@ render() {
             //   options={}
 						// Max Zoom: 0 to 18
             zoom={18}>
-              <DrawingManager
-                onLoad={drawingManager => {
-                  console.log(drawingManager)
-                }}
-                onPolylineComplete={this.onPolylineComplete}
-              />
            
                 {console.log("MAPPPPP:")}
                 {console.log(this.props.track)}

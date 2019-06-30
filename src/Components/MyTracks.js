@@ -5,6 +5,7 @@ import { Card, Icon, Image, Label, Button } from 'semantic-ui-react'
 import { originURL, getGoogleApiKey } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
 import './style/FavoriteList.css';
+import { NavLink } from "react-router-dom";
 
 import {
   StaticGoogleMap,
@@ -192,12 +193,15 @@ class MyTracks extends Component {
               <Card.Content extra>
               </Card.Content>
 
-                {/* @TODO: IMPLEMENT LIVE NAVIGATION */}
-                <Button primary
-                onClick={ () => {alert('Start Navigation')}}
-                >
-                Live Navigation
-                </Button>
+                <NavLink to=
+                //navigate to TrackDetails via TemplateComponent with the params
+                {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+                  idOfTrack: track._id}}>
+                  <Button primary style={{width: '100%'}}>
+                  Live Navigation
+                  </Button>
+                </NavLink>
+
             </Card>
            
             </React.Fragment>

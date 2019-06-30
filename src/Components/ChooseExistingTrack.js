@@ -174,7 +174,7 @@ class ChooseExistingTrack extends Component {
     var minutes = (hours - rhours) * 60;
     var rminutes = Math.round(minutes);
 
-    html.push(<span class="">{rhours}:{rminutes}</span>)
+    html.push(<span className="">{rhours}:{rminutes}</span>)
     return html;
   }
 
@@ -261,7 +261,7 @@ console.log(track);
   render() {
     return (
       <div>
-        <Card className="text-center">
+        <Card>
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
           <Menu currentPage={"Choose Existing"}> </Menu>
@@ -273,7 +273,7 @@ console.log(track);
             <Breadcrumb.Item active>Choose</Breadcrumb.Item>
           </Breadcrumb>
 
-          <Card.Body>
+          <Card.Body className="text-center">
             <Card.Title>
               <h6> Choose Origin and Destination </h6>
             </Card.Title>
@@ -297,12 +297,12 @@ console.log(track);
                   </div>
                 </div>
 
-                <div className="d-flex flex-wrap justify-content-md-center">
-                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center"> 
+                <div className="d-flex flex-wrap justify-content-md-center text-center">
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center text-center"> 
                     <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value={this.state.walking} required />
                     <label className=''>Walking</label>
                   </div>
-                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode"> 
+                  <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode text-center"> 
                   <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
                   <label className=''>Bicycling</label>
                 </div>
@@ -365,7 +365,7 @@ console.log(track);
             </div>
 
             
-          <Card.Body>
+          <Card.Body style={{ textAlign: 'center'}}>
             {this.state.loading ?
               (
             <div className="col-12 mx-auto">
