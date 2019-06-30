@@ -5,7 +5,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import {getGoogleLoginApiKey} from '../globalService';
 import google from './style/Login.css'
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Jumbotron, Container, Image} from 'react-bootstrap';
 import { originURL } from '../globalService';
 
 class Login extends Component {
@@ -178,21 +178,25 @@ class Login extends Component {
             <div id="root">
                 <NotificationContainer />
                 {!this.state.isAccessibility && this.accessibilityModal()}
-                <header style={{ textAlign: 'center' }}>
-                    <div style={{ height: '140px', width: '100%', margin: '0 auto'}}> 
-                        <div style={{ backgroundImage: `url(./images/logo.png)`, backgroundSize: 'cover', margin: '0 auto', width: '350px', height: '121px', marginTop: '70px' }} />
-                  </div>                
-                </header>
+                <Jumbotron fluid>
+                    <Container >
+                        <header style={{ textAlign: 'center' }}>
+                                            
+                            <Image src="./images/logo.png" fluid />
+                        </header>
+                    </Container>
+                </Jumbotron>
                 <p style={{ marginTop: '50px' }}></p>
                 <div style={{ textAlign: 'center' }}>
-                    <h1> Welcome to Look Up - Vibrating Navigation </h1>
-                    An alternative navigation system which provides the user with safe directions by vibrations <br />
-                    that are transmitted in real time directly from the mobile phone to our special bracelet. <br />
+                    <div style={{ textAlign: 'center' }}>
+                        <h1> Welcome to Look Up</h1>
+                        An alternative navigation system which provides the user with safe directions by vibrations <br />
+                        that are transmitted in real time directly from the mobile phone to our special bracelet. <br />
 
-                    The system will provide a safe solution for navigating an urban area by means of a non-motorized vehicle, <br />
-                    from place of origin to destination without user distraction. <br />
-
-                    <div style={{ height: '350px', width: '350px', margin: '0 auto', marginTop: '40px'}}> 
+                        The system will provide a safe solution for navigating an urban area by means of a non-motorized vehicle, <br />
+                        from place of origin to destination without user distraction. <br />
+                    </div>
+                    <div style={{ height: '400px', width: '80%', margin: '0 auto', marginTop: '40px'}}> 
                         <iframe src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" width="100%" height="100%"></iframe>
                     </div>
 

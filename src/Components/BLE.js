@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import BLEController from './BLEController';
-import { Modal, Button, Form } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/styles';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+// import { Icon, Button } from 'semantic-ui-react'
 import Icon from '@material-ui/core/Icon';
 
 // UI elements.
@@ -91,13 +91,23 @@ class BLE extends Component {
     });
     return (
       <div>
-        <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-          <img alt="bleConnect" src={`/images/bleOnIcon.png`} style={{ height: '25px', width: '25px' }}></img><br></br>
-        </button>
-        <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-          <img alt="bleDisconnect" src={`/images/bleOffIcon.png`} style={{ height: '25px', width: '25px' }}></img><br></br>
-        </button>
-            {
+        {!this.state.isBLEConnected ?
+        <div style={{ fontSize: '120%', lineHight: '160%'}}>
+            <Icon style={{ color: 'gray', fontSize: '35px' }} id="connect" onClick={this.connectButton} >bluetooth_disabled</Icon>
+            {/* <Icon color='teal' size='big' name='bluetooth b' style={{ backgroundColor: 'light gray', borderRadius: '50%' }}/>Bluetooth */}
+        </div> :
+          <div style={{ fontSize: '120%', lineHight: '160%' }}>
+            <Icon style={{ color: 'teal', fontSize: '35px' }} id="disconnect" onClick={this.disconnectButton}>bluetooth_connected</Icon>
+        </div>
+      }
+        
+
+          {/* <div className="item" >connect</div>
+          <div className="item"  >disconnect</div>
+
+        </div> */}
+
+            {/* {
               !this.state.isBLEConnected ?
             <SnackbarContent
               className={classes.snackbar}
@@ -105,34 +115,7 @@ class BLE extends Component {
                 'No device connected'
               }
             /> : null
-              
-              
-              
-              /* <>
-              <Modal
-                show={this.state.showBLEnotification}
-                onHide={this.handleHide}
-                dialogClassName="modal-90w"
-                aria-labelledby="example-custom-modal-styling-title"
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title id="example-custom-modal-styling-title">
-                    Custom Modal Styling
-            </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <p>
-                    Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae
-                    unde commodi aspernatur enim, consectetur. Cumque deleniti
-                    temporibus ipsam atque a dolores quisquam quisquam adipisci
-                    possimus laboriosam. Quibusdam facilis doloribus debitis! Sit
-                    quasi quod accusamus eos quod. Ab quos consequuntur eaque quo rem!
-                    Mollitia reiciendis porro quo magni incidunt dolore amet atque
-                    facilis ipsum deleniti rem!
-            </p>
-                </Modal.Body>
-              </Modal>
-            </> */}
+            } */}
       </div>
     );
   }

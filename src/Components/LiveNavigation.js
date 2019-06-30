@@ -13,7 +13,6 @@ class LiveNavigation extends Component {
     this.state = {
       userDetails: [],
       isLoading: true,
-      isBLEConnected: sessionStorage.getItem('isBLEConnected') ? sessionStorage.getItem('isBLEConnected') : false,
       isLocation: false,
       generatedTrack: this.props.location.generatedTrack ? this.props.location.generatedTrack: '' 
     }
@@ -25,7 +24,7 @@ class LiveNavigation extends Component {
     this.createEndPoint = this.createEndPoint.bind(this);
     this.createTrack = this.createTrack.bind(this);
     this.addTrackRecord = this.addTrackRecord.bind(this);
-    //this.storageChanged = this.storageChanged.bind(this);
+
 
   }
   
@@ -43,24 +42,9 @@ class LiveNavigation extends Component {
         await this.getUserDetails();
         await this.setState({ isLoading: false });
       }
-    }
 
-    //window.addEventListener('storage', this.storageChanged);
+    }}
 
-    if (this.state.isBLEConnected == false) {
-      console.log('*******************');
-      console.log('no device connected');
-      console.log(this.isBLEConnected);
-    } else {
-      console.log('**************');
-      console.log('device connected');
-      console.log(this.isBLEConnected);
-    }
-  }
-
-  // storageChanged() {
-  //     console.log("storage changes");
-  // }
 
   
   // Fetching all the needed data 
@@ -178,8 +162,8 @@ class LiveNavigation extends Component {
       <div>
         <Card>
 
-          <Menu currentPage={"Live Navigation"}> </Menu>
-
+          <Menu currentPage={"Live Navigation"}> </Menu> &&
+          (
           {this.state.isLocation === true ? 
             <div>
               <Breadcrumb>
@@ -214,7 +198,7 @@ class LiveNavigation extends Component {
                 </footer>
                 </div>
               }
-
+          )
           <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
       </div>
