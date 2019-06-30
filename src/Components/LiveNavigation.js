@@ -164,7 +164,7 @@ class LiveNavigation extends Component {
 
           <Menu currentPage={"Live Navigation"}> </Menu>
           {this.state.isLocation === true ? 
-            <div>
+            <div className="text-center">
               <Breadcrumb>
                 <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
                 <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
