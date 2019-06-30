@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import BLEController from './BLEController';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Icon from '@material-ui/core/Icon';
 
