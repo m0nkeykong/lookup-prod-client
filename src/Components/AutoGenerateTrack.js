@@ -207,7 +207,7 @@ class AutoGenerateTrack extends Component {
         console.log(leg);
 
         if(leg.duration.value){
-          if (this.state.userDetails.accessibility !== 'Disabled'){
+          if (this.state.userDetails.accessibility == 'Disabled'){
             let tempDuration = parseFloat(leg.duration.value);
             d =  tempDuration * disabledFactor;
             console.log("UPDATED TIME");
