@@ -71,15 +71,18 @@ class ChooseExistingTrack extends Component {
       console.log(data);  
       var self=this; 
       this.state.tracks = [];
-      if( data[0].length == 0){
+      if( data.length == 0){
           self.addTracks('','','','','','','',''); 
       }  
-      if( data[0].message == "No tracks found"){
+      if( data.message == "No tracks found"){
         self.addTracks('','','','','','','',''); 
     }    
       else{
-        data[0].map(json => { 
-          self.addTracks(json._id,json.title, json.type, json.reports, json.description,"","","",json.difficultyLevel.star,json.disabledTime, json.nonDisabledTime); 
+        data.map(json => { 
+          console.log("JSONNNNNNNNN");
+          console.log(json);
+          let jsonParse = json[0];
+          self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,"","","",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
         })  
       } 
     })
@@ -129,7 +132,10 @@ class ChooseExistingTrack extends Component {
   }
 
   getIconType(type){
-    if(type == 'Walking')
+    console.log("TYPEEEEEEEEEEEEEEE");
+    console.log(type);
+
+    if(type === 'WALKING')
       return <MdDirectionsWalk size={20} color="black" />;
     else
       return <IoAndroidBicycle size={20} color="black" />;

@@ -365,15 +365,10 @@ class Map extends Component {
                             avoidFerries: true,
                             avoidHighways: true,
                             avoidTolls: true,
-                            // origin: "32.0856379,34.777242",
-                            // destination: "32.0892991,34.7800542",
                             waypoints: this.getWayPoints(this.props.track.wayPoints),
-                            // waypoints: [{location: "32.08983833446587, 34.779908375488276", stopover: true}],
                             travelMode: this.props.track.travelMode.toUpperCase(),
                             origin: this.getStartPoint(this.props.track.startPointObj),
                             destination: this.getEndPoint(this.props.track.endPointObj),
-                            // waypoints: this.getWayPoints(this.props.track.wayPoints),
-                            // travelMode: this.props.track.travelMode.toUpperCase(),
                             drivingOptions: {
                               departureTime: new Date(Date.now()),
                               trafficModel: 'bestguess'
