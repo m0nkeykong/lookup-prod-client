@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-//import './style/normalize.css';
 import BLEController from './BLEController';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { makeStyles } from '@material-ui/core/styles';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Icon from '@material-ui/core/Icon';
 
 // UI elements.
 // const deviceNameLabel = document.getElementById('device-name');
@@ -8,6 +11,11 @@ import BLEController from './BLEController';
 class BLE extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isBLEConnected: false
+    }
+
+
     this.BLEController = new BLEController();
 
     this.receive = this.receive.bind(this);
@@ -51,23 +59,80 @@ class BLE extends Component {
 
   // connect button functionallity (open available bluetooth device list)                  
   connectButton = () => {
-    this.BLEController.connect();
+    this.BLEController.connect()
+    .then((device) => {console.log('device connected')
+      this.setState({
+        isBLEConnected: true
+      });}
+    );
   };
 
   // disconnect button functionallity (disconnet component)               
   disconnectButton = () => {
     this.BLEController.disconnect();
+    this.setState({ 
+      isBLEConnected: false,
+      showBLEnotification: false
+     });
   };
 
+  
+
   render() {
+    const classes = (function () {
+      makeStyles(theme => ({
+        root: {
+          maxWidth: 600,
+        },
+        snackbar: {
+          margin: theme.spacing(1),
+        },
+      }));
+    });
     return (
       <div>
         <button id="connect" onClick={this.connectButton} type="button" aria-label="Connect" ref="device-name">
-          <img alt="bleConnect" src={`/images/bleOnIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+          <img alt="bleConnect" src={`/images/bleOnIcon.png`} style={{ height: '25px', width: '25px' }}></img><br></br>
         </button>
         <button id="disconnect" onClick={this.disconnectButton} type="button" aria-label="Disconnect">
-          <img alt="bleDisconnect" src={`/images/bleOffIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+          <img alt="bleDisconnect" src={`/images/bleOffIcon.png`} style={{ height: '25px', width: '25px' }}></img><br></br>
         </button>
+            {
+              !this.state.isBLEConnected ?
+            <SnackbarContent
+              className={classes.snackbar}
+              message={
+                'No device connected'
+              }
+            /> : null
+              
+              
+              
+              /* <>
+              <Modal
+                show={this.state.showBLEnotification}
+                onHide={this.handleHide}
+                dialogClassName="modal-90w"
+                aria-labelledby="example-custom-modal-styling-title"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-custom-modal-styling-title">
+                    Custom Modal Styling
+            </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>
+                    Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae
+                    unde commodi aspernatur enim, consectetur. Cumque deleniti
+                    temporibus ipsam atque a dolores quisquam quisquam adipisci
+                    possimus laboriosam. Quibusdam facilis doloribus debitis! Sit
+                    quasi quod accusamus eos quod. Ab quos consequuntur eaque quo rem!
+                    Mollitia reiciendis porro quo magni incidunt dolore amet atque
+                    facilis ipsum deleniti rem!
+            </p>
+                </Modal.Body>
+              </Modal>
+            </> */}
       </div>
     );
   }

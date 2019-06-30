@@ -432,7 +432,7 @@ render() {
               </button>
               {
                 !this.state.isLoadingIdOfTrack && (
-                <button id="disconnect" onClick={this.postNavifation} type="button" aria-label="Disconnect">
+                <button id="disconnect" type="button" aria-label="PostNavigation">
                 <NavLink to=
                 //navigate to TrackDestails via TemplateComponent with the params
                 {{pathname: `${process.env.PUBLIC_URL}/post`, 
@@ -440,7 +440,7 @@ render() {
                   actualTime:45}}
                   activeStyle={this.active} 
                   style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-                  className="btn btn-primary" >Post Navigator</NavLink>
+                  className="material-icons" >Post Navigator</NavLink>
                 </button>)
               }
             

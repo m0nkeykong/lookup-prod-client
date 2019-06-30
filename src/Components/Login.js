@@ -179,12 +179,10 @@ class Login extends Component {
                 <NotificationContainer />
                 {!this.state.isAccessibility && this.accessibilityModal()}
                 <header style={{ textAlign: 'center' }}>
-                  <div style={{ height: '350px', width: '100%', border: '2px solid gray', margin: '0 auto'}}> 
-                  HEADER
+                    <div style={{ height: '140px', width: '100%', margin: '0 auto'}}> 
+                        <div style={{ backgroundImage: `url(./images/logo.png)`, backgroundSize: 'cover', margin: '0 auto', width: '350px', height: '121px', marginTop: '70px' }} />
                   </div>                
                 </header>
-                <div style={{ backgroundImage: `url(./images/logo.png)`, backgroundSize: 'cover', margin: '0 auto', width: '350px', height: '121px', marginTop: '70px' }}>
-                </div>
                 <p style={{ marginTop: '50px' }}></p>
                 <div style={{ textAlign: 'center' }}>
                     <h1> Welcome to Look Up - Vibrating Navigation </h1>
@@ -194,8 +192,8 @@ class Login extends Component {
                     The system will provide a safe solution for navigating an urban area by means of a non-motorized vehicle, <br />
                     from place of origin to destination without user distraction. <br />
 
-                    <div style={{ height: '350px', width: '350px', border: '2px solid gray', margin: '0 auto', marginTop: '40px'}}> 
-                      VIDEO
+                    <div style={{ height: '350px', width: '350px', margin: '0 auto', marginTop: '40px'}}> 
+                        <iframe src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" width="100%" height="100%"></iframe>
                     </div>
 
                     <h6 style={{ display: 'block', marginTop: '40px'}}>Supported Browsers:
@@ -225,9 +223,28 @@ class Login extends Component {
                     </GoogleLogin>
                 </div>
                 <footer style={{ textAlign: 'center' }}>
-                  <div style={{ height: '350px', width: '100%', border: '2px solid gray', margin: '0 auto', marginTop: '40px'}}> 
-                  FOOTER
-                  </div>
+                  <div style={{ height: '350px', width: '100%', margin: '0 auto', marginTop: '40px'}}> 
+                        <h4 style={{textAlign: 'center', marginBottom: 35+'px'}}> Developed By </h4>
+                        <div className="row">
+                            <div className="col-lg-4">
+                                <img className="rounded-circle" src="https://avatars3.githubusercontent.com/u/32986144?s=400&u=aba2a7d183a15bd4a2c99c4b9a540c5291e1cffa&v=4" alt="profPic" width="90" height="90" /><br></br>
+                                <a href="https://github.com/ronipolisanov" target="_blank"> <h5>Roni Polisanov</h5> </a><br></br>        
+                            </div>
+                            <div className="col-lg-4">
+                                <img className="rounded-circle" src="https://avatars1.githubusercontent.com/u/27493738?s=460&v=4" alt="profPic" width="90" height="90"/><br></br>
+                                <a href="https://github.com/m0nkeykong" target="_blank"> <h5>Haim Elbaz</h5> </a><br></br>
+                            </div>
+                            <div className="col-lg-4">
+                                <img className="rounded-circle" src="https://avatars2.githubusercontent.com/u/28447221?s=460&v=4" alt="profPic" width="90" height="90" /><br></br>
+                                <a href="https://github.com/reutleib" target="_blank"> <h5>Reut Leib</h5> </a><br></br>
+                            </div>
+                            <div style={{ height: '350px', width: '100%', margin: '0 auto', marginTop: '40px' }}>
+                                <p>This product is the property of the developers listed above.<br/> 
+                                <br/>© 2019 - The Dept. of Software Engineering, Shenkar: Engineering. Design. Art.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </footer>
             </div>
         )

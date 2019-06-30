@@ -284,17 +284,6 @@ class TrackDetails extends Component {
           className="btn btn-primary" >Start Navigator</NavLink>
       </div>
 
-      <div className="col-12" style={{margin:'auto'}}>
-      <NavLink to=
-      //navigate to TrackDetails via TemplateComponent with the params
-      {{pathname: `${process.env.PUBLIC_URL}/post`, 
-        idOfTrack: track.idOfTrack,
-        actualTime:45}}
-        activeStyle={this.active} 
-        style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-        className="btn btn-primary" >Post Navigator</NavLink>
-    </div>
-
           <div className="col-12 px-4">
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
@@ -368,3 +357,13 @@ class TrackDetails extends Component {
 
 export default TrackDetails;
 
+// <div className="col-12" style={{margin:'auto'}}>
+// <NavLink to=
+// //navigate to TrackDetails via TemplateComponent with the params
+// {{pathname: `${process.env.PUBLIC_URL}/post`, 
+//   idOfTrack: track.idOfTrack,
+//   actualTime:45}}
+//   activeStyle={this.active} 
+//   style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
+//   className="btn btn-primary" >Post Navigator</NavLink>
+// </div>

@@ -13,6 +13,7 @@ class LiveNavigation extends Component {
     this.state = {
       userDetails: [],
       isLoading: true,
+      isBLEConnected: sessionStorage.getItem('isBLEConnected') ? sessionStorage.getItem('isBLEConnected') : false,
       isLocation: false,
       generatedTrack: this.props.location.generatedTrack ? this.props.location.generatedTrack: '' 
     }
@@ -24,6 +25,7 @@ class LiveNavigation extends Component {
     this.createEndPoint = this.createEndPoint.bind(this);
     this.createTrack = this.createTrack.bind(this);
     this.addTrackRecord = this.addTrackRecord.bind(this);
+    //this.storageChanged = this.storageChanged.bind(this);
 
   }
   
@@ -43,7 +45,23 @@ class LiveNavigation extends Component {
       }
     }
 
+    //window.addEventListener('storage', this.storageChanged);
+
+    if (this.state.isBLEConnected == false) {
+      console.log('*******************');
+      console.log('no device connected');
+      console.log(this.isBLEConnected);
+    } else {
+      console.log('**************');
+      console.log('device connected');
+      console.log(this.isBLEConnected);
+    }
   }
+
+  // storageChanged() {
+  //     console.log("storage changes");
+  // }
+
   
   // Fetching all the needed data 
   fetchData = async () => {
