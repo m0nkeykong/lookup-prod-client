@@ -308,7 +308,7 @@ render() {
             language="en"
             version="3.36"
             region="en"
-              // libraries={this.mode}
+              libraries={this.mode}
           >
           <div className="map-container">
             <GoogleMap

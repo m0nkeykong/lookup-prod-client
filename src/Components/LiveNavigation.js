@@ -144,7 +144,7 @@ class LiveNavigation extends Component {
         distance: track.distance,
         rating: track.rating,
         ...estimatedDuration,
-        difficultyLevel: track.difficultyLevel !== '' ? {star: 1, countVotes: 1} : {star: track.difficultyLevel},
+        difficultyLevel: track.difficultyLevel == '' ? {star: 1, countVotes: 1} : {star: track.difficultyLevel},
         changesDuringTrack: false,
       };
       axios.post(`${originURL}track/insertTrack`, { ...trackObj, })
@@ -176,7 +176,7 @@ class LiveNavigation extends Component {
 
     return (
       <div>
-        <Card className="text-center">
+        <Card>
 
           <Menu currentPage={"Live Navigation"}> </Menu>
 
