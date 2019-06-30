@@ -217,6 +217,7 @@ class Map extends Component {
 
   getWayPoints(wayPoints) {
     console.log("HAAAAAA");
+    console.log(wayPoints);
     let html = [];
     console.log(`wayPoints: ${wayPoints}`);
 
@@ -280,9 +281,12 @@ class Map extends Component {
                   >
                   </Marker>
                   {console.log("REUTTTTTTTTTT")}
+                  {console.log(this.props.track)}
+                  {console.log(this.props.track.wayPoints[0])}
+                  {console.log(this.props.track.wayPoints[0]._id)}
                   {console.log(this.props.track.wayPoints)}
                   {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
-                  {typeof this.props.track.startPoint.city !== "undefined" ?
+                  {typeof this.props.track.wayPoints[0]._id !== "undefined" ?
                     (
                       (
                         this.state.response === null
@@ -779,3 +783,10 @@ export default Map;
 
 
 // export default Map;
+
+
+
+
+// typeof this.props.track.wayPoints.length !== 0 &&
+//                     this.props.track.wayPoints[0]
+//                    ?
