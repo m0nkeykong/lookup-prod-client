@@ -38,7 +38,6 @@ class Map extends Component {
     this.onGoogleMapSuccess = this.onGoogleMapSuccess.bind(this);
     this.onGoogleMapClick = this.onGoogleMapClick.bind(this);
 
-
     this.directionsCallback = this.directionsCallback.bind(this);
 
   }
@@ -205,11 +204,6 @@ class Map extends Component {
       console.warn("Geolocation API not supported.");
     }
   }
-
-  //   {this.state.loading ? (this.state.edit ? this.renderFORM() : this.showDetails()) :
-  //     <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div> }
-
-  // {this.state.loading ? <h1> ({`Hello ${this.state.userDetails.name}, Login succeeded`})</h1> : <div className='sweet-loading'> <BeatLoader color={'#123abc'}/> </div>}
 
   getStartPoint(startPoint){
       let html = "";
@@ -383,6 +377,5 @@ class Map extends Component {
     );
   }
 }
-
 
 export default Map;
