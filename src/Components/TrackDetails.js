@@ -192,9 +192,9 @@ class TrackDetails extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span className="fa fa-star colorStarOrange"></span>)
+        html.push(<span key={'starKey1'} className="fa fa-star colorStarOrange"></span>)
       else
-        html.push(<span className="fa fa-star"></span>)
+        html.push(<span key={'starKey2'} className="fa fa-star"></span>)
 
     }
     return html;
@@ -238,7 +238,7 @@ class TrackDetails extends Component {
     var minutes = (hours - rhours) * 60;
     var rminutes = Math.round(minutes);
 
-    html.push(<span className="">{rhours}:{rminutes}</span>)
+    html.push(<span key={'conKey'} className="">{rhours}:{rminutes}</span>)
     return html;
   }
 
