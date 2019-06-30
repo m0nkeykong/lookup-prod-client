@@ -10,6 +10,8 @@ import LiveNavigation from './LiveNavigation';
 import './style/AutoGenerateTrack.css';
 import Menu from './Menu';
 import { lookup } from 'dns';
+import { Icon } from 'semantic-ui-react'
+
 const _ = require('lodash');
 
 
@@ -488,7 +490,7 @@ class CustomTrack extends Component {
     return (
       <Card.Body>
 
-        <Card.Title>
+        <Card.Title style={{ textAlign: 'center'}}>
           <h6> Search </h6>
         </Card.Title>
         <p id='searchAlert'></p>
@@ -526,8 +528,8 @@ class CustomTrack extends Component {
         </Modal>
 
         <Form onSubmit={e => this.handleSubmit(e)}>
-          <Card.Header>
-            <h6> Planning Map </h6>
+          <Card.Header style={{ textAlign: 'center'}}>
+            Planning Map
           </Card.Header>
           <Card.Body>
             <div style={{
@@ -596,16 +598,16 @@ class CustomTrack extends Component {
 
           </Card.Body>
 
-          <Card.Title>
+          <Card.Title style={{ textAlign: 'center'}}>
             <h6> Travel Mode </h6>
           </Card.Title>
 
-          <Form.Group>
-            <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange} />
-            <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange} />
+          <Form.Group style={{ textAlign: 'center'}}>
+            <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange} /><Icon name='male' size='large' />
+            <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange} /><Icon name='bicycle' size='large' />
           </Form.Group>
 
-          <Card.Title>
+          <Card.Title style={{ textAlign: 'center'}}>
             <h6> Description and Title </h6>
           </Card.Title>
 
@@ -622,17 +624,17 @@ class CustomTrack extends Component {
           </Form.Group>
           <br />
 
-          <Card.Title>
+          <Card.Title style={{ textAlign: 'center'}}>
             <h6> Required Settings </h6>
           </Card.Title>
 
-          <Form.Group>
+          <Form.Group style={{ textAlign: 'center'}}>
             <Form.Check disabled custom inline id="formTolls" type="radio" checked={true} label="Avoid Tolls" name="avoidTolls" value="true" />
             <Form.Check disabled custom inline id="formSafeWays" type="radio" checked={true} label="Safe Ways" name="safeWays" value="true" />
             <Form.Check disabled custom inline id="formHighway" type="radio" checked={true} label="Avoid Highways" name="avoidHighways" value="true" />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button  style={{ margin: '0 auto', display: 'block'}} variant="primary" type="submit">
             Build Route
         </Button>
         </Form>
@@ -769,7 +771,7 @@ class CustomTrack extends Component {
   render() {
     return (
       <div>
-        <Card className="text-center">
+        <Card>
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
           <Menu currentPage={"Custom Track"}> </Menu>

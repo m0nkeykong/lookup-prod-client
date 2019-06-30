@@ -49,7 +49,7 @@ class Profile extends Component {
 
   async componentDidMount(){
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <Profile> componentDidMount(), fetching userid: ${this.userid}`);
     await this.getUserDetails();
   }
 
@@ -111,7 +111,7 @@ class Profile extends Component {
         <Breadcrumb>
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+          <Breadcrumb.Item active>Profile Settings</Breadcrumb.Item>
         </Breadcrumb>
 
         <Form onSubmit={e => this.handleSubmit(e)} style={{ padding: '7px'}}>

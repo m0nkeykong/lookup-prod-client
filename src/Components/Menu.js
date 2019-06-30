@@ -3,8 +3,11 @@ import { Card, Navbar, Nav } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
-import './style//LiveNavigation.css';
+import './style//Menu.css';
 import BLE from './BLE';
+import { Icon, Button } from 'semantic-ui-react'
+import { NavLink } from "react-router-dom";
+
 
 class Menu extends Component {
   constructor(props) {
@@ -58,9 +61,8 @@ class Menu extends Component {
 
   render() {
     return (
-        <Card id="menu" className="text-center">
+        <Card id="menu">
 
-            <Card.Header>
             <Navbar collapseOnSelect expand="lg">
 
             <Navbar.Brand style={{ float: 'left' }}>
@@ -79,7 +81,7 @@ class Menu extends Component {
             <Navbar.Brand style={{ float: 'center' }}>
                 {!this.state.loading ?
                 (
-                    <div style={{ marginTop: '15px' }}>
+                    <div >
                     <p>{this.props.currentPage}</p>
                     </div>
                 )
@@ -92,27 +94,30 @@ class Menu extends Component {
 
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                <div>
-                <img alt="Profile" src={this.state.userDetails.profilePicture} style={{ height: '40px', width: '40px', position: 'absolute', right: '0', borderRadius: '50%' }}></img>
-                    <p style={{ fontSize: '120%', textAlign: 'left', paddingTop: '8px' }}>Hello, {this.state.userDetails.name}</p>
+                <div >
+                    <p style={{ fontSize: '120%', textAlign: 'center', paddingTop: '8px', position: 'relative' }}>Hello, {this.state.userDetails.name}
+                  <NavLink
+                  to={{ pathname: `${process.env.PUBLIC_URL}/` }}
+                  style={{ position: 'absolute', right: '0' }}>
+                  <Button circular icon='user close'></Button>
+                </NavLink>
+                  </p>
+
                 </div>
-                <Nav className="mr-auto">
-                    <Nav.Link href='home'>Home</Nav.Link>
-                    <Nav.Link href='profile'>Profile Settings</Nav.Link>
-                    <Nav.Link href="mytracks">My Tracks</Nav.Link>
-                    <Nav.Link href="favorite">Favorite Tracks</Nav.Link>
-                    {/* <Nav.Link href="search">Serach Tracks</Nav.Link> */}
-                    <Nav.Link href="auto">Generate Auto Track</Nav.Link>
-                    <Nav.Link href="custom">Generate Custom Track</Nav.Link>
-                    <Nav.Link href="choose">Choose Existing Track</Nav.Link>
-                    <Nav.Link href="contact">Contact us</Nav.Link>
+                <Nav className="mr-auto" style={{ fontSize: '120%', lineHight: '160%' }}>
+                    <Nav.Link href='home'><Icon color='teal' size='big' name='home' /> Home</Nav.Link>
+                    <Nav.Link href='profile'><Icon color='teal' size='big' name='setting' /> Profile Settings</Nav.Link>
+                    <Nav.Link href="mytracks"><Icon color='teal' size='big' name='hand point right' /> My Tracks</Nav.Link>
+                    <Nav.Link href="favorites"><Icon color='teal' size='big' name='like' /> Favorite Tracks</Nav.Link>
+                    <Nav.Link href="auto"><Icon color='teal' size='big' name='angle right' /> Generate Auto Track</Nav.Link>
+                    <Nav.Link href="custom"><Icon color='teal' size='big' name='angle double right' /> Generate Custom Track</Nav.Link>
+                    <Nav.Link href="choose"><Icon color='teal' size='big' name='search' /> Choose Existing Track</Nav.Link>
                 </Nav>
                 <BLE>
                 </BLE>
                 </Navbar.Collapse>
             </Navbar>
 
-            </Card.Header>
         </Card>
     );
   }

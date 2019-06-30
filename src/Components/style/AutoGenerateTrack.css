@@ -2,3 +2,7 @@
     font-size: 120%;
     font-weight: bold;
 }
+
+.custom-control-inline{
+    display: block !important;
+}

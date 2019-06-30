@@ -14,6 +14,7 @@ import PostNavigation from '../Components/PostNavigation'
 import Profile from "../Components/Profile";
 import Favorites from "../Components/FavoritesList";
 import LiveMap from "../Components/LiveMap";
+import MyTracks from "../Components/MyTracks";
 // import DirectionsPoint from "../Components/DirectionsPoints";
 // import Navigate from "../Components/Navigate";
 
@@ -39,6 +40,7 @@ const AppRouter = () =>{
       <Route exact path="/profile" component={Profile}/>
       <Route exact path="/favorites" component={Favorites}/>
       <Route exact path="/liveMap" component={LiveMap}/>
+      <Route exact path="/myTracks" component={MyTracks}/>
     </React.Fragment>
   );
 // <Route exact path="/" component={Navigate} />

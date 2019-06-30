@@ -74,7 +74,6 @@ class PostNavigation extends Component {
     return new Promise(resolve => {
       console.log(`Entered <PostNavigation> rankUpdate(), Updating rank for userid: ${self.userid}`);
       // Updating the user rank 
-      // @TODO: Get the total distance user navigated
       axios.put(`${originURL}user/rankUpdate/${self.userid}`, {totalDistance: this.state.tracks.totalDistance})
         .then(response => {
           self.setState({ isRankUpdated: true });

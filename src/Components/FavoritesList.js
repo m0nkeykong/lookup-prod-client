@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { rank, accessibility } from '../MISC';
-import { Breadcrumb, CardGroup, Card } from 'react-bootstrap';
+import { Card, Icon, Image, Label, Button } from 'semantic-ui-react'
 import { originURL, getGoogleApiKey } from '../globalService';
+import { Breadcrumb } from 'react-bootstrap';
+import './style/FavoriteList.css';
+
 import {
   StaticGoogleMap,
   Marker,
   Path
 } from 'react-static-google-map';
-import { makeStyles } from '@material-ui/core/styles';
-// import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-import Menu from './Menu';
+import Menu2 from './Menu';
+import FavoriteButton from './FavoriteButton';
 
 const _ = require('lodash');
 
@@ -32,6 +27,7 @@ class FavoriteTracks extends Component {
     }
     this.trackRecord = this.trackRecord.bind(this);
     this.getUserDetails = this.getUserDetails.bind(this);
+    this.getDifficulty = this.getDifficulty.bind(this);
   }
 
   // Fetch the updated user data from db
@@ -53,10 +49,11 @@ class FavoriteTracks extends Component {
 
   async componentDidMount(){
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+    console.log(`Entered <FavoriteList> componentDidMount(), fetching userid: ${this.userid}`);
     await this.getUserDetails();
   }
 
+  // @TODO: Implement wayPoints
   trackRecord(track){
     let location = [];
     location.push({lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString()});
@@ -78,122 +75,140 @@ class FavoriteTracks extends Component {
     }
   }
 
+  getDifficulty(difficulty){
+    var i = 0;
+    switch(difficulty){
+      case 1:
+        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        break;
+
+      case 2:
+        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        break;
+
+      case 3:
+        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        break;
+
+      case 4:
+        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/></div>)
+        break;
+
+      case 5:
+        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/> </div>)
+        break;
+
+      default:
+        return( <div style={{ display: 'inline-block' }}> <Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        break;
+    }
+  }
+
   render() {
     const userDetails = {...this.state.userDetails};
     return (
       <div>
-        <Menu currentPage={"Favorite Tracks"}></Menu>
+        <Menu2 currentPage={"Favorite Tracks"}></Menu2>
         
         <Breadcrumb>
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
           <Breadcrumb.Item active>Favorite Tracks</Breadcrumb.Item>
         </Breadcrumb>
-        <CardGroup>
 
-        {/* @TODO: Change from trackRecords to favoriteTracks */}
-        {!this.state.loading && userDetails.trackRecords.length > 0 && userDetails.trackRecords.map( (track, index) => 
+        <Card.Group style={{ marginTop: '15px'}}>
+        {!this.state.loading && userDetails.favoriteTracks.length > 0 && userDetails.favoriteTracks.map( (track, index) => 
           (
-            <React.Fragment key={index.toString()}>
+            <React.Fragment key={index}>
+            
+            <Card style={{ margin: '0 auto', padding: '5px'}}>
+              <StaticGoogleMap
+                  maptype='roadmap'
+                  apiKey={getGoogleApiKey()}
+                  size="340x240"
+                  language='en'
+                >        
+                <Marker
+                  size ='mid'
+                  location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
+                  color="green"
+                  label="A"
+                />
 
-            <Card>
-            <Card.Header>{track.title.toString()}</Card.Header>
-            <Card.Body>
-            <div style={{display: 'block', width: '340px', height: '240px', margin: '0 auto'}}>
-            <StaticGoogleMap
-                maptype='roadmap'
-                apiKey={getGoogleApiKey()}
-                size="340x240"
-                language='en'
-              >        
-              <Marker
-                size ='mid'
-                location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
-                color="green"
-                label="A"
-              />
-
-              <Marker
-                size ='mid'
-                location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
-                color="red"
-                label="B"
-              />
-              <Path
-                points={[
-                  this.trackRecord(track)
-                ]}
-              />
+                <Marker
+                  size ='mid'
+                  location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
+                  color="red"
+                  label="B"
+                />
+                <Path
+                  points={[
+                    this.trackRecord(track)
+                  ]}
+                />
               </StaticGoogleMap> 
-              </div>         
-              <blockquote className="blockquote mb-0">
-                <p>
-                  {' '}
-                  {`From ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + ', ' : ''} ${track.startPoint.country}`}.{' '} <br></br>
-                  {`To ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + ', ' : ''} ${track.endPoint.country}`}.{' '}
-                </p>
-                <p>
-                Distance: <cite title="Source Title"> {track.distance.toString() + 'm'} </cite> 
-                <br></br>Duration: <cite title="Source Title"> {userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </cite>
-                <br></br>Travel Mode: <cite title="Source Title"> {track.travelMode.toString()} </cite> 
-                <br></br>Difficuly Level: <cite title="Source Title"> {track.difficultyLevel.star ? track.difficultyLevel.star.toString() : '0'} </cite>
-                <br></br>Reports: <cite title="Source Title"> {track.reports.map( (report) => {return <div> Report: {report.report} Reported by: {report.userid} </div>})} </cite> 
-                </p>
-                <footer className="blockquote-footer">
-                  Description: <cite title="Source Title"> {track.description.toString()} </cite>
 
-                </footer>
-              </blockquote>
-            </Card.Body>
-          </Card>
+              <Card.Content>
+                <Card.Header> 
+                  {track.title.toString()} 
+                </Card.Header>
+                <Card.Meta>
+                <div>
+                  { this.getDifficulty(parseInt(track.difficultyLevel.star)) }
+                  <span className='date' style={{ float: 'right'}}>
+                      {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
+                  </span>
+                </div>
 
+                </Card.Meta>
 
+                <Card.Description> 
+                  <Label.Group>
+                    <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
+                    <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
+                  </Label.Group>
+                  <Label.Group>
+                    <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
+                    <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
+                  </Label.Group>
+                  <Label.Group>
+                    <Label size='large' color='teal'>Duration</Label>
+                    <Label size='large'> {userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </Label>
+                  </Label.Group>                
+                  <Label.Group>
+                    <Label size='large' color='teal'>Distance</Label>
+                    <Label size='large'> {track.distance.toString() + 'm'} </Label>
+                  </Label.Group>                
+                  <Label.Group>
+                    <Label size='large' color='grey'>Description</Label>
+                    <Label size='large'> {track.description.toString()}  </Label>
+                  </Label.Group>                
+                  <FavoriteButton
+                  trackid={track._id}>
+                  </FavoriteButton>
+                </Card.Description>
+                
+              </Card.Content>
+              <Card.Content extra>
+              </Card.Content>
 
+                {/* @TODO: IMPLEMENT LIVE NAVIGATION */}
+                <Button primary
+                onClick={ () => {alert('Start Navigation')}}
+                >
+                Live Navigation
+                </Button>
+            </Card>
+           
             </React.Fragment>
-          )
-        )}
+          ))
+        }
+        </Card.Group>
+        {!this.state.loading && userDetails.favoriteTracks.length <= 0 && (<div> <p> Favorite tracks list is empty. </p> </div>)}
+        {/* Reports:  {track.reports.map( (report) => return{<div> Report: {report.report} Reported by: {report.userid} </div>})} */}
 
-        {!this.state.loading && userDetails.trackRecords.length <= 0 && (<div> <p> Favorite tracks list is empty. </p> </div>)}
-      </CardGroup>
-        
       </div>
-    );
+    )
   }
 }
-
-
-export default FavoriteTracks;
-
-/*
-
-            <Card style={{display: 'block', maxWidth: '345px', margin: '0 auto'}}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Lizard
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                  across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-              <Button size="small" color="primary">
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-
-
-*/
+  export default FavoriteTracks;

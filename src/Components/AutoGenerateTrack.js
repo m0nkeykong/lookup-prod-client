@@ -11,6 +11,7 @@ import LiveNavigation from './LiveNavigation';
 import {getGoogleApiKey} from '../globalService';
 import './style/AutoGenerateTrack.css';
 import Menu from './Menu';
+import { Icon } from 'semantic-ui-react'
 
 var EventEmitter = require('events');
 var ee = new EventEmitter();
@@ -289,12 +290,11 @@ class AutoGenerateTrack extends Component {
     return(
       <Card.Body>
       <Form onSubmit={e => this.handleSubmit(e)}>
-        <Card.Title>
+        <Card.Title style={{ textAlign: 'center'}}>
           <h6> Choose Origin and Destination </h6>
         </Card.Title>
 
         <InputGroup className="mb-3">
-          {/*<Form.Label>Origin</Form.Label>*/}
           {/* @TODO: Let the user choose location from auto complete input */}
           <InputGroup.Prepend>
             <Button title="Get current location" onClick={ this.getCurrentLocation }> <IoIosLocation/> </Button>
@@ -303,21 +303,20 @@ class AutoGenerateTrack extends Component {
         </InputGroup>
 
         <Form.Group controlId="formDestination">
-          {/*<Form.Label>Destination</Form.Label>*/}
           {/* @TODO: Let the user choose location from auto complete input */}
           <Form.Control required type="text" placeholder="Enter Destination" value={this.state.track.endPoint} name="endPoint" onChange={this.handleInputChange}/>
         </Form.Group>
 
-        <Card.Title>
+        <Card.Title style={{ textAlign: 'center'}}>
           <h6> Travel Mode </h6>
         </Card.Title>
 
-        <Form.Group>
-          <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange}/>
-          <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange}/>
+        <Form.Group style={{ textAlign: 'center'}}>
+        <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange}/><Icon name='male' size='large' />
+        <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange}/><Icon name='bicycle' size='large' />
         </Form.Group>
 
-        <Card.Title>
+        <Card.Title style={{ textAlign: 'center'}}>
           <h6> Description and Title </h6>
         </Card.Title>
 
@@ -334,17 +333,17 @@ class AutoGenerateTrack extends Component {
         </Form.Group>
         <br/>
 
-        <Card.Title>
+        <Card.Title style={{ textAlign: 'center'}}>
           <h6> Required settings </h6>
         </Card.Title>
 
-        <Form.Group>
+        <Form.Group style={{ textAlign: 'center'}}>
           <Form.Check disabled custom inline id="formTolls" type="radio" checked={true} label="Avoid Tolls" name="avoidTolls" value="true"/>
           <Form.Check disabled custom inline id="formSafeWays" type="radio" checked={true} label="Safe Ways" name="safeWays" value="true"/>
           <Form.Check disabled custom inline id="formHighway" type="radio" checked={true} label="Avoid Highways" name="avoidHighways" value="true"/>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button style={{ margin: '0 auto', display: 'block'}} variant="primary" type="submit">
           Generate Route
         </Button>
       </Form>
@@ -492,7 +491,7 @@ class AutoGenerateTrack extends Component {
   render() {    
     return (
       <div>
-        <Card className="text-center">
+        <Card>
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
           <Menu currentPage={"Auto Generate"}> </Menu>

@@ -46,7 +46,7 @@ class TrackDetails extends Component {
     this.getTrackById(idOfTrack);
   // user session
   this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-  console.log(`Entered <AutoGenerateTrack> componentDidMount(), fetching userid: ${this.userid}`);
+  console.log(`Entered <TrackDetails> componentDidMount(), fetching userid: ${this.userid}`);
 
   // Get the user details from database
   axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)

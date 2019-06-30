@@ -1,3 +1,7 @@
 #menu{
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Alef', sans-serif;
 }
+
+a.nav-link:hover {
+    background-color: #E0E0E0 !important;
+  }

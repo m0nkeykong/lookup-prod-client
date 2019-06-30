@@ -71,7 +71,7 @@ class Login extends Component {
 
     loginFail(response) {
         console.log('Entered <Login></Login> loginFail()');
-        NotificationManager.error('Login failed, try again please.', '', 3000);
+        NotificationManager.error('Login failed, try again please.', '', 3000, true);
         console.log(response);
     }
 
