@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import BLEController from './BLEController';
-<<<<<<< Updated upstream
-import { Modal, Button, Form } from 'react-bootstrap';
-import { makeStyles } from '@material-ui/core/styles';
-=======
 import { makeStyles } from '@material-ui/styles';
->>>>>>> Stashed changes
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 // import { Icon, Button } from 'semantic-ui-react'
 import Icon from '@material-ui/core/Icon';

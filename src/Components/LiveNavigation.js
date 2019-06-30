@@ -42,20 +42,9 @@ class LiveNavigation extends Component {
         await this.getUserDetails();
         await this.setState({ isLoading: false });
       }
-<<<<<<< Updated upstream
-    }
 
-    //window.addEventListener('storage', this.storageChanged);
-
-    
-  }
-
-  // storageChanged() {
-  //     console.log("storage changes");
-  // }
-=======
     }}
->>>>>>> Stashed changes
+
 
   
   // Fetching all the needed data 
