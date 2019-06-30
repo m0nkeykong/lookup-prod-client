@@ -316,7 +316,7 @@ class TrackDetails extends Component {
     
     return (
       <div>
-        <Card className="text-center">
+        <Card>
 
           {/* Show Menu And User Details When Page Stop Loading sessionStorage */}
           <Menu currentPage={"Choose Existing"}> </Menu>
@@ -328,8 +328,9 @@ class TrackDetails extends Component {
             <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
             <Breadcrumb.Item active>Details</Breadcrumb.Item>
           </Breadcrumb>
-
-          {this.state.tracks.map(this.viewTrack)}
+          <div className="text-center">
+            {this.state.tracks.map(this.viewTrack)}
+          </div>
           <Card.Footer id="locationUpdate" className="text-muted"></Card.Footer>
         </Card>
       </div>
