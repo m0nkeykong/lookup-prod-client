@@ -450,7 +450,7 @@ class CustomTrack extends Component {
                 <ListGroup.Item> <span className="autoSpan"> From: </span> {leg.start_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> To: </span> {leg.end_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
-                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {this.state.track.estimatedDuration} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {estimatedTime.toString()} </ListGroup.Item>
               </ListGroup>
             </div>
           </div>
