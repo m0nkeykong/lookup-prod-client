@@ -149,6 +149,10 @@
   color: white;
 }
 
+.btn-primary {
+  background-color: #64a19d
+}
+
 .btn-primaryLogin:hover {
   background-color: #4f837f;
 }
