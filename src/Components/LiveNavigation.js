@@ -24,7 +24,7 @@ class LiveNavigation extends Component {
     this.createEndPoint = this.createEndPoint.bind(this);
     this.createTrack = this.createTrack.bind(this);
     this.addTrackRecord = this.addTrackRecord.bind(this);
-    //this.storageChanged = this.storageChanged.bind(this);
+
 
   }
   
@@ -42,6 +42,7 @@ class LiveNavigation extends Component {
         await this.getUserDetails();
         await this.setState({ isLoading: false });
       }
+<<<<<<< Updated upstream
     }
 
     //window.addEventListener('storage', this.storageChanged);
@@ -52,6 +53,9 @@ class LiveNavigation extends Component {
   // storageChanged() {
   //     console.log("storage changes");
   // }
+=======
+    }}
+>>>>>>> Stashed changes
 
   
   // Fetching all the needed data 
