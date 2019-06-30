@@ -62,6 +62,10 @@ address{
 
 /* form stars css: */
 
+.starCenter{
+    text-align: center;
+  }
+  
 .colorStarOrange{
     color: orange;
 }
@@ -103,4 +107,8 @@ address{
  
 .rating input[type=radio][name=stars]:required + label.stars:after {
     content: counter(checkbox) " stars!";
+}
+
+button.ui.grey.button{
+    margin-bottom: 10px !important;
 }

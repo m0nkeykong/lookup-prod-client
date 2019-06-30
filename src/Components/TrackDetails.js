@@ -274,7 +274,7 @@ class TrackDetails extends Component {
             <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
             <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)}</p>
             <p className="descriptionTrack"><br></br>{track.description}</p>
-            <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+            <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
 
 
               <div class="row">
@@ -282,14 +282,26 @@ class TrackDetails extends Component {
                     
                     <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Reports</h4></a></li>
-                        </ul>            
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="reports-logout">  
-                              {this.getReports(track.reports,track.userDetails)}
-                            </div>  
-
-                        </div>
+                            <li class="active"><h4 class="reviews text-capitalize">Reports</h4></li>
+                        </ul>    
+                        {track.reports.length == 0 ? 
+                          (
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="reports-logout">  
+                                <p> - No reports to display - </p>
+                              </div>  
+                            </div>
+                          
+                          ) 
+                          :
+                          (
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="reports-logout">  
+                                {this.getReports(track.reports,track.userDetails)}
+                              </div>  
+                            </div>
+                           )}        
+                        
                     </div>
               </div>
             </div>

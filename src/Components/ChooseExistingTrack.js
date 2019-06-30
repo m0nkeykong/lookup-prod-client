@@ -11,6 +11,10 @@ import { BeatLoader } from 'react-spinners';
 import Map from './Map'
 import Menu from './Menu'
 import axios from 'axios';
+import FavoriteButton from './FavoriteButton';
+import { Button } from 'semantic-ui-react'
+
+
 
 
 class ChooseExistingTrack extends Component {
@@ -162,7 +166,7 @@ class ChooseExistingTrack extends Component {
     let html=[];
 
     let num;
-    // this.state.userDetails.accessibility;
+    
     // if user is nonDisabledTime
     if(this.state.userDetails.accessibility == 0)
       num = nonDisabledTime.actual;
@@ -179,9 +183,8 @@ class ChooseExistingTrack extends Component {
   }
 
   viewTracks(track,i) {
-console.log("RANK");
-console.log(this.state.userDetails.rank);
-console.log(track);
+    console.log("TRACKTTTT:");
+    console.log(track);
     if (track.title == ''){
       console.log("there are no tracks to display !");
       return (
@@ -200,17 +203,27 @@ console.log(track);
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
+              <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
+                <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
+                <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
+                <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
+                <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+
+
+              <FavoriteButton
+              trackid={track.idOfTrack}>
+              </FavoriteButton>
+
+              
               <NavLink to=
               //navigate to TrackDetails via TemplateComponent with the params
               {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
                 idOfTrack: track.idOfTrack}}
                 activeStyle={this.active} 
                 className="" >
-                <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
-                <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
-                <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
-                <p>{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+                <Button primary style={{width: '100%'}}>
+                Live Navigation
+                </Button>
               </NavLink>
 
               </TamplateComponent>
@@ -239,7 +252,6 @@ console.log(track);
   }
 
   componentDidMount(){
-    // this.getAllTracks();
     // user session
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <ChooseExistingTrack> componentDidMount(), fetching userid: ${this.userid}`);
@@ -307,16 +319,13 @@ console.log(track);
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
-               
-                {console.log("CHECK CHECK CHECK")}
-                {console.log(this.state.userDetails.accessibility)}
-                { console.log(this.state.userDetails.accessibility == '2')}
+                
                 {
                   this.state.userDetails.accessibility == '2' ?
                   (
                     <div className="container">
                     <h6>Choose Difficulty Level</h6>
-                    <p>{this.getStarsForAccesability()}</p>
+                    <p className="starCenter">{this.getStarsForAccesability()}</p>
                     </div>
                   ) 
                   :
@@ -338,9 +347,6 @@ console.log(track);
                     </div>
                   )
                 }
-
-                
-
 
               <div className="row">
                 <div className="w-100 mb-md-4"></div>
@@ -388,6 +394,3 @@ console.log(track);
 
 
 export default ChooseExistingTrack;
-
-// <img alt="HeaderLogo" src='../../images/logo.PNG'></img>
-// <img alt="HeaderLogo" src='../../images/str.jpeg'></img>
