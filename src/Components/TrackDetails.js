@@ -308,6 +308,7 @@ class TrackDetails extends Component {
             <Map 
             track={this.buildTrack(track)}
             idOfTrack={track._id}
+            isFromTrackDetails={true}
             >
             </Map>
 
