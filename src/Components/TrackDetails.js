@@ -282,7 +282,7 @@ class TrackDetails extends Component {
                     
                     <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="active"><a href="#reports-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Reports</h4></a></li>
+                            <li class="active"><h4 class="reviews text-capitalize">Reports</h4></li>
                         </ul>            
                         <div class="tab-content">
                             <div class="tab-pane active" id="reports-logout">  
