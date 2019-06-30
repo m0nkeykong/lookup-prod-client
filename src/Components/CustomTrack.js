@@ -58,7 +58,6 @@ class CustomTrack extends Component {
         rating: '',
         disabledTime: '',
         nonDisabledTime: '',
-
         estimatedDuration: '',
         difficultyLevel: '',
       },
@@ -404,7 +403,7 @@ class CustomTrack extends Component {
   }
 
   // Generated track filled form
-  getGeneratedTrackDetails() {
+  getTrackDetails() {
     console.log("Entered <CustomGenerateTrack></CustomGenerateTrack> getGeneratedTrackDetails()");
     const response = this.state.directionsResponse;
     var leg = '';
@@ -438,7 +437,7 @@ class CustomTrack extends Component {
           var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
 
           estimatedTime = hDisplay + mDisplay + sDisplay;
-          this.setState({ track: { estimatedDuration: estimatedTime } });
+          //this.setState(prevState => ({ track: { ...prevState.state, ['estimatedDuration']: estimatedTime } }));
         }
 
         return (
@@ -451,15 +450,8 @@ class CustomTrack extends Component {
                 <ListGroup.Item> <span className="autoSpan"> From: </span> {leg.start_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> To: </span> {leg.end_address} </ListGroup.Item>
                 <ListGroup.Item> <span className="autoSpan"> Total Distance: </span> {leg.distance.text} </ListGroup.Item>
-                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {estimatedTime.toString()} </ListGroup.Item>
+                <ListGroup.Item> <span className="autoSpan"> Estimated Duration: </span> {this.state.track.estimatedDuration} </ListGroup.Item>
               </ListGroup>
-
-              {/*
-              <ProgressBar variant="info" animated now={100} />  
-              <Button variant="outline-success">Save And Start Live Navigation</Button>
-              <Button variant="outline-primary">Start Live Navigation Without Save</Button>
-              <Button variant="outline-secondary">Save Track</Button>
-              */}
             </div>
           </div>
         )
