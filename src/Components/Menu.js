@@ -97,7 +97,7 @@ class Menu extends Component {
 
             <Navbar.Toggle onClick={this.userCloseToggle} aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                { this.state.userClose &&<div >
+                { this.state.userClose && <div >
                     <p style={{ fontSize: '120%', textAlign: 'center', paddingTop: '8px', position: 'relative' }}>Hello, {this.state.userDetails.name}
                    <NavLink
                   to={{ pathname: `${process.env.PUBLIC_URL}/` }}
