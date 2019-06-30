@@ -221,11 +221,22 @@ class Map extends Component {
     let html = [];
     console.log(`wayPoints: ${wayPoints}`);
 
+
     if (wayPoints.length != 0) {
       for (let i = 0; i < wayPoints.length; i++) {
-        html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
+        let parseString = wayPoints[i].location.split(",");
+        let lat = parseString[0];
+
+        console.log(lat);
+        console.log(typeof lat);
+        console.log(wayPoints[i].location);
+
+        // html.push({ location: { lat: wayPoints[i].lat, lng: wayPoints[i].lng } });
+        html.push({ location: `${wayPoints[i].location}` });
       }
     }
+    console.log("HTML ___________________");
+    console.log(html);
     return html;
   }
 
@@ -285,7 +296,6 @@ class Map extends Component {
                   {console.log(this.props.track.wayPoints[0])}
                   {console.log(this.props.track.wayPoints[0]._id)}
                   {console.log(this.props.track.wayPoints)}
-                  {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
                   {typeof this.props.track.wayPoints[0]._id !== "undefined" ?
                     (
                       (
