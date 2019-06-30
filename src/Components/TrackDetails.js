@@ -283,13 +283,25 @@ class TrackDetails extends Component {
                     <div class="report-tabs">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="active"><h4 class="reviews text-capitalize">Reports</h4></li>
-                        </ul>            
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="reports-logout">  
-                              {this.getReports(track.reports,track.userDetails)}
-                            </div>  
-
-                        </div>
+                        </ul>    
+                        {track.reports.length == 0 ? 
+                          (
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="reports-logout">  
+                                <p> - No reports to display - </p>
+                              </div>  
+                            </div>
+                          
+                          ) 
+                          :
+                          (
+                            <div class="tab-content">
+                              <div class="tab-pane active" id="reports-logout">  
+                                {this.getReports(track.reports,track.userDetails)}
+                              </div>  
+                            </div>
+                           )}        
+                        
                     </div>
               </div>
             </div>
