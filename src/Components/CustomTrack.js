@@ -13,19 +13,6 @@ import { lookup } from 'dns';
 const _ = require('lodash');
 
 
-
-/*/ **********************************
-
-  1. need to fix the directionsCallback.   - FIXED ***
-  2. need to adjust the bluetooth buttons location
-  3. needs to see that all is getting saved in DB - FIXED ***
-  4. needs to fix the re-letter on markers after removing one - FIXED ***
-  5. needs to add search - FIXED ***
-  6. change saving of marker parameters in an outside var in state - FIXED ***
-  7. add check that if the user didnt add adlist 2 points - done allow to build route - FIXED ***
-
-
-// **********************************/
 var EventEmitter = require('events');
 var ee = new EventEmitter();
 
