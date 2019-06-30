@@ -7,7 +7,6 @@ import {getGoogleLoginApiKey} from '../globalService';
 import google from './style/Login.css'
 import { Modal, Button, Form, Jumbotron, Container, Image} from 'react-bootstrap';
 import { originURL } from '../globalService';
-import VideoPlayer from 'react-video-js-player';
 
 class Login extends Component {
     constructor(props) {

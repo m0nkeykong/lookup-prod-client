@@ -8,8 +8,7 @@ import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
 import Map from './Map';
 import Menu from './Menu';
 import axios from 'axios';
-import { Card, Navbar, Nav, Breadcrumb } from 'react-bootstrap';
-import { BeatLoader } from 'react-spinners';
+import { Card, Breadcrumb } from 'react-bootstrap';
 import './style/TrackDetails.css'
 
 class TrackDetails extends Component {
@@ -180,22 +179,6 @@ class TrackDetails extends Component {
     this.setState(prevState => ({tracks: []}))
   }
 
-  // async onSubmitAddReport(e){
-  //   e.preventDefault();
-
-  //    // TODO: how to get user Id here
-  //   let data1 = {userId:`${this.state.userDetails._id}`, report: `${this.state.addReport}` };
-  //   var reportId = await PostAsyncRequest('reports/insertReport', data1);
-
-  //    let data2 = {trackId:`${this.props.location.idOfTrack}`, reportId: `${reportId}` };
-  //    console.log("DATA2:");
-  //    console.log(data2);
-  //   var reportId = await PostAsyncRequest('track/addReportToTrack', data2);
-    
-  //   this.initialState();
-  //   this.getTrackById(this.props.location.idOfTrack);
-  // }
-
   handleChange(event){
     this.setState({ [event.target.name]: event.target.value})
   }
@@ -356,14 +339,3 @@ class TrackDetails extends Component {
 
 
 export default TrackDetails;
-
-// <div className="col-12" style={{margin:'auto'}}>
-// <NavLink to=
-// //navigate to TrackDetails via TemplateComponent with the params
-// {{pathname: `${process.env.PUBLIC_URL}/post`, 
-//   idOfTrack: track.idOfTrack,
-//   actualTime:45}}
-//   activeStyle={this.active} 
-//   style={{padding:'6px', marginTop:'15px',verticalAlign:'middle'}}
-//   className="btn btn-primary" >Post Navigator</NavLink>
-// </div>
