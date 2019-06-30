@@ -144,9 +144,9 @@ class ChooseExistingTrack extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span class="fa fa-star colorStarOrange"></span>)
+        html.push(<span className="fa fa-star colorStarOrange"></span>)
       else
-        html.push(<span class="fa fa-star"></span>)
+        html.push(<span className="fa fa-star"></span>)
 
     }
     return html;
@@ -179,7 +179,7 @@ class ChooseExistingTrack extends Component {
     var minutes = (hours - rhours) * 60;
     var rminutes = Math.round(minutes);
 
-    html.push(<span className="">{rhours}:{rminutes}</span>)
+    html.push(<span key={'uniqKey'} className="">{rhours}:{rminutes}</span>)
     return html;
   }
 
