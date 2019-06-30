@@ -12,6 +12,8 @@ import Map from './Map'
 import Menu from './Menu'
 import axios from 'axios';
 import FavoriteButton from './FavoriteButton';
+import { Button } from 'semantic-ui-react'
+
 
 
 
@@ -201,29 +203,31 @@ class ChooseExistingTrack extends Component {
             <div className="">
               <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
               
-              <NavLink to=
-              //navigate to TrackDetails via TemplateComponent with the params
-              {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-                idOfTrack: track.idOfTrack}}
-                activeStyle={this.active} 
-                className="" >
-                <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
+              <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
                 <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
                 <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
                 <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
                 <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
-              </NavLink>
-
-              </TamplateComponent>
-
 
 
               <FavoriteButton
               trackid={track.idOfTrack}>
               </FavoriteButton>
 
-
               
+              <NavLink to=
+              //navigate to TrackDetails via TemplateComponent with the params
+              {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+                idOfTrack: track.idOfTrack}}
+                activeStyle={this.active} 
+                className="" >
+                <Button primary style={{width: '100%'}}>
+                Live Navigation
+                </Button>
+              </NavLink>
+
+              </TamplateComponent>
+
               <div style={{paddingBottom:'20px'}}>
               </div>
 
