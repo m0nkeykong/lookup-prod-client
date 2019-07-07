@@ -38,8 +38,10 @@ class ChooseExistingTrack extends Component {
   onSubmit(e){
     // e.preventDefault();
     e.preventDefault();
-    var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
+    var checkedTravelMode = this.refs.bicycling.checked ? 'BICYCLING' : 'WALKING';
 
+    console.log("checkedTravelMode");
+    console.log(checkedTravelMode);
     var checkedStar = "NO";
     console.log("REUT:");
     console.log(this.refs.star1);
@@ -57,6 +59,8 @@ class ChooseExistingTrack extends Component {
         checkedStar = "5";
     }
 
+    console.log("URL:");
+    console.log(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility));
     // TODO: parse city to upper case and lower case:
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
     .then((res) => { 
@@ -268,6 +272,9 @@ class ChooseExistingTrack extends Component {
   }
 
   handleChange(event){
+    console.log("event:");
+    console.log(event.target.name);
+    console.log(event.target.value);
     this.setState({ [event.target.name]: event.target.value})
   }
 
@@ -312,11 +319,11 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center text-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center text-center"> 
-                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value={this.state.walking} required />
+                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value="WALKING" required />
                     <label className=''>Walking</label>
                   </div>
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode text-center"> 
-                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
+                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value="BICYCLING" />                  
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
