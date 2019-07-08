@@ -27,6 +27,10 @@ export const getUpdateDefficultyLevelURL = (trackId, Star) => {
   return `${originURL}track/updateDefficultyLevel/${trackId}/${Star}`;
 }
 
+export const getPointURL = (pointId) => {
+  // http://localhost:3000/point/getPoint/
+  return `${originURL}point/getPoint/${pointId}`;
+}
 export const getUpdateTrackTimeURL = (trackId, isDisable, minues) => {
   let disable = "";
 

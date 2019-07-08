@@ -3,7 +3,7 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import {getAllTracksURL, getTracksByCityURL} from '../globalService'
+import {getAllTracksURL, getTracksByCityURL, getPointURL} from '../globalService'
 import { NavLink } from "react-router-dom";
 import { Card, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
@@ -38,10 +38,8 @@ class ChooseExistingTrack extends Component {
   onSubmit(e){
     // e.preventDefault();
     e.preventDefault();
-    var checkedTravelMode = this.refs.bicycling.checked ? 'BICYCLING' : 'WALKING';
+    var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
 
-    console.log("checkedTravelMode");
-    console.log(checkedTravelMode);
     var checkedStar = "NO";
     console.log("REUT:");
     console.log(this.refs.star1);
@@ -59,9 +57,6 @@ class ChooseExistingTrack extends Component {
         checkedStar = "5";
     }
 
-    console.log("URL:");
-    console.log(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility));
-    // TODO: parse city to upper case and lower case:
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
     .then((res) => { 
       return res.json();      
@@ -81,7 +76,7 @@ class ChooseExistingTrack extends Component {
           console.log("JSONNNNNNNNN");
           console.log(json);
           let jsonParse = json[0];
-          self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,"","","",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
+          self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,jsonParse.startPoint,jsonParse.endPoint,"",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
         })  
       } 
     })
@@ -141,6 +136,19 @@ class ChooseExistingTrack extends Component {
      
   }
 
+  getPointsById(point){
+
+    fetch(getPointURL(point))
+    .then((res) => { 
+      return res.json();      
+    }).then((data) => {
+      console.log("getPoint:");
+      console.log(data);  
+      var self=this; 
+      this.state.startPoint = data;
+    })
+  }
+
   getStarsForDifficultyLevel(diffLever){
     let html=[];
     let diffNumber = Math.round(diffLever);
@@ -187,7 +195,8 @@ class ChooseExistingTrack extends Component {
     return html;
   }
 
-  viewTracks(track,i) {
+  
+   viewTracks(track,i) {
     console.log("TRACKTTTT:");
     console.log(track);
     if (track.title === ''){
@@ -202,7 +211,14 @@ class ChooseExistingTrack extends Component {
         return (<div></div>)
     }
     else{
+      // <p className="starCenter">{end.lat.toString()}</p>
      
+      // let start = await this.getPointsById(track.startPoint);
+      // let end = await this.getPointsById(track.endPoint);
+      // console.log("LAT AND LNG:");
+      // console.log(start);
+      // console.log(end);
+
       return (          
         <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`}}>
             <div className="">
@@ -319,11 +335,11 @@ class ChooseExistingTrack extends Component {
 
                 <div className="d-flex flex-wrap justify-content-md-center text-center">
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center text-center"> 
-                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value="WALKING" required />
+                    <input className="marginInherit radioTravelMode" type="radio" ref="walking" name="type" id="walking" autoComplete="off" onChange={this.handleChange} value={this.state.walking} required />
                     <label className=''>Walking</label>
                   </div>
                   <div className="form-group custom-control custom-radio mr-4 justify-content-md-center radioTravelMode text-center"> 
-                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value="BICYCLING" />                  
+                  <input className="marginInherit radioTravelMode" type="radio" ref="bicycling" name="type" id="bicycling" autoComplete="off" onChange={this.handleChange} value={this.state.bicycling} />                  
                   <label className=''>Bicycling</label>
                 </div>
                 </div>
