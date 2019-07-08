@@ -3,14 +3,16 @@ import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import {getAllTracksURL, getTracksByCityURL, getPointURL} from '../globalService'
+import {getAllTracksURL, getTracksByCityURL, getPointURL, getGoogleApiKey} from '../globalService'
 import { NavLink } from "react-router-dom";
 import { Card, Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Menu from './Menu'
 import axios from 'axios';
 import FavoriteButton from './FavoriteButton';
-import { Button } from 'semantic-ui-react'
+import { Icon, Label, Button } from 'semantic-ui-react';
+import {Card as Cardi} from 'semantic-ui-react';
+import { StaticGoogleMap, Marker, Path} from 'react-static-google-map';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -195,7 +197,12 @@ class ChooseExistingTrack extends Component {
     return html;
   }
 
-  
+  trackRecord(track){
+    let location = [];
+      location.push({lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString()});
+      return location;
+  }
+
    viewTracks(track,i) {
     console.log("TRACKTTTT:");
     console.log(track);
@@ -211,49 +218,89 @@ class ChooseExistingTrack extends Component {
         return (<div></div>)
     }
     else{
-      // <p className="starCenter">{end.lat.toString()}</p>
-     
-      // let start = await this.getPointsById(track.startPoint);
-      // let end = await this.getPointsById(track.endPoint);
-      // console.log("LAT AND LNG:");
-      // console.log(start);
-      // console.log(end);
-
       return (          
-        <div key={'container'+i} className="col-10 p-md-4 card borderBlue" style={{ margin:`20px auto`}}>
-            <div className="">
-              <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-              
-              <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-                <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
-                <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
-                <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
-                <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+        <div key={'container'+i} className="margin" style={{ margin:`20px auto`}}>
 
-
-              <FavoriteButton
-              trackid={track.idOfTrack}>
-              </FavoriteButton>
-
-              
-              <NavLink to=
-              //navigate to TrackDetails via TemplateComponent with the params
-              {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-                idOfTrack: track.idOfTrack}}
-                activeStyle={this.active} 
-                className="" >
-                <Button primary style={{width: '100%'}}>
-                Live Navigation
-                </Button>
-              </NavLink>
-
-              </TamplateComponent>
-
-              <div style={{paddingBottom:'20px'}}>
+            <Cardi style={{ margin: '0 auto', padding: '5px'}}>
+            <StaticGoogleMap
+                maptype='roadmap'
+                apiKey={getGoogleApiKey()}
+                size="340x240"
+                language='en'
+              >        
+              <Marker
+                size ='mid'
+                location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
+                color="green"
+                label="A"
+              />
+            
+              <Marker
+                size ='mid'
+                location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
+                color="red"
+                label="B"
+              />
+              <Path
+                points={[
+                  this.trackRecord(track)
+                ]}
+              />
+            </StaticGoogleMap> 
+            
+            <Cardi.Content>
+              <Cardi.Header> 
+                {track.title.toString()} 
+              </Cardi.Header>
+              <Cardi.Meta>
+              <div>
+                { this.getStarsForDifficultyLevel(track.difficultyLevel) }
+                <span className='date' style={{ float: 'right'}}>
+                    {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
+                </span>
               </div>
+            
+              </Cardi.Meta>
+            
+              <Cardi.Description> 
+                <Label.Group>
+                  <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
+                  <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
+                </Label.Group>
+                <Label.Group>
+                  <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
+                  <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
+                </Label.Group>
+                <Label.Group>
+                  <Label size='large' color='teal'>Duration</Label>
+                  <Label size='large'> {this.state.userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </Label>
+                </Label.Group>               
+                <Label.Group>
+                  <Label size='large' color='grey'>Description</Label>
+                  <Label size='large'> {track.description.toString()}  </Label>
+                </Label.Group>                
+                <FavoriteButton
+                trackid={track._id}>
+                </FavoriteButton>
+              </Cardi.Description>
+              
+            </Cardi.Content>
+            <Cardi.Content extra>
+            </Cardi.Content>
+            
+            <NavLink to=
+            //navigate to TrackDetails via TemplateComponent with the params
+            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+              idOfTrack: track.idOfTrack}}
+              activeStyle={this.active} 
+              className="" >
+              <Button primary style={{width: '100%'}}>
+              Live Navigation
+              </Button>
+            </NavLink>
+            
+            </Cardi>
 
-          </div>
-          
         </div>
       )
     }
@@ -418,3 +465,122 @@ class ChooseExistingTrack extends Component {
 
 
 export default ChooseExistingTrack;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+// <Card style={{ margin: '0 auto', padding: '5px'}}>
+// <StaticGoogleMap
+//     maptype='roadmap'
+//     apiKey={getGoogleApiKey()}
+//     size="340x240"
+//     language='en'
+//   >        
+//   <Marker
+//     size ='mid'
+//     location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
+//     color="green"
+//     label="A"
+//   />
+
+//   <Marker
+//     size ='mid'
+//     location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
+//     color="red"
+//     label="B"
+//   />
+//   <Path
+//     points={[
+//       this.trackRecord(track)
+//     ]}
+//   />
+// </StaticGoogleMap> 
+
+// <Card.Content>
+//   <Card.Header> 
+//     {track.title.toString()} 
+//   </Card.Header>
+//   <Card.Meta>
+//   <div>
+//     { this.getStarsForDifficultyLevel(track.difficultyLevel) }
+//     <span className='date' style={{ float: 'right'}}>
+//         {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
+//     </span>
+//   </div>
+
+//   </Card.Meta>
+
+//   <Card.Description> 
+//     <Label.Group>
+//       <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
+//       <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
+//     </Label.Group>
+//     <Label.Group>
+//       <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
+//       <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
+//     </Label.Group>
+//     <Label.Group>
+//       <Label size='large' color='teal'>Duration</Label>
+//       <Label size='large'> {this.state.userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </Label>
+//     </Label.Group>               
+//     <Label.Group>
+//       <Label size='large' color='grey'>Description</Label>
+//       <Label size='large'> {track.description.toString()}  </Label>
+//     </Label.Group>                
+//     <FavoriteButton
+//     trackid={track._id}>
+//     </FavoriteButton>
+//   </Card.Description>
+  
+// </Card.Content>
+// <Card.Content extra>
+// </Card.Content>
+
+//   <NavLink to=
+//   //navigate to TrackDetails via TemplateComponent with the params
+//   {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+//     idOfTrack: track._id}}>
+//     <Button primary style={{width: '100%'}}>
+//     Live Navigation
+//     </Button>
+//   </NavLink>
+
+// </Card>
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+// <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
+       
+// <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
+//   <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
+//   <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
+//   <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
+//   <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
+
+
+// <FavoriteButton
+// trackid={track.idOfTrack}>
+// </FavoriteButton>
+
+
+// <NavLink to=
+// //navigate to TrackDetails via TemplateComponent with the params
+// {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
+//   idOfTrack: track.idOfTrack}}
+//   activeStyle={this.active} 
+//   className="" >
+//   <Button primary style={{width: '100%'}}>
+//   Live Navigation
+//   </Button>
+// </NavLink>
+
+// </TamplateComponent>
+
+// <div style={{paddingBottom:'20px'}}>
+// </div>
