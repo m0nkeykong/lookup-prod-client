@@ -76,7 +76,7 @@ class ChooseExistingTrack extends Component {
           console.log("JSONNNNNNNNN");
           console.log(json);
           let jsonParse = json[0];
-          self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,jsonParse.startPoint,jsonParse.endPoint,"",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
+          self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,json[1],json[2],"",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
         })  
       } 
     })
