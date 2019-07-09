@@ -199,8 +199,9 @@ class ChooseExistingTrack extends Component {
 
   trackRecord(track){
     let location = [];
-      location.push({lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString()});
-      return location;
+    location.push({lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString()});
+    location.push({lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString()});
+    return location;
   }
 
    viewTracks(track,i) {
