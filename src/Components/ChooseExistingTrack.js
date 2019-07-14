@@ -13,6 +13,7 @@ import FavoriteButton from './FavoriteButton';
 import { Icon, Label, Button } from 'semantic-ui-react';
 import {Card as Cardi} from 'semantic-ui-react';
 import { StaticGoogleMap, Marker, Path} from 'react-static-google-map';
+import StarRatings from './react-star-ratings';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -404,18 +405,12 @@ class ChooseExistingTrack extends Component {
                   (
                     <div>
                     <h6>Choose Difficulty Level</h6>
-                      <div className="row rating">     
-                          <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="4_stars">4 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="3_stars">3 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="2_stars">2 stars</label>
-                          <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="1_stars">1 star</label>
-                          <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                          <label className="stars" htmlFor="0_stars">0 star</label>
-                      </div>
+                    <StarRatings
+                    rating={2.403}
+                    starDimension="40px"
+                    starSpacing="15px"
+                  />
+
                     </div>
                   )
                 }
@@ -585,3 +580,20 @@ export default ChooseExistingTrack;
 
 // <div style={{paddingBottom:'20px'}}>
 // </div>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+                      // <div className="row rating">     
+                      //     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
+                      //     <label className="stars" htmlFor="4_stars">4 stars</label>
+                      //     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
+                      //     <label className="stars" htmlFor="3_stars">3 stars</label>
+                      //     <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
+                      //     <label className="stars" htmlFor="2_stars">2 stars</label>
+                      //     <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
+                      //     <label className="stars" htmlFor="1_stars">1 star</label>
+                      //     <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
+                      //     <label className="stars" htmlFor="0_stars">0 star</label>
+                      // </div>
