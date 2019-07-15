@@ -13,7 +13,7 @@ import FavoriteButton from './FavoriteButton';
 import { Icon, Label, Button } from 'semantic-ui-react';
 import {Card as Cardi} from 'semantic-ui-react';
 import { StaticGoogleMap, Marker, Path} from 'react-static-google-map';
-import StarRatings from './react-star-ratings';
+import StarRating from 'react-star-ratings';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -24,7 +24,8 @@ class ChooseExistingTrack extends Component {
       endPoint: [],
       wayPoints: [],
       userDetails: [],
-      travelMode: ''
+      travelMode: '',
+      rating:[]
     }
 
     this.addTracks = this.addTracks.bind(this)
@@ -36,6 +37,7 @@ class ChooseExistingTrack extends Component {
     this.onChange = this.onChange.bind(this)
     this.handleChange  = this.handleChange.bind(this)
     this.getTimeOfTrack = this.getTimeOfTrack.bind(this)
+    this.onSubmitStars = this.onSubmitStars.bind(this)
   }
   
   onSubmit(e){
@@ -44,36 +46,50 @@ class ChooseExistingTrack extends Component {
     var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
 
     var checkedStar = "NO";
-    console.log("REUT:");
-    console.log(this.refs.star1);
-    console.log(this.refs.star1 === 'undefined');
-    if( typeof this.refs.star1 !== 'undefined'){
-      if(this.refs.star1.checked)
-        checkedStar = "1";
-      if(this.refs.star2.checked)
-        checkedStar = "2";
-      if(this.refs.star3.checked)
-        checkedStar = "3";
-      if(this.refs.star4.checked)
-        checkedStar = "4";
-      if(this.refs.star5.checked)
-        checkedStar = "5";
+    // console.log("REUT:");
+    // console.log(this.refs.star1);
+    // console.log(this.refs.star1 === 'undefined');
+    // if( typeof this.refs.star1 !== 'undefined'){
+    //   if(this.refs.star1.checked)
+    //     checkedStar = "1";
+    //   if(this.refs.star2.checked)
+    //     checkedStar = "2";
+    //   if(this.refs.star3.checked)
+    //     checkedStar = "3";
+    //   if(this.refs.star4.checked)
+    //     checkedStar = "4";
+    //   if(this.refs.star5.checked)
+    //     checkedStar = "5";
+    // }
+
+    if (JSON.stringify(this.state.rating) !== '[]'){
+      console.log("IIIIIIIIIIINNNNNNNNNNNNN");
+      console.log(JSON.stringify(this.state.rating));
+      console.log(this.state.rating);
+      checkedStar = JSON.stringify(this.state.rating);
     }
+
+    console.log("TYPE OF RATING:");
+    console.log(this.state.rating);
 
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
     .then((res) => { 
       return res.json();      
     }).then((data) => {
       console.log("DATTTTTA");
+      console.log(data.message);  
       console.log(data);  
       var self=this; 
       this.state.tracks = [];
       if( data.length == 0){
           self.addTracks('','','','','','','',''); 
       }  
-      if( data.message == "No tracks found"){
+      else if( data.message == "No tracks found"){
         self.addTracks('','','','','','','',''); 
-    }    
+      }
+      else if( data.message == "This page was not found")
+        self.addTracks('','','','','','','','');     
+
       else{
         data.map(json => { 
           console.log("JSONNNNNNNNN");
@@ -83,11 +99,20 @@ class ChooseExistingTrack extends Component {
         })  
       } 
     })
+    // checkedStar = "NO";
+    this.setState({rating: []});
 
   }
 
   onChange(e){
     this.setState({[e.target.name]:e.target.value});
+  }
+
+  onSubmitStars(value, name){
+    console.log("onSubmitStars::::::::");
+    console.log(name)
+    console.log(value)
+    this.setState({[name]: value});
   }
 
   addTracks(_id,_title,_type, _reports, _description, _startPoint, _endPoint, _wayPoints, _difficultyLevel,_disabledTime,_nonDisabledTime) {
@@ -405,11 +430,14 @@ class ChooseExistingTrack extends Component {
                   (
                     <div>
                     <h6>Choose Difficulty Level</h6>
-                    <StarRatings
-                    rating={2.403}
-                    starDimension="40px"
-                    starSpacing="15px"
-                  />
+                    <StarRating
+                      starRatedColor="blue"
+                      numberOfStars={5}
+                      starDimension="26px"
+                      step={1} 
+                      name='rating'
+                      changeRating={this.onSubmitStars}
+                    />
 
                     </div>
                   )
