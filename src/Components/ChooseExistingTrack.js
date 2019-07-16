@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TamplateComponent from './TemplateComponent'
 import './style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
@@ -19,6 +18,8 @@ class ChooseExistingTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      from:[],
+      to:[],
       tracks: [],
       startPoint: [],
       endPoint: [],
@@ -81,13 +82,13 @@ class ChooseExistingTrack extends Component {
       console.log(data);  
       var self=this; 
       this.state.tracks = [];
-      if( data.length == 0){
+      if( data.length === 0){
           self.addTracks('','','','','','','',''); 
       }  
-      else if( data.message == "No tracks found"){
+      else if( data.message === "No tracks found"){
         self.addTracks('','','','','','','',''); 
       }
-      else if( data.message == "This page was not found")
+      else if( data.message === "This page was not found")
         self.addTracks('','','','','','','','');     
 
       else{
@@ -168,7 +169,6 @@ class ChooseExistingTrack extends Component {
     }).then((data) => {
       console.log("getPoint:");
       console.log(data);  
-      var self=this; 
       this.state.startPoint = data;
     })
   }
@@ -180,9 +180,9 @@ class ChooseExistingTrack extends Component {
 
     for (let i = 0; i < limitOfStars; i++) {
       if(i < diffNumber)
-        html.push(<span className="fa fa-star colorStarOrange"></span>)
+        html.push(<span key={'spen1'+i} className="fa fa-star colorStarOrange"></span>)
       else
-        html.push(<span className="fa fa-star"></span>)
+        html.push(<span key={'spen2'+i} className="fa fa-star"></span>)
 
     }
     return html;
@@ -192,9 +192,9 @@ class ChooseExistingTrack extends Component {
     let html=[];
 
     for (let i = 0; i < 3; i++)
-        html.push(<span className="fa fa-star colorStarOrange starAccesability"></span>)
+        html.push(<span key={'spen3'+i} className="fa fa-star colorStarOrange starAccesability"></span>)
     for (let i = 0; i < 2; i++)
-      html.push(<span className="fa fa-star colorStarGrey starAccesability"></span>)
+      html.push(<span key={'spen4'+i} className="fa fa-star colorStarGrey starAccesability"></span>)
 
     return html;
   }
@@ -232,7 +232,7 @@ class ChooseExistingTrack extends Component {
     if (track.title === ''){
       console.log("there are no tracks to display !");
       return (
-        <div>
+        <div key={'viewTracks'}>
           <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
         </div>
       )
@@ -361,6 +361,7 @@ class ChooseExistingTrack extends Component {
     console.log("event:");
     console.log(event.target.name);
     console.log(event.target.value);
+    this.setState({ [event.target.name]: []})
     this.setState({ [event.target.name]: event.target.value})
   }
 
