@@ -99,7 +99,6 @@ class ChooseExistingTrack extends Component {
         })  
       } 
     })
-    // checkedStar = "NO";
     this.setState({rating: []});
 
   }
@@ -109,9 +108,6 @@ class ChooseExistingTrack extends Component {
   }
 
   onSubmitStars(value, name){
-    console.log("onSubmitStars::::::::");
-    console.log(name)
-    console.log(value)
     this.setState({[name]: value});
   }
 
@@ -431,7 +427,8 @@ class ChooseExistingTrack extends Component {
                     <div>
                     <h6>Choose Difficulty Level</h6>
                     <StarRating
-                      starRatedColor="blue"
+                      starRatedColor="#F8CE28"
+                      starHoverColor="F8CE28"
                       numberOfStars={5}
                       starDimension="26px"
                       step={1} 
