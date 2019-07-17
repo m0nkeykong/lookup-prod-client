@@ -38,15 +38,6 @@ class PostNavigation extends Component {
 
     // Get the user details from database
     await this.getUserDetails();
-
-    // Update user rank
-    // await this.rankUpdate();
-
-    // TODO: call route for update RANK
-    // TODO: call route for update actual time
-    // console.log("REPORT COMPO:");
-    // console.log(this.state)
-
   }
 
   // Fetching the user data 
@@ -60,7 +51,6 @@ class PostNavigation extends Component {
         .then(userResponse => {
           self.setState({ userDetails: userResponse.data, isLoading: false });
           console.log(userResponse.data);
-          // resolve(self.userid);
         })
         .catch(error => {
           fetchDataHandleError(error);
@@ -143,10 +133,6 @@ class PostNavigation extends Component {
   }
 
   render() {
-    console.log("RENDER:");
-    console.log(this.state);
-    console.log(this.props.location.idOfTrack);
-
     return (
       <div>
         <div className="postContainer">
@@ -165,7 +151,6 @@ class PostNavigation extends Component {
           <div className="col-10 p-md-4">
             <NavLink to=
             //navigate to TrackDetails via TemplateComponent with the params
-            // TODO: dont forgot to send the id of track 
             {{pathname: `${process.env.PUBLIC_URL}/trackDetails`,
               idOfTrack:this.props.location.idOfTrack}}
                 activeStyle={this.active} 

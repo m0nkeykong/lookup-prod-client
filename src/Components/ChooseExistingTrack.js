@@ -47,38 +47,15 @@ class ChooseExistingTrack extends Component {
     var checkedTravelMode = this.refs.bicycling.checked ? 'Bicycling' : 'Walking';
 
     var checkedStar = "NO";
-    // console.log("REUT:");
-    // console.log(this.refs.star1);
-    // console.log(this.refs.star1 === 'undefined');
-    // if( typeof this.refs.star1 !== 'undefined'){
-    //   if(this.refs.star1.checked)
-    //     checkedStar = "1";
-    //   if(this.refs.star2.checked)
-    //     checkedStar = "2";
-    //   if(this.refs.star3.checked)
-    //     checkedStar = "3";
-    //   if(this.refs.star4.checked)
-    //     checkedStar = "4";
-    //   if(this.refs.star5.checked)
-    //     checkedStar = "5";
-    // }
-
     if (JSON.stringify(this.state.rating) !== '[]'){
-      console.log("IIIIIIIIIIINNNNNNNNNNNNN");
-      console.log(JSON.stringify(this.state.rating));
-      console.log(this.state.rating);
       checkedStar = JSON.stringify(this.state.rating);
     }
-
-    console.log("TYPE OF RATING:");
-    console.log(this.state.rating);
 
     fetch(getTracksByCityURL(this.state.from,this.state.to,checkedTravelMode,checkedStar,this.state.userDetails.accessibility))
     .then((res) => { 
       return res.json();      
     }).then((data) => {
       console.log("DATTTTTA");
-      console.log(data.message);  
       console.log(data);  
       var self=this; 
       this.state.tracks = [];
@@ -93,7 +70,7 @@ class ChooseExistingTrack extends Component {
 
       else{
         data.map(json => { 
-          console.log("JSONNNNNNNNN");
+          console.log("JSONNN");
           console.log(json);
           let jsonParse = json[0];
           self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,json[1],json[2],"",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
@@ -151,9 +128,6 @@ class ChooseExistingTrack extends Component {
   }
 
   getIconType(type){
-    console.log("TYPEEEEEEEEEEEEEEE");
-    console.log(type);
-
     if(type === 'WALKING')
       return <MdDirectionsWalk size={20} color="black" />;
     else
@@ -167,8 +141,6 @@ class ChooseExistingTrack extends Component {
     .then((res) => { 
       return res.json();      
     }).then((data) => {
-      console.log("getPoint:");
-      console.log(data);  
       this.state.startPoint = data;
     })
   }
@@ -201,7 +173,6 @@ class ChooseExistingTrack extends Component {
 
   getTimeOfTrack(disabledTime,nonDisabledTime){
     let html=[];
-
     let num;
     
     // if user is nonDisabledTime
@@ -230,7 +201,6 @@ class ChooseExistingTrack extends Component {
     console.log("TRACKTTTT:");
     console.log(track);
     if (track.title === ''){
-      console.log("there are no tracks to display !");
       return (
         <div key={'viewTracks'}>
           <h3 style={{ margin: '0 auto'}}> There are no tracks to display</h3>
@@ -358,9 +328,6 @@ class ChooseExistingTrack extends Component {
   }
 
   handleChange(event){
-    console.log("event:");
-    console.log(event.target.name);
-    console.log(event.target.value);
     this.setState({ [event.target.name]: []})
     this.setState({ [event.target.name]: event.target.value})
   }
