@@ -109,6 +109,6 @@ address{
     content: counter(checkbox) " stars!";
 }
 
-button.ui.grey.button{
+/* button.ui.grey.button{
     margin-bottom: 10px !important;
-}
+} */

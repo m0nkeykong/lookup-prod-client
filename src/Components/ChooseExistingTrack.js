@@ -303,7 +303,7 @@ class ChooseExistingTrack extends Component {
                   <Label size='large'> {track.description.toString()}  </Label>
                 </Label.Group>                
                 <FavoriteButton
-                trackid={track._id}>
+                  trackid={track.idOfTrack}>
                 </FavoriteButton>
               </Cardi.Description>
               
