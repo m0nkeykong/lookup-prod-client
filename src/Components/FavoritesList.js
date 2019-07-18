@@ -5,6 +5,7 @@ import { originURL, getGoogleApiKey } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
 import './style/FavoriteList.css';
 import { NavLink } from "react-router-dom";
+import BLE from './BLE';
 
 import {
   StaticGoogleMap,
@@ -74,7 +75,6 @@ class FavoriteTracks extends Component {
   }
 
   getDifficulty(difficulty){
-    var i = 0;
     switch(difficulty){
       case 1:
         return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
@@ -112,6 +112,8 @@ class FavoriteTracks extends Component {
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
           <Breadcrumb.Item active>Favorite Tracks</Breadcrumb.Item>
+          <BLE>
+          </BLE>
         </Breadcrumb>
 
         <Card.Group style={{ marginTop: '15px'}}>

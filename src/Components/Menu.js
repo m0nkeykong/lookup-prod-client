@@ -4,7 +4,6 @@ import { BeatLoader } from 'react-spinners';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
 import './style//Menu.css';
-import BLE from './BLE';
 import { Icon, Button } from 'semantic-ui-react'
 import { NavLink } from "react-router-dom";
 
@@ -114,8 +113,6 @@ class Menu extends Component {
                     <Nav.Link href="custom"><Icon color='teal' size='big' name='angle double right' /> Generate Custom Track</Nav.Link>
                     <Nav.Link href="choose"><Icon color='teal' size='big' name='search' /> Choose Existing Track</Nav.Link>
                 </Nav>
-                <BLE>
-                </BLE>
                 </Navbar.Collapse>
             </Navbar>
 

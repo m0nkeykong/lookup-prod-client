@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import Map from './Map';
+import Map from './TrackNavigator';
 import Menu from './Menu';
 import axios from 'axios';
 import TamplateComponent from './TemplateComponent';
 import { Card, Breadcrumb } from 'react-bootstrap';
-
+import BLE from './BLE';
  class LiveMap extends Component {
   constructor(props) {
     super(props);
@@ -19,16 +19,15 @@ import { Card, Breadcrumb } from 'react-bootstrap';
     console.log(`Entered <LiveMap> componentDidMount(), fetching userid: ${this.userid}`);
 
     let idOfTrack = this.props.location.idOfTrack;
-    console.log(idOfTrack);
+    // console.log(idOfTrack);
 
-    console.log(this.props.location.track);
+    // console.log(this.props.location.track);
     this.setState({track:this.props.location.track});
 
-    console.log("STATE:");
-    console.log(this.state.track);
+    // console.log("STATE:");
+    // console.log(this.state.track);
     // user session
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-    console.log(`Entered <LiveMap> componentDidMount(), fetching userid: ${this.userid}`);
 
     // Get the user details from database
     axios.get(`http://localhost:3000/user/getAccountDetails/${this.userid}`)
@@ -68,6 +67,8 @@ import { Card, Breadcrumb } from 'react-bootstrap';
             <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
             <Breadcrumb.Item href="">Live</Breadcrumb.Item>
             <Breadcrumb.Item active>Post</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
 
           {this.viewMap()}

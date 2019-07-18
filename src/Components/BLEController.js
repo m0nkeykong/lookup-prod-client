@@ -354,6 +354,7 @@ class BLEController {
      * @private
      */
     _log(...messages) {
+        console.log('<BLEController/>');
         console.log(...messages);
     }
 

@@ -3,12 +3,11 @@ import './style/CustomTrack.css';
 import axios from 'axios';
 import 'react-notifications/lib/notifications.css';
 import { BeatLoader } from 'react-spinners';
-import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer, DrawingManager } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 import { getGoogleApiKey } from '../globalService';
 import './style/normalize.css';
 import BLE from './BLE';
 import { originURL } from '../globalService';
-import { NavLink } from "react-router-dom";
 
 class Map extends Component {
   constructor(props) {
@@ -83,7 +82,7 @@ class Map extends Component {
 
   // directionsCallback = response => {
  directionsCallback(response){
-		console.log("in direectionsCallBack");
+		// console.log("in direectionsCallBack");
 		if (this.state.response === null) {
 			if (response !== null) {
 				if (response.status === 'OK') {
@@ -128,7 +127,7 @@ class Map extends Component {
           this.setState({ timestamp: pos.timestamp });
           this.setState({ UpdatedPosition: {lat: lat, lng: lng}});
           // Create new 'p' elemnt to print updated location
-          console.log("watching");
+          // console.log("watching");
 
           // *** Bluetooth ***
 
@@ -148,11 +147,9 @@ class Map extends Component {
                 var distance = R * c * 1000;
                 var directions = leg.steps[this.state.currStep].maneuver;
 
-                console.log("start lat:" + leg.steps[this.state.currStep].start_location.lat());
-                console.log("start lng:" + leg.steps[this.state.currStep].start_location.lng());
-                console.log("end lat:" + leg.steps[this.state.currStep].end_location.lat());
-                console.log("end lng:" + leg.steps[this.state.currStep].end_location.lng());
-                console.log("distance: " + distance + ",direction: " + directions);
+                console.log("Start lat:" + leg.steps[this.state.currStep].start_location.lat() + ',' + " Start lng:" + leg.steps[this.state.currStep].start_location.lng());
+                console.log("End lat:" + leg.steps[this.state.currStep].end_location.lat() + ',' + " End lng:" + leg.steps[this.state.currStep].end_location.lng());
+                console.log("Distance: " + distance + ", Direction: " + directions);
 
                 if (!this.state.startedNavigation &&
                   (this.state.UpdatedPosition.lat === leg.steps[0].start_location.lat()) && (this.state.UpdatedPosition.lng === leg.steps[0].start_location.lng())) {
@@ -180,7 +177,9 @@ class Map extends Component {
                   this.BLE.send(directions + "," + distance);
                   console.log(this.state.currStep);
                   if (!(leg.steps[this.state.currStep] == (leg.steps.length - 1))) {
-                    this.state.currStep = this.state.currStep + 1
+                    this.setState(prevState => ({
+                      currStep: prevState.currStep + 1
+                    }))
                   }
                 }
               } else {
@@ -228,30 +227,21 @@ class Map extends Component {
   }
 
   getWayPoints(wayPoints) {
-    console.log("wayPoints");
-    console.log(wayPoints);
     let html = [];
     console.log(`wayPoints: ${wayPoints}`);
 
     if (wayPoints.length != 0) {
       for (let i = 0; i < wayPoints.length; i++) {
-        let parseString = wayPoints[i].location.split(",");
-        let lat = parseFloat(parseString[0]);
-        let lng = parseFloat(parseString[1]);
-        let parseLocation = parseFloat(wayPoints[i].location);
-        console.log("wayPoints[i].stopover:");
         console.log(wayPoints[i].stopover);
         html.push({ location: `${wayPoints[i].location}` ,stopover: wayPoints[i].stopover});
       }
     }
-    console.log("HTML waypoint___________________");
-    console.log(html);
+
     return html;
   }
 
   render() {
-    const { loading } = this.state;
-
+    // const { loading } = this.state;
     return (
       <div style={{
         margin: "0 auto",
@@ -289,20 +279,17 @@ class Map extends Component {
             //   options={}
 						// Max Zoom: 0 to 18
             zoom={ 15 || this.state.map.getZoom()}
-            onZoomChanged={ () =>{ console.log(this.state.map.getZoom()); }}
+            onZoomChanged={ () =>{ 
+              // console.log(this.state.map.getZoom()); 
+            }}
             
             >
-
                   <Marker
                     position={this.state.UpdatedPosition}
                     icon={`/images/map-marker-icon3.png`}
                   >
                   </Marker>
-                  {console.log("TRACKKKKKKKK _---------_____------")}
-                  {console.log(this.props.track)}
-                  {console.log(this.props.isFromTrackDetails)}
-                  {console.log(typeof this.props.track.startPoint.city)}
-                  {/* CHECK WHAT IS IT >>>>>>>> MOVE IT FROM HERE >>>>>>>>>>>>>>>>>>>>*/}
+
                   {this.props.isFromTrackDetails === true ?
                     (
                       (

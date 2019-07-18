@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Card, Breadcrumb } from 'react-bootstrap';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
-import './style/LiveNavigation.css';
-import Map from './Map';
-import { rank, accessibility, disabledFactor } from '../MISC';
+import './style/TrackBuilder.css';
+import Map from './TrackNavigator';
+import { disabledFactor } from '../MISC';
 import Menu from './Menu';
-import { Header, Segment, Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
+import { Header, Segment, Icon } from 'semantic-ui-react'
+import BLE from './BLE';
 
-class LiveNavigation extends Component {
+class TrackBuilder extends Component {
   constructor(props) {
     super(props);
 
@@ -30,7 +31,7 @@ class LiveNavigation extends Component {
   }
   
   async componentDidMount(){
-    console.log(this.props);
+    // console.log(this.props);
     // If is it new route - redirected from auto\custom generate so save data in db, just navigate
     if(this.props.location.generatedTrack != null){
       this.setState({ isLocation: true });
@@ -69,12 +70,12 @@ class LiveNavigation extends Component {
     var self = this;
     return new Promise(resolve => {
       self.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-      console.log(`Entered <LiveNavigation> getUserDetails(), fetching userid: ${self.userid}`);
+      console.log(`Entered <TrackBuilder> getUserDetails(), fetching userid: ${self.userid}`);
       // Get the user details from database
       axios.get(`${originURL}user/getAccountDetails/${self.userid}`)
         .then(userResponse => {
           self.setState({ userDetails: userResponse.data, isLoading: false });
-          console.log(userResponse.data);
+          // console.log(userResponse.data);
           resolve(self.userid);
         })
         .catch(error => {
@@ -174,11 +175,12 @@ class LiveNavigation extends Component {
                 {this.state.generatedTrack.isCustomGenerated === true && <Breadcrumb.Item href="/custom">Custom</Breadcrumb.Item>} 
                 {/* Check if come from choose existing page */}
                 <Breadcrumb.Item active>Live Navigation</Breadcrumb.Item>
+                <BLE>
+                </BLE>
               </Breadcrumb>
 
               <Card.Header> 
                 <h6> Live Navigation Map </h6> 
-                  {console.log(this.state.generatedTrack.track)}
                   {!this.state.isLoading && 
                     <Map
                     track={this.state.generatedTrack.track}>
@@ -204,4 +206,4 @@ class LiveNavigation extends Component {
 }
 
 
-export default LiveNavigation;
+export default TrackBuilder;

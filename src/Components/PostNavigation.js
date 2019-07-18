@@ -9,6 +9,7 @@ import { Card, Navbar, Nav,Breadcrumb } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import Menu from './Menu';
 import './style/TrackDetails.css'
+import BLE from './BLE';
 
 class PostNavigation extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class PostNavigation extends Component {
     this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
     console.log(`Entered <PostNavidation> componentDidMount(), fetching userid: ${this.userid}`);
 
-    console.log("ID OF TRACK: ");
+    // console.log("ID OF TRACK: ");
     console.log(this.props.location.idOfTrack);
 
     // Get the user details from database
@@ -45,7 +46,7 @@ class PostNavigation extends Component {
     var self = this;
     return new Promise(resolve => {
       self.userid = JSON.parse(sessionStorage.getItem('userDetails'));
-      console.log(`Entered <LiveNavigation> getUserDetails(), fetching userid: ${self.userid}`);
+      console.log(`Entered <PostNavigation> getUserDetails(), fetching userid: ${self.userid}`);
       // Get the user details from database
       axios.get(`${originURL}user/getAccountDetails/${self.userid}`)
         .then(userResponse => {
@@ -102,7 +103,7 @@ class PostNavigation extends Component {
 
     axios.put(getUpdateTrackTimeURL(idOfTrack,this.state.userDetails.accessibility,this.props.location.actualTime))
     .then(res => {
-        console.log("result:");
+        console.log("Result:");
         console.log(res);
     })
     .catch(error => {
@@ -116,9 +117,9 @@ class PostNavigation extends Component {
       console.error(error);
     });
 
-    console.log("USER :");
+    console.log("User:");
     console.log(this.state.userDetails._id);
-    console.log("REPORT:");
+    console.log("Report:");
     console.log(this.state.addReport);
 
     if(this.state.addReport.length !== 0){
@@ -146,6 +147,8 @@ class PostNavigation extends Component {
             <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
             <Breadcrumb.Item href="">Live</Breadcrumb.Item>
             <Breadcrumb.Item active>Post</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
 
           <div className="col-10 p-md-4">

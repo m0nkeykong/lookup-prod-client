@@ -5,13 +5,14 @@ import Geocode from 'react-geocode';
 import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, DirectionsService, DrawingManager } from '@react-google-maps/api';
 import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup, Alert } from 'react-bootstrap';
-import { getGoogleApiKey, fetchDataHandleError, originURL } from '../globalService';
-import LiveNavigation from './LiveNavigation';
-import './style/AutoGenerateTrack.css';
-import Menu from './Menu';
+import { getGoogleApiKey, fetchDataHandleError, originURL } from '../../globalService';
+import TrackBuilder from './../TrackBuilder';
+import '../style/AutoGenerateTrack.css';
+import Menu from './../Menu';
 import { lookup } from 'dns';
 import { Icon } from 'semantic-ui-react'
-import { rank, accessibility, disabledFactor } from '../MISC';
+import { rank, accessibility, disabledFactor } from '../../MISC';
+import BLE from './../BLE';
 
 const _ = require('lodash');
 
@@ -137,8 +138,8 @@ class CustomTrack extends Component {
     let Lng = objLatLng[1].toString();
 
     // echo to console for checks
-    console.log("lat: " + Lat + "  lng: " + Lng);
-    console.log("marker " + marker.get("id") + " has been placed by user");
+    console.log("Lat: " + Lat + "  Lng: " + Lng);
+    console.log("Marker " + marker.get("id") + " has been placed by user");
 
     // create marker lat\lng object at waypoints array
     let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
@@ -153,8 +154,8 @@ class CustomTrack extends Component {
       let objLatLng = marker.getPosition().toString().replace("(", "").replace(")", "").split(',');
       let Lat = objLatLng[0].toString();
       let Lng = objLatLng[1].toString();
-      console.log("lat: " + Lat + "   Lng: " + Lng);
-      console.log("marker " + marker.get("id") + " has been moved to a different location");
+      console.log("Lat: " + Lat + "   Lng: " + Lng);
+      console.log("Marker " + marker.get("id") + " has been moved to a different location");
       let mrkrwaypt = { lat: Lat, lng: Lng, id: marker.get("id") };
 
       // update marker lat\lng at waypoints array
@@ -209,7 +210,7 @@ class CustomTrack extends Component {
 
       // unmount marker from map
       marker.setMap(null);
-      console.log("marker " + marker.get("id") + " has been removed by user");
+      console.log("Marker " + marker.get("id") + " has been removed by user");
     });
     // -------------------------------------------------------
   }
@@ -288,7 +289,7 @@ class CustomTrack extends Component {
   // Handle search address request
   searchAddress() {
     if (this.state.searchInput !== '') {
-      console.log("search requested for: " + this.state.searchInput);
+      console.log("Search requested for: " + this.state.searchInput);
 
       // convert address from user to lat\lng
       fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.state.searchInput + '&key=' + getGoogleApiKey())
@@ -297,7 +298,7 @@ class CustomTrack extends Component {
         })
         .then((myJson) => {
           console.log(myJson.results[0].geometry.location);
-          console.log("zooming map on query...");
+          console.log("Zooming map on query...");
           let lat = myJson.results[0].geometry.location.lat;
           let lng = myJson.results[0].geometry.location.lng;
 
@@ -419,13 +420,9 @@ class CustomTrack extends Component {
           if (this.state.userDetails.accessibility == 'Disabled') {
             let tempDuration = parseFloat(leg.duration.value);
             d = tempDuration * disabledFactor;
-            console.log("UPDATED TIME");
-            console.log(d);
           }
           else {
             d = parseFloat(leg.duration.value);
-            console.log("UPDATED TIME2");
-            console.log(d);
           }
 
           var h = Math.floor(d / 3600);
@@ -499,7 +496,6 @@ class CustomTrack extends Component {
             </Modal.Body>
 
             <Modal.Footer>
-              {console.log("GENERATED TRACK IS HERE:")}
               {console.log(this.state)}
               <NavLink to={{ pathname: `${process.env.PUBLIC_URL}/liveNavigation`, generatedTrack: this.state }}>
                 <Button variant="primary" onClick={this.startLiveNavigation}>Live navigation</Button>
@@ -739,7 +735,6 @@ class CustomTrack extends Component {
             response => {
               lat = response.results[0].geometry.location.lat;
               lng = response.results[0].geometry.location.lng;
-              console.log(lat, lng);
 
               switch (pointDetails.length) {
                 // User writed only country
@@ -749,7 +744,7 @@ class CustomTrack extends Component {
                       ...prevState,
                       track: { ...prevState.track, [point]: { country: pointDetails[0], lat: lat, lng: lng } },
                     }));
-                  console.log("case 1");
+                  // console.log("case 1");
                   break;
                 // User writed only country, city
                 case 2:
@@ -758,7 +753,7 @@ class CustomTrack extends Component {
                       ...prevState,
                       track: { ...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], lat: lat, lng: lng } }
                     }));
-                  console.log("case 2");
+                  // console.log("case 2");
                   break;
                 // User writed only country, city, street
                 case 3:
@@ -767,7 +762,7 @@ class CustomTrack extends Component {
                       ...prevState,
                       track: { ...prevState.track, [point]: { country: pointDetails[0], city: pointDetails[1], street: pointDetails[2], lat: lat, lng: lng } }
                     }));
-                  console.log("case 3");
+                  // console.log("case 3");
                   break;
 
                 default:
@@ -811,6 +806,8 @@ class CustomTrack extends Component {
             <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
             <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
             <Breadcrumb.Item active>Custom</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
 
           {/* Show Generate Track Form When Page Stop Loading sessionStorage */}

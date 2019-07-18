@@ -5,12 +5,12 @@ import { NavLink} from "react-router-dom";
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline';
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle';
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk';
-import Map from './Map';
+import Map from './TrackNavigator';
 import Menu from './Menu';
 import axios from 'axios';
 import { Card, Breadcrumb } from 'react-bootstrap';
 import './style/TrackDetails.css'
-
+import BLE from './BLE';
 class TrackDetails extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +39,7 @@ class TrackDetails extends Component {
   
   componentDidMount() {
     let idOfTrack=this.props.location.idOfTrack;
-    console.log(idOfTrack);
+    // console.log(idOfTrack);
 
     // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
@@ -61,11 +61,9 @@ class TrackDetails extends Component {
   getTrackById(trackId){
     fetch(getTrackByIdURL(trackId))
     .then((res) => {   
-      console.log("RESSSS !!!");
       console.log(res);     
       return res.json();      
     }).then((data) => { 
-      console.log("GET TRACK DETAILS:");
       console.log(data);       
       var self=this;      
       self.addTrack(data.track._id,data.track.title, data.track.travelMode, data.track.difficultyLevel.star, data.reports, data.userDetails,
@@ -243,7 +241,6 @@ class TrackDetails extends Component {
   }
 
   viewTrack(track,i) {
-    console.log("TRACKKKKKKKKKKK _____________________");
     console.log(track);
     return (          
       <div key={'container'+i}>
@@ -302,8 +299,6 @@ class TrackDetails extends Component {
           </TamplateComponent>
 
           <div style={{paddingBottom:'20px'}}>
-          {console.log("AAALLLAA:")}
-          {console.log(track)}
           
             <Map 
             track={this.buildTrack(track)}
@@ -333,6 +328,8 @@ class TrackDetails extends Component {
             <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
             <Breadcrumb.Item href="/choose">Choose</Breadcrumb.Item>
             <Breadcrumb.Item active>Details</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
           <div className="text-center">
             {this.state.tracks.map(this.viewTrack)}

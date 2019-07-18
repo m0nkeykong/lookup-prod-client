@@ -3,8 +3,8 @@ import axios from 'axios';
 import { rank } from '../MISC';
 import { Button, Form, Alert, Breadcrumb} from 'react-bootstrap';
 import { originURL } from '../globalService';
-
 import Menu from './Menu';
+import BLE from './BLE';
 
 const _ = require('lodash');
 
@@ -112,6 +112,8 @@ class Profile extends Component {
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
           <Breadcrumb.Item active>Profile Settings</Breadcrumb.Item>
+          <BLE>
+          </BLE>
         </Breadcrumb>
 
         <Form onSubmit={e => this.handleSubmit(e)} style={{ padding: '7px'}}>

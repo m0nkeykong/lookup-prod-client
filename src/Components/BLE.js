@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import BLEController from './BLEController';
 import { makeStyles } from '@material-ui/styles';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 // import { Icon, Button } from 'semantic-ui-react'
 import Icon from '@material-ui/core/Icon';
 
@@ -28,6 +27,7 @@ class BLE extends Component {
   }
 
   submited = () => {
+    console.log('<BLE/>');
     console.log(this.refs.inputField.value);
     this.send(this.refs.inputField.value);
     this.refs.inputField.value = '';
@@ -90,32 +90,16 @@ class BLE extends Component {
       }));
     });
     return (
-      <div>
+      <div style={{ position: 'absolute', right: '5px'}}>
         {!this.state.isBLEConnected ?
-        <div style={{ fontSize: '120%', lineHight: '160%'}}>
-            <Icon style={{ color: 'gray', fontSize: '35px' }} id="connect" onClick={this.connectButton} >bluetooth_disabled</Icon>
+        <div style={{ fontSize: '100%', lineHight: '100%'}}>
+            <Icon style={{ color: 'orange', fontSize: '20px' }} id="connect" onClick={this.connectButton} >bluetooth_disabled</Icon>
             {/* <Icon color='teal' size='big' name='bluetooth b' style={{ backgroundColor: 'light gray', borderRadius: '50%' }}/>Bluetooth */}
         </div> :
-          <div style={{ fontSize: '120%', lineHight: '160%' }}>
-            <Icon style={{ color: 'teal', fontSize: '35px' }} id="disconnect" onClick={this.disconnectButton}>bluetooth_connected</Icon>
+          <div style={{ fontSize: '100%', lineHight: '100%' }}>
+            <Icon style={{ color: 'green', fontSize: '20px' }} id="disconnect" onClick={this.disconnectButton}>bluetooth_connected</Icon>
         </div>
       }
-        
-
-          {/* <div className="item" >connect</div>
-          <div className="item"  >disconnect</div>
-
-        </div> */}
-
-            {/* {
-              !this.state.isBLEConnected ?
-            <SnackbarContent
-              className={classes.snackbar}
-              message={
-                'No device connected'
-              }
-            /> : null
-            } */}
       </div>
     );
   }

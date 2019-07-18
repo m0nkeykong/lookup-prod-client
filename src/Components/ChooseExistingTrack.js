@@ -13,6 +13,7 @@ import { Icon, Label, Button } from 'semantic-ui-react';
 import {Card as Cardi} from 'semantic-ui-react';
 import { StaticGoogleMap, Marker, Path} from 'react-static-google-map';
 import StarRating from 'react-star-ratings';
+import BLE from './BLE';
 
 class ChooseExistingTrack extends Component {
   constructor(props) {
@@ -55,10 +56,10 @@ class ChooseExistingTrack extends Component {
     .then((res) => { 
       return res.json();      
     }).then((data) => {
-      console.log("DATTTTTA");
+      console.log("<ChoostExistingTrack/> Data:");
       console.log(data);  
       var self=this; 
-      this.state.tracks = [];
+      this.setState({ tracks: [] });
       if( data.length === 0){
           self.addTracks('','','','','','','',''); 
       }  
@@ -70,7 +71,7 @@ class ChooseExistingTrack extends Component {
 
       else{
         data.map(json => { 
-          console.log("JSONNN");
+          console.log("<ChoostExistingTrack/> JSON");
           console.log(json);
           let jsonParse = json[0];
           self.addTracks(jsonParse._id,jsonParse.title, jsonParse.travelMode, jsonParse.reports, jsonParse.description,json[1],json[2],"",jsonParse.difficultyLevel.star,jsonParse.disabledTime, jsonParse.nonDisabledTime); 
@@ -136,12 +137,11 @@ class ChooseExistingTrack extends Component {
   }
 
   getPointsById(point){
-
     fetch(getPointURL(point))
     .then((res) => { 
       return res.json();      
     }).then((data) => {
-      this.state.startPoint = data;
+      this.setState({ startPoint: data });
     })
   }
 
@@ -198,7 +198,7 @@ class ChooseExistingTrack extends Component {
   }
 
    viewTracks(track,i) {
-    console.log("TRACKTTTT:");
+    console.log("<ChoostExistingTrack/> Track:");
     console.log(track);
     if (track.title === ''){
       return (
@@ -345,6 +345,8 @@ class ChooseExistingTrack extends Component {
             <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
             <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
             <Breadcrumb.Item active>Choose</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
 
           <Card.Body className="text-center">

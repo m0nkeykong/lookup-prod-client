@@ -6,13 +6,14 @@ import { BeatLoader } from 'react-spinners';
 import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api';
 import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup} from 'react-bootstrap';
 import IoIosLocation from 'react-icons/lib/io/ios-location';
-import { fetchDataHandleError, originURL } from '../globalService';
-import LiveNavigation from './LiveNavigation';
-import {getGoogleApiKey} from '../globalService';
-import './style/AutoGenerateTrack.css';
-import Menu from './Menu';
-import { rank, accessibility, disabledFactor } from '../MISC';
+import { originURL } from '../../globalService';
+import TrackBuilder from './../TrackBuilder';
+import {getGoogleApiKey} from '../../globalService';
+import '../style/AutoGenerateTrack.css';
+import Menu from './../Menu';
+import { disabledFactor } from '../../MISC';
 import { Icon } from 'semantic-ui-react'
+import BLE from './../BLE';
 
 var EventEmitter = require('events');
 var ee = new EventEmitter();
@@ -211,13 +212,9 @@ class AutoGenerateTrack extends Component {
           if (this.state.userDetails.accessibility == 'Disabled'){
             let tempDuration = parseFloat(leg.duration.value);
             d = tempDuration * disabledFactor;
-            console.log("UPDATED TIME");
-            console.log(d);
           } 
           else{
             d = parseFloat(leg.duration.value);
-            console.log("UPDATED TIME2");
-            console.log(d);
           }
           
           var h = Math.floor(d / 3600);
@@ -471,7 +468,6 @@ class AutoGenerateTrack extends Component {
                       ...prevState,
                       track: { ...prevState.track, [point]: { country: pointDetails[0], lat: lat, lng: lng }},
                     }));
-                  console.log("case 1");
                   break;
                 // User writed only country, city
                 case 2:
@@ -480,7 +476,6 @@ class AutoGenerateTrack extends Component {
                       ...prevState,
                       track: {...prevState.track, [point]: { city: pointDetails[0], country: pointDetails[1], lat: lat, lng: lng }}
                     }));
-                  console.log("case 2");
                   break;
                 // User writed only country, city, street
                 case 3:
@@ -489,7 +484,6 @@ class AutoGenerateTrack extends Component {
                       ...prevState,
                       track: {...prevState.track, [point]: { street: pointDetails[0], city: pointDetails[1], country: pointDetails[2], lat: lat, lng: lng }}
                     }));
-                  console.log("case 3");
                   break;
         
                 default:
@@ -533,6 +527,8 @@ class AutoGenerateTrack extends Component {
             <Breadcrumb.Item href="/">Login</Breadcrumb.Item>
             <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
             <Breadcrumb.Item active>Auto</Breadcrumb.Item>
+            <BLE>
+            </BLE>
           </Breadcrumb>
 
           {/* Show Generate Track Form When Page Stop Loading sessionStorage */}

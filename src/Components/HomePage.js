@@ -6,6 +6,7 @@ import { originURL } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
 import { rank } from '../MISC';
 import { Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
+import BLE from './BLE';
 
 class HomePage extends Component {
   constructor(props) {
@@ -46,6 +47,8 @@ class HomePage extends Component {
         <Breadcrumb>
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item active>Home</Breadcrumb.Item>
+          <BLE>
+          </BLE>
         </Breadcrumb>
 
         {!this.state.isLoading &&
