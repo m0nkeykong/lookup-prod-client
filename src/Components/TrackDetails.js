@@ -41,7 +41,6 @@ class TrackDetails extends Component {
     let idOfTrack=this.props.location.idOfTrack;
     console.log(idOfTrack);
 
-    // this.getTrackById("5ca9d94c87d03b340f708ffd");
     this.getTrackById(idOfTrack);
   // user session
   this.userid = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -61,8 +60,6 @@ class TrackDetails extends Component {
   getTrackById(trackId){
     fetch(getTrackByIdURL(trackId))
     .then((res) => {   
-      console.log("RESSSS !!!");
-      console.log(res);     
       return res.json();      
     }).then((data) => { 
       console.log("GET TRACK DETAILS:");
@@ -137,9 +134,6 @@ class TrackDetails extends Component {
 
   getStartPoint(startPoint){
     let html=[];
-    console.log(`startPoint: ${startPoint}`);
-    console.log(startPoint);
-
       html.push(<p>	&#8227; &#9; latitude: {startPoint.latitude}</p>)
       html.push(<p>	&#8227; &#9; longitude: {startPoint.longitude}</p>)
     return html;
@@ -147,9 +141,6 @@ class TrackDetails extends Component {
 
   getEndPoint(endPoint){
     let html=[];
-    console.log(`endPoint: ${endPoint}`);
-    console.log(endPoint);
-
     html.push(<p>	&#8227; &#9; latitude: {endPoint.latitude}</p>)
     html.push(<p>	&#8227; &#9; longitude: {endPoint.longitude}</p>)
     return html;
@@ -157,8 +148,6 @@ class TrackDetails extends Component {
 
   getWayPoints(wayPoints){
     let html=[];
-    console.log(`wayPoints: ${wayPoints}`);
-
     if(wayPoints.length !== 0){
       for (let i = 0; i < wayPoints.length; i++) {
         html.push(<p style={{fontSize: '15px'}}> &#9; point number: {i}</p>)
@@ -226,8 +215,6 @@ class TrackDetails extends Component {
     let html=[];
 
     let num;
-    // this.state.userDetails.accessibility;
-    // if user is nonDisabledTime
     if(this.state.userDetails.accessibility === 0)
       num = nonDisabledTime.actual;
     else
@@ -243,7 +230,7 @@ class TrackDetails extends Component {
   }
 
   viewTrack(track,i) {
-    console.log("TRACKKKKKKKKKKK _____________________");
+    console.log("TRACKKKKK \---");
     console.log(track);
     return (          
       <div key={'container'+i}>
