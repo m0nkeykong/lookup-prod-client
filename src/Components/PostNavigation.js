@@ -160,19 +160,7 @@ class PostNavigation extends Component {
             <BLE>
             </BLE>
           </Breadcrumb>
-
-          <div className="col-10 p-md-4">
-            <NavLink to=
-            //navigate to TrackDetails via TemplateComponent with the params
-            {{pathname: `${process.env.PUBLIC_URL}/trackDetails`,
-              idOfTrack:this.props.location.idOfTrack}}
-                activeStyle={this.active} 
-                style={{padding:'6px', verticalAlign:'baseline'}}
-                className="tring" >
-                <TiArrowBackOutline size={29} color='black'/></NavLink>
-            </div>
-
-
+          
           <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
