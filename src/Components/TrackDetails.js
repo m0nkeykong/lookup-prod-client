@@ -233,19 +233,6 @@ class TrackDetails extends Component {
     console.log(track);
     return (          
       <div key={'container'+i}>
-
-        <div className="col-10 p-md-4">
-        <NavLink to=
-        //navigate to TrackDetails via TemplateComponent with the params
-        {{pathname: `${process.env.PUBLIC_URL}/choose`}}
-          activeStyle={this.active} 
-          style={{padding:'6px', verticalAlign:'baseline'}}
-          className="tring" >
-          <TiArrowBackOutline size={29} color='black'/></NavLink>
-      </div>
-
-     
-
           <div className="col-12 px-4">
 
           <TamplateComponent key={'track'+i} index={i} onChange={this.updateTrack}>  
