@@ -10,6 +10,8 @@ import { BeatLoader } from 'react-spinners';
 import Menu from './Menu';
 import './style/TrackDetails.css'
 import BLE from './BLE';
+import StarRating from 'react-star-ratings';
+
 
 class PostNavigation extends Component {
   constructor(props) {
@@ -19,13 +21,15 @@ class PostNavigation extends Component {
       userDetails: [],
       addReport: [],
       isRankUpdated: false,
-      isLoading: true
+      isLoading: true,
+      rating:[]
     }
 
     this.getUserDetails = this.getUserDetails.bind(this);
     this.rankUpdate = this.rankUpdate.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this)
+    this.onSubmitStars = this.onSubmitStars.bind(this)
     this.handleChange  = this.handleChange.bind(this)
   }
   
@@ -77,6 +81,10 @@ class PostNavigation extends Component {
     });
   }
 
+  onSubmitStars(value, name){
+    this.setState({[name]: value});
+  }
+
   initialState(){
     this.setState(prevState => ({tracks: []}))
   }
@@ -90,16 +98,9 @@ class PostNavigation extends Component {
     var idOfTrack = this.props.location.idOfTrack;
     // add stars:
     var checkedStar = "";
-    if(this.refs.star1.checked)
-      checkedStar = "1";
-    if(this.refs.star2.checked)
-      checkedStar = "2";
-    if(this.refs.star3.checked)
-      checkedStar = "3";
-    if(this.refs.star4.checked)
-      checkedStar = "4";
-    if(this.refs.star5.checked)
-      checkedStar = "5";
+    if (JSON.stringify(this.state.rating) !== '[]'){
+      checkedStar = JSON.stringify(this.state.rating);
+    }
 
     axios.put(getUpdateTrackTimeURL(idOfTrack,this.state.userDetails.accessibility,this.props.location.actualTime))
     .then(res => {
@@ -109,6 +110,9 @@ class PostNavigation extends Component {
     .catch(error => {
     console.error(error);
     });
+
+    console.log("VBVVVVVVV");
+    console.log(checkedStar);
 
     axios.put(`http://localhost:3000/track/updateDefficultyLevel/${this.props.location.idOfTrack}/${checkedStar}`)
     .then(res => {
@@ -133,6 +137,12 @@ class PostNavigation extends Component {
     }
   }
 
+  getRating(){
+    if (this.state.rating.length !== 0)
+      return this.state.rating;
+    return 0;
+  }
+  
   render() {
     return (
       <div>
@@ -166,18 +176,16 @@ class PostNavigation extends Component {
           <form onSubmit={this.onSubmit}>
           
                 <h6>Vote for Difficulty Level</h6>
-                <div className="row rating"> 
-                    <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="4_stars">4 stars</label>
-                    <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="3_stars">3 stars</label>
-                    <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="2_stars">2 stars</label>
-                    <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="1_stars">1 star</label>
-                    <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                    <label className="stars" for="0_stars">0 star</label>
-                </div>
+                   <StarRating
+                      starRatedColor="#F8CE28"
+                      starHoverColor="F8CE28"
+                      numberOfStars={5}
+                      starDimension="26px"
+                      step={1} 
+                      name='rating'
+                      rating={this.getRating()}
+                      changeRating={this.onSubmitStars}
+                    />
 
                 <div className="row pt-3">     
                     <div class="col-10" style={{ margin:`20px auto`}}> 
