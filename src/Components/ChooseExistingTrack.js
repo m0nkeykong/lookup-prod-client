@@ -332,6 +332,12 @@ class ChooseExistingTrack extends Component {
     this.setState({ [event.target.name]: event.target.value})
   }
 
+  getRating(){
+    if (this.state.rating.length !== 0)
+      return this.state.rating;
+    return 0;
+  }
+
   render() {
     return (
       <div>
@@ -403,6 +409,7 @@ class ChooseExistingTrack extends Component {
                       starDimension="26px"
                       step={1} 
                       name='rating'
+                      rating={this.getRating()}
                       changeRating={this.onSubmitStars}
                     />
 
@@ -456,139 +463,3 @@ class ChooseExistingTrack extends Component {
 
 
 export default ChooseExistingTrack;
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-// <Card style={{ margin: '0 auto', padding: '5px'}}>
-// <StaticGoogleMap
-//     maptype='roadmap'
-//     apiKey={getGoogleApiKey()}
-//     size="340x240"
-//     language='en'
-//   >        
-//   <Marker
-//     size ='mid'
-//     location={{ lat: track.startPoint.lat.toString(), lng: track.startPoint.lng.toString() }}
-//     color="green"
-//     label="A"
-//   />
-
-//   <Marker
-//     size ='mid'
-//     location={{ lat: track.endPoint.lat.toString(), lng: track.endPoint.lng.toString() }}
-//     color="red"
-//     label="B"
-//   />
-//   <Path
-//     points={[
-//       this.trackRecord(track)
-//     ]}
-//   />
-// </StaticGoogleMap> 
-
-// <Card.Content>
-//   <Card.Header> 
-//     {track.title.toString()} 
-//   </Card.Header>
-//   <Card.Meta>
-//   <div>
-//     { this.getStarsForDifficultyLevel(track.difficultyLevel) }
-//     <span className='date' style={{ float: 'right'}}>
-//         {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
-//     </span>
-//   </div>
-
-//   </Card.Meta>
-
-//   <Card.Description> 
-//     <Label.Group>
-//       <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
-//       <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
-//     </Label.Group>
-//     <Label.Group>
-//       <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
-//       <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
-//     </Label.Group>
-//     <Label.Group>
-//       <Label size='large' color='teal'>Duration</Label>
-//       <Label size='large'> {this.state.userDetails.accessibility === 1 ? track.nonDisabledTime.actual.toString() + ' minutes' : track.disabledTime.actual.toString() + ' minutes'} </Label>
-//     </Label.Group>               
-//     <Label.Group>
-//       <Label size='large' color='grey'>Description</Label>
-//       <Label size='large'> {track.description.toString()}  </Label>
-//     </Label.Group>                
-//     <FavoriteButton
-//     trackid={track._id}>
-//     </FavoriteButton>
-//   </Card.Description>
-  
-// </Card.Content>
-// <Card.Content extra>
-// </Card.Content>
-
-//   <NavLink to=
-//   //navigate to TrackDetails via TemplateComponent with the params
-//   {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-//     idOfTrack: track._id}}>
-//     <Button primary style={{width: '100%'}}>
-//     Live Navigation
-//     </Button>
-//   </NavLink>
-
-// </Card>
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-// <TamplateComponent key={'track'+i} index={i} onChange={this.updateTracks}>  
-       
-// <h1 className="card-title title" style={{ textAlign:`center`}}>{track.title}</h1>
-//   <p className="typeTrack">{this.getIconType(track.travelMode)}</p>
-//   <p className="typeTrack">{this.getTimeOfTrack(track.disabledTime,track.nonDisabledTime)} </p>
-//   <p className="descriptionTrack marginTop18" style={{ textAlign:`center`}}>{track.description}</p>
-//   <p className="starCenter">{this.getStarsForDifficultyLevel(track.difficultyLevel)}</p>
-
-
-// <FavoriteButton
-// trackid={track.idOfTrack}>
-// </FavoriteButton>
-
-
-// <NavLink to=
-// //navigate to TrackDetails via TemplateComponent with the params
-// {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
-//   idOfTrack: track.idOfTrack}}
-//   activeStyle={this.active} 
-//   className="" >
-//   <Button primary style={{width: '100%'}}>
-//   Live Navigation
-//   </Button>
-// </NavLink>
-
-// </TamplateComponent>
-
-// <div style={{paddingBottom:'20px'}}>
-// </div>
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                      // <div className="row rating">     
-                      //     <input className="inputStarts" type="radio" name="stars" id="4_stars" value="4" ref="star5" onChange={this.handleChange} value={this.state.stars} />
-                      //     <label className="stars" htmlFor="4_stars">4 stars</label>
-                      //     <input className="inputStarts" type="radio" name="stars" id="3_stars" value="3" ref="star4" onChange={this.handleChange} value={this.state.stars} />
-                      //     <label className="stars" htmlFor="3_stars">3 stars</label>
-                      //     <input className="inputStarts" type="radio" name="stars" id="2_stars" value="2" ref="star3" onChange={this.handleChange} value={this.state.stars} />
-                      //     <label className="stars" htmlFor="2_stars">2 stars</label>
-                      //     <input className="inputStarts" type="radio" name="stars" id="1_stars" value="1" ref="star2" onChange={this.handleChange} value={this.state.stars} />
-                      //     <label className="stars" htmlFor="1_stars">1 star</label>
-                      //     <input className="inputStarts" type="radio" name="stars" id="0_stars" value="0" ref="star1" onChange={this.handleChange} value={this.state.stars} />
-                      //     <label className="stars" htmlFor="0_stars">0 star</label>
-                      // </div>
