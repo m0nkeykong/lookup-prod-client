@@ -111,8 +111,6 @@ class PostNavigation extends Component {
     console.error(error);
     });
 
-    console.log("VBVVVVVVV");
-    console.log(checkedStar);
 
     axios.put(`http://localhost:3000/track/updateDefficultyLevel/${this.props.location.idOfTrack}/${checkedStar}`)
     .then(res => {
