@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
 class Header extends Component {
     active = {
-        color: "white",
-        fontWeight: "bold",
-    };
+        color: 'white',
+        fontWeight: 'bold',
+    }
 
     logo = {
         width: '153px',
@@ -12,13 +12,19 @@ class Header extends Component {
         display: 'block',
         margin: '0 auto',
         marginTop: '4px',
-        marginBottom: '4px'
+        marginBottom: '4px',
     }
 
     render() {
         return (
             <div className="container">
-                <img alt="HeaderLogo" style={this.logo} src='./images/logoSmall.png'></img>
+                <img
+                    alt="HeaderLogo"
+                    style={this.logo}
+                    src="./images/logoSmall.png"
+                />
             </div>
-);}}
-export default Header;
+        )
+    }
+}
+export default Header
