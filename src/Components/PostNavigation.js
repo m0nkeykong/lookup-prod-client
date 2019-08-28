@@ -58,7 +58,6 @@ class PostNavigation extends Component {
                         userDetails: userResponse.data,
                         isLoading: false,
                     })
-                    console.log(userResponse.data)
                 })
                 .catch(error => {
                     fetchDataHandleError(error)
@@ -70,11 +69,6 @@ class PostNavigation extends Component {
     rankUpdate() {
         var self = this
         return new Promise(resolve => {
-            console.log(
-                `Entered <PostNavigation> rankUpdate(), Updating rank for userid: ${
-                    self.userid
-                }`
-            )
             // Updating the user rank
             axios
                 .put(`${originURL}user/rankUpdate/${self.userid}`, {
@@ -82,8 +76,6 @@ class PostNavigation extends Component {
                 })
                 .then(response => {
                     self.setState({ isRankUpdated: true })
-                    console.log(response.data)
-                    // resolve(self.userid);
                 })
                 .catch(error => {
                     fetchDataHandleError(error)
@@ -121,8 +113,6 @@ class PostNavigation extends Component {
                 )
             )
             .then(res => {
-                console.log('Result:')
-                console.log(res)
             })
             .catch(error => {
                 console.error(error)
@@ -138,11 +128,6 @@ class PostNavigation extends Component {
             .catch(error => {
                 console.error(error)
             })
-
-        console.log('User:')
-        console.log(this.state.userDetails._id)
-        console.log('Report:')
-        console.log(this.state.addReport)
 
         if (this.state.addReport.length !== 0) {
             let data1 = {

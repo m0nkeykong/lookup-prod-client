@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { getTrackByIdURL } from '../globalService'
 import TamplateComponent from './TemplateComponent'
-import { NavLink } from 'react-router-dom'
-import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle'
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk'
 import Map from './TrackNavigator'
@@ -11,6 +9,7 @@ import axios from 'axios'
 import { Card, Breadcrumb } from 'react-bootstrap'
 import './style/TrackDetails.css'
 import BLE from './BLE'
+
 class TrackDetails extends Component {
     constructor(props) {
         super(props)

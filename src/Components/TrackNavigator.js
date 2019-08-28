@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './style/CustomTrack.css'
 import axios from 'axios'
 import 'react-notifications/lib/notifications.css'
 import { BeatLoader } from 'react-spinners'

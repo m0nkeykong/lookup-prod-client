@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './style/ChooseExistingTrack.css'
+import '../style/ChooseExistingTrack.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle'
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk'
 import {
@@ -7,18 +7,18 @@ import {
     getTracksByCityURL,
     getPointURL,
     getGoogleApiKey,
-} from '../globalService'
+} from '../../globalService'
 import { NavLink } from 'react-router-dom'
 import { Card, Breadcrumb } from 'react-bootstrap'
 import { BeatLoader } from 'react-spinners'
-import Menu from './Menu'
+import Menu from './../Menu'
 import axios from 'axios'
-import FavoriteButton from './FavoriteButton'
+import FavoriteButton from './../FavoriteButton'
 import { Icon, Label, Button } from 'semantic-ui-react'
 import { Card as Cardi } from 'semantic-ui-react'
 import { StaticGoogleMap, Marker, Path } from 'react-static-google-map'
 import StarRating from 'react-star-ratings'
-import BLE from './BLE'
+import BLE from './../BLE'
 
 class ChooseExistingTrack extends Component {
     constructor(props) {
