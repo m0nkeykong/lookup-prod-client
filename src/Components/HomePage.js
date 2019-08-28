@@ -20,11 +20,6 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.userid = JSON.parse(sessionStorage.getItem('userDetails'))
-        console.log(
-            `Entered <HomePage> componentDidMount(), fetching userid: ${
-                this.userid
-            }`
-        )
 
         // Get the user details from database
         axios
@@ -37,7 +32,6 @@ class HomePage extends Component {
                     userDetails: userResponse.data,
                     isLoading: false,
                 })
-                console.log(userResponse.data)
             })
             .catch(error => {
                 console.error(error)

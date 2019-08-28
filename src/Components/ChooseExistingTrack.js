@@ -72,8 +72,6 @@ class ChooseExistingTrack extends Component {
                 return res.json()
             })
             .then(data => {
-                console.log('<ChoostExistingTrack/> Data:')
-                console.log(data)
                 var self = this
                 this.setState({ tracks: [] })
                 if (data.length === 0) {
@@ -84,8 +82,6 @@ class ChooseExistingTrack extends Component {
                     self.addTracks('', '', '', '', '', '', '', '')
                 else {
                     data.map(json => {
-                        console.log('<ChoostExistingTrack/> JSON')
-                        console.log(json)
                         let jsonParse = json[0]
                         self.addTracks(
                             jsonParse._id,
@@ -256,8 +252,6 @@ class ChooseExistingTrack extends Component {
     }
 
     viewTracks(track, i) {
-        console.log('<ChoostExistingTrack/> Track:')
-        console.log(track)
         if (track.title === '') {
             return (
                 <div key={'viewTracks'}>
@@ -458,11 +452,6 @@ class ChooseExistingTrack extends Component {
     componentDidMount() {
         // user session
         this.userid = JSON.parse(sessionStorage.getItem('userDetails'))
-        console.log(
-            `Entered <ChooseExistingTrack> componentDidMount(), fetching userid: ${
-                this.userid
-            }`
-        )
 
         // Get the user details from database
         axios

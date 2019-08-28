@@ -39,16 +39,10 @@ class TrackDetails extends Component {
 
     componentDidMount() {
         let idOfTrack = this.props.location.idOfTrack
-        // console.log(idOfTrack);
 
         this.getTrackById(idOfTrack)
         // user session
         this.userid = JSON.parse(sessionStorage.getItem('userDetails'))
-        console.log(
-            `Entered <TrackDetails> componentDidMount(), fetching userid: ${
-                this.userid
-            }`
-        )
 
         // Get the user details from database
         axios
@@ -58,7 +52,6 @@ class TrackDetails extends Component {
                     userDetails: userResponse.data,
                     loading: false,
                 })
-                console.log(userResponse.data)
             })
             .catch(error => {
                 console.error(error)
@@ -68,11 +61,9 @@ class TrackDetails extends Component {
     getTrackById(trackId) {
         fetch(getTrackByIdURL(trackId))
             .then(res => {
-                console.log(res)
                 return res.json()
             })
             .then(data => {
-                console.log(data)
                 var self = this
                 self.addTrack(
                     data.track._id,
@@ -137,7 +128,6 @@ class TrackDetails extends Component {
 
     getReports(reports, userDetails) {
         let html = []
-        console.log(reports)
         // Outer loop to create parent
         if (reports.length !== 0) {
             for (let i = 0; i < reports.length; i++) {
@@ -276,7 +266,6 @@ class TrackDetails extends Component {
     }
 
     viewTrack(track, i) {
-        console.log(track)
         return (
             <div key={'container' + i}>
                 <div className="col-12 px-4">

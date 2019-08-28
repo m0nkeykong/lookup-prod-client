@@ -40,14 +40,6 @@ class PostNavigation extends Component {
     async componentDidMount() {
         // get user details
         this.userid = JSON.parse(sessionStorage.getItem('userDetails'))
-        console.log(
-            `Entered <PostNavidation> componentDidMount(), fetching userid: ${
-                this.userid
-            }`
-        )
-
-        // console.log("ID OF TRACK: ");
-        console.log(this.props.location.idOfTrack)
 
         // Get the user details from database
         await this.getUserDetails()
@@ -58,11 +50,6 @@ class PostNavigation extends Component {
         var self = this
         return new Promise(resolve => {
             self.userid = JSON.parse(sessionStorage.getItem('userDetails'))
-            console.log(
-                `Entered <PostNavigation> getUserDetails(), fetching userid: ${
-                    self.userid
-                }`
-            )
             // Get the user details from database
             axios
                 .get(`${originURL}user/getAccountDetails/${self.userid}`)
