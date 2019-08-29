@@ -213,7 +213,7 @@ class Login extends Component {
                                     <div className="col-xl-4 col-lg-5">
                                         <div className="featured-text text-center text-lg-left">
                                             <h4>What are we?</h4>
-                                            <p className="text-black-50 mb-0">Our system is design to provide users with navgiation instructions without endangering themselfs while riding on the streets</p>
+                                            <p className="text-black-50 mb-0">Our system is design to provide users with navigation instructions without endangering themselves while riding on the streets</p>
                                         </div>
                                     </div>
                                 </div>
