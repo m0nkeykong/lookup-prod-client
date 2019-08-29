@@ -1,0 +1,76 @@
+.firstDiv {
+    margin: 0;
+}
+
+
+.secDiv {
+    width: 350px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.firstH2 {
+    text-align: center;
+}
+
+.firstNavLink {
+    position: absolute; 
+    right: 15px;
+}
+
+.firstImage {
+    padding-bottom: 10px;
+}
+
+.thirdDiv {
+    padding-left: 20px;
+}
+
+.fourthDiv {
+    margin: 0 auto;
+    text-align: center;
+    width: 350px;
+    height: 175px;
+}
+
+.stats {
+    padding-top: 25px;
+}
+
+.firstButton {
+    color: white;
+    text-decoration: none;
+}
+
+.secButton {
+    color: white;
+    text-decoration: none;
+}
+
+.thirdButton {
+    color: white;
+    text-decoration: none;
+}
+
+.secStats {
+    padding-top: 25px;
+    display: block;
+}
+
+.secNavLink {
+    color: white;
+    text-decoration: none;
+}
+
+
+.thirdStats {
+    padding-top: 25px; 
+    display: block;
+}
+
+.thirdNavLink {
+    color: white;
+    text-decoration: none;
+    padding-bottom: 45px;
+}
+

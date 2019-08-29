@@ -8,6 +8,7 @@ import google from './style/Login.css'
 import { Modal, Button, Form, Jumbotron, Container, Image } from 'react-bootstrap';
 import { originURL } from '../globalService';
 import styles from './style/grayscale.css';
+import './style/LoginCSS.css'
 
 class Login extends Component {
     constructor(props) {
@@ -143,12 +144,12 @@ class Login extends Component {
                         <Modal.Title>One more moment and we're off...</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div style={{ display: 'block' }}>
-                            <img alt="Profile" src={this.state.userDetails.imageUrl} style={{ height: '34px', width: '34px', borderRadius: '50%', display: 'block', margin: '0 auto' }}></img>
-                            <h5 style={{ textAlign: 'center' }}> Hello, {this.state.userDetails.name} </h5>
+                        <div className='firstDiv'>
+                            <img alt="Profile" src={this.state.userDetails.imageUrl} className='firstIMG'></img>
+                            <h5 className='firstH5'> Hello, {this.state.userDetails.name} </h5>
                         </div>
 
-                        <div style={{ display: 'block', marginTop: '25px' }}>
+                        <div className='secondDiv'>
                             <h6>Please fill out the following fields: </h6>
                             <Form.Group controlId="formBirthDay">
                                 <Form.Control required type="text" placeholder="Enter Birthday Date" value={this.state.birthDay} name="birthDay" onChange={this.handleInputChange} />
@@ -207,7 +208,7 @@ class Login extends Component {
                                 <div className="row align-items-center no-gutters mb-4 mb-lg-5">
                                     <div className="col-xl-8 col-lg-7">
                                         <div className="embed-responsive embed-responsive-16by9">
-                                            <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowFullScreen style={{height: '100%', width: '100%'}}></iframe>
+                                            <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowFullScreen></iframe>
                                         </div>
                                     </div>
                                     <div className="col-xl-4 col-lg-5">

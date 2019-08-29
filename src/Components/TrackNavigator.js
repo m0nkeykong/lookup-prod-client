@@ -395,14 +395,7 @@ class Map extends Component {
     render() {
         // const { loading } = this.state;
         return (
-            <div
-                style={{
-                    margin: '0 auto',
-                    // border: '2px solid red',
-                    height: '400px',
-                    maxWidth: '90%',
-                }}
-            >
+            <div className='firstDiv'>
                 {this.state.loading ? (
                     <div className="load-container">
                         <LoadScript

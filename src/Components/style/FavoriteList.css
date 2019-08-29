@@ -1,3 +1,29 @@
 .extra{
     padding: 0 !important
 }
+
+.caseClass {
+    display: inline-block;
+}
+
+.cardGroup {
+     margin-top: 15px;
+}
+
+.cardClass {
+    margin: 0 auto;
+    padding: 5px;
+}
+
+.spanClass {
+    float: right;
+}
+
+
+.labelClass {
+    width: 55px;
+}
+
+.buttonClass {
+    width: 100%;
+}

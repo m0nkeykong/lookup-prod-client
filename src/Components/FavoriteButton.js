@@ -4,6 +4,7 @@ import { fetchDataHandleError, originURL } from '../globalService'
 import { Button } from 'semantic-ui-react'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css'
+import './style/favButton.css'
 
 const _ = require('lodash')
 
@@ -148,7 +149,6 @@ class FavoriteButton extends Component {
 
                 {!this.state.isLoading && (
                     <Button
-                        style={{ float: 'right' }}
                         color={this.state.isFavorite ? 'red' : 'grey'}
                         onClick={this.favoriteToggle}
                         icon="heart"

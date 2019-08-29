@@ -4,4 +4,38 @@
 
 a.nav-link:hover {
     background-color: #E0E0E0 !important;
-  }
+}
+
+.firstNavBrand {
+    float: left;
+}
+
+
+.firstIMG {
+    height: 40px;
+    width: 40px; 
+    float: left; 
+    border-radius: 50%;
+}
+
+.secNavBrand {
+    float: center;
+}
+
+.firstP {
+    font-size: 120%;
+    text-align: center;
+    padding-top: 8px; 
+    position: relative;
+}
+
+.firstNavLink {
+    position: absolute;
+    right: 0;
+}
+
+.lastNav {
+    font-size: 120%; 
+    line-height: 160%;
+}
+

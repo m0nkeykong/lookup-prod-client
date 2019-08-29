@@ -3,6 +3,7 @@ import BLEController from './BLEController';
 import { makeStyles } from '@material-ui/styles';
 // import { Icon, Button } from 'semantic-ui-react'
 import Icon from '@material-ui/core/Icon';
+import './style/BLE.css';
 
 // UI elements.
 // const deviceNameLabel = document.getElementById('device-name');
@@ -90,14 +91,14 @@ class BLE extends Component {
       }));
     });
     return (
-      <div style={{ position: 'absolute', right: '5px'}}>
+      <div className='mainDiv'>
         {!this.state.isBLEConnected ?
-        <div style={{ fontSize: '100%', lineHight: '100%'}}>
-            <Icon style={{ color: 'orange', fontSize: '20px' }} id="connect" onClick={this.connectButton} >bluetooth_disabled</Icon>
+        <div className='secDiv'>
+            <Icon className='disabledIcon' id="connect" onClick={this.connectButton} >bluetooth_disabled</Icon>
             {/* <Icon color='teal' size='big' name='bluetooth b' style={{ backgroundColor: 'light gray', borderRadius: '50%' }}/>Bluetooth */}
         </div> :
-          <div style={{ fontSize: '100%', lineHight: '100%' }}>
-            <Icon style={{ color: 'green', fontSize: '20px' }} id="disconnect" onClick={this.disconnectButton}>bluetooth_connected</Icon>
+          <div className='secDiv'>
+            <Icon className='enabledIcon' id="disconnect" onClick={this.disconnectButton}>bluetooth_connected</Icon>
         </div>
       }
       </div>

@@ -76,27 +76,27 @@ class MyTracks extends Component {
   getDifficulty(difficulty){
     switch(difficulty){
       case 1:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
         break;
 
       case 2:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/></div>)
         break;
 
       case 3:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/></div>)
         break;
 
       case 4:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/></div>)
         break;
 
       case 5:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/> </div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/> </div>)
         break;
 
       default:
-        return( <div style={{ display: 'inline-block' }}> <Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        return( <div className='caseClass'> <Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
         break;
     }
   }
@@ -115,12 +115,12 @@ class MyTracks extends Component {
           </BLE>
         </Breadcrumb>
 
-        <Card.Group style={{ marginTop: '15px'}}>
+        <Card.Group className='cardGroup'>
         {!this.state.loading && userDetails.trackRecords.length > 0 && userDetails.trackRecords.map( (track, index) => 
           (
             <React.Fragment key={index}>
             
-            <Card style={{ margin: '0 auto', padding: '5px'}}>
+            <Card className='cardClass'>
               <StaticGoogleMap
                   maptype='roadmap'
                   apiKey={getGoogleApiKey()}
@@ -154,7 +154,7 @@ class MyTracks extends Component {
                 <Card.Meta>
                 <div>
                   { this.getDifficulty(parseInt(track.difficultyLevel.star)) }
-                  <span className='date' style={{ float: 'right'}}>
+                  <span className='date spanClass'>
                       {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
                   </span>
                 </div>
@@ -163,11 +163,11 @@ class MyTracks extends Component {
 
                 <Card.Description> 
                   <Label.Group>
-                    <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
+                    <Label className='labelClass' size='large' color='teal'>From</Label>
                     <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
                   </Label.Group>
                   <Label.Group>
-                    <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
+                    <Label className='labelClass' size='large' color='teal'>To</Label>
                     <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
                   </Label.Group>
                   <Label.Group>
@@ -195,7 +195,7 @@ class MyTracks extends Component {
                 //navigate to TrackDetails via TemplateComponent with the params
                 {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
                   idOfTrack: track._id}}>
-                  <Button primary style={{width: '100%'}}>
+                  <Button primary className='buttonClass'>
                   Live Navigation
                   </Button>
                 </NavLink>

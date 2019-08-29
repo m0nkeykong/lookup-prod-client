@@ -66,11 +66,11 @@ class Menu extends Component {
 
             <Navbar collapseOnSelect expand="lg">
 
-            <Navbar.Brand style={{ float: 'left' }}>
+            <Navbar.Brand className='firstNavBrand'>
                 {this.state.userDetails.profilePicture ?
                 (
                     // @TODO: Make tooltip message when clicking on rank picture
-                    <img alt="Profile" src={`/images/${this.state.userDetails.rank}.png`} style={{ height: '40px', width: '40px', float: 'left', borderRadius: '50%' }}></img>
+                    <img alt="Profile" src={`/images/${this.state.userDetails.rank}.png`} className='firstIMG'></img>
                 )
                 :
                 (
@@ -79,7 +79,7 @@ class Menu extends Component {
                 }
             </Navbar.Brand>
 
-            <Navbar.Brand style={{ float: 'center' }}>
+            <Navbar.Brand className='secNavBrand'>
                 {!this.state.loading ?
                 (
                     <div >
@@ -96,15 +96,15 @@ class Menu extends Component {
             <Navbar.Toggle onClick={this.userCloseToggle} aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 { this.state.userClose && <div >
-                    <p style={{ fontSize: '120%', textAlign: 'center', paddingTop: '8px', position: 'relative' }}>Hello, {this.state.userDetails.name}
+                    <p className='firstP'>Hello, {this.state.userDetails.name}
                    <NavLink
                   to={{ pathname: `${process.env.PUBLIC_URL}/` }}
-                  style={{ position: 'absolute', right: '0' }}>
+                  className='firstNavLink'>
                   <Button circular icon='user close'></Button>
                 </NavLink>
                   </p>
                 </div>}
-                <Nav className="mr-auto" style={{ fontSize: '120%', lineHight: '160%' }}>
+                <Nav className="mr-auto lastNav">
                     <Nav.Link href='home'><Icon color='teal' size='big' name='home' /> Home</Nav.Link>
                     <Nav.Link href='profile'><Icon color='teal' size='big' name='setting' /> Profile Settings</Nav.Link>
                     <Nav.Link href="mytracks"><Icon color='teal' size='big' name='hand point right' /> My Tracks</Nav.Link>

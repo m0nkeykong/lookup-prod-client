@@ -174,3 +174,26 @@ input[type="file"]{
   border-bottom: 0px;
 }
 .custom-input-file:hover .uploadPhoto { display: block; }
+
+
+.firstDiv {
+  margin: 20px auto;
+}
+
+.firstP {
+  font-size: 15px;
+}
+
+.firstH1 {
+  text-align: center; margin-top: 20px;
+}
+
+.secDiv {
+  margin: 20px auto;
+}
+
+.mapDiv {
+  padding-bottom: 20px;
+}
+
+

@@ -182,7 +182,7 @@ class PostNavigation extends Component {
                         />
 
                         <div className="row pt-3">
-                            <div class="col-10" style={{ margin: `20px auto` }}>
+                            <div class="col-10 firstDiv">
                                 <h6>
                                     Have you encountered a report <br />
                                     during the track?
