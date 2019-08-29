@@ -105,12 +105,12 @@ class MyTracks extends Component {
     const userDetails = {...this.state.userDetails};
     return (
       <div>
-        <Menu currentPage={"Favorite Tracks"}></Menu>
+        <Menu currentPage={"My Tracks"}></Menu>
         
         <Breadcrumb>
           <Breadcrumb.Item href="../">Login</Breadcrumb.Item>
           <Breadcrumb.Item href="../home">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active>Favorite Tracks</Breadcrumb.Item>
+          <Breadcrumb.Item active>My Tracks</Breadcrumb.Item>
           <BLE>
           </BLE>
         </Breadcrumb>

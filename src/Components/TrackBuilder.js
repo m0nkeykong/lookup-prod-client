@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Card, Breadcrumb } from 'react-bootstrap';
 import axios from 'axios';
 import { fetchDataHandleError, originURL } from '../globalService';
-import './style/TrackBuilder.css';
 import Map from './TrackNavigator';
 import { disabledFactor } from '../MISC';
 import Menu from './Menu';
