@@ -101,3 +101,30 @@ ul>li{
 #root{
   font-family: 'Mukta', sans-serif !important;
 }
+
+
+iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.firstDiv {
+    display: block;
+}
+
+.firstIMG {
+    height: 34px;
+    width: 34px; 
+    border-radius: 50%; 
+    display: block; 
+    margin: 0 auto;
+}
+
+.firstH5 {
+    text-align: center;
+}
+
+.secondDiv {
+    display: block;
+    margin-top: 25px;
+}
