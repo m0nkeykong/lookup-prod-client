@@ -1,5 +1,41 @@
+.displayBlock{
+    display: block !important;
+}
+
 .margin0auto{
-    margin: 0 auto;
+    margin: 0 auto !important;
+}
+
+.margin20auto{
+    margin: 20 auto !important;
+}
+
+.width55px{
+    width: 55px !important;
+}
+
+.width60px{
+    width: 60px !important;
+}
+
+.width40px{
+    width: 40px !important;
+}
+
+.width100per{
+    width: 100% !important;
+}
+
+.pb10px{
+    padding-bottom: 10px !important;
+}
+
+.floatR{
+    float: right !important;
+}
+
+.floatL{
+    float: left !important;
 }
 
 .padding20px {
@@ -8,4 +44,24 @@
 
 .padding5px{
     padding: 5px !important;
+}
+
+.textCenter{
+    text-align: center !important;
+}
+
+.height40px{
+    height: 40px !important;
+}
+
+.height400px{
+    height: 400px !important;
+}
+
+.height100px{
+    height: 100px !important;
+}
+
+.maxWidth90per{
+    max-width: 90% !important; 
 }

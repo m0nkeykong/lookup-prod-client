@@ -271,10 +271,8 @@ class ChooseExistingTrack extends Component {
             return (
                 <div
                     key={'container' + i}
-                    className="margin"
-                    style={{ margin: `20px auto` }}
-                >
-                    <Cardi style={{ margin: '0 auto', padding: '5px' }}>
+                    className="margin margin20auto pb10px">
+                    <Cardi className='margin0auto padding5px pb10px'>
                         <StaticGoogleMap
                             maptype="roadmap"
                             apiKey={getGoogleApiKey()}
@@ -313,9 +311,7 @@ class ChooseExistingTrack extends Component {
                                         track.difficultyLevel
                                     )}
                                     <span
-                                        className="date"
-                                        style={{ float: 'right' }}
-                                    >
+                                        className="date floatR">
                                         {track.travelMode.toString() ===
                                         'WALKING' ? (
                                             <Icon
@@ -338,9 +334,9 @@ class ChooseExistingTrack extends Component {
                             <Cardi.Description>
                                 <Label.Group>
                                     <Label
-                                        style={{ width: '55px' }}
                                         size="large"
                                         color="teal"
+                                        className='width55px'
                                     >
                                         From
                                     </Label>
@@ -359,9 +355,9 @@ class ChooseExistingTrack extends Component {
                                 </Label.Group>
                                 <Label.Group>
                                     <Label
-                                        style={{ width: '55px' }}
                                         size="large"
                                         color="teal"
+                                        className='width55px'
                                     >
                                         To
                                     </Label>
@@ -417,7 +413,7 @@ class ChooseExistingTrack extends Component {
                             activeStyle={this.active}
                             className=""
                         >
-                            <Button primary style={{ width: '100%' }}>
+                            <Button primary className='width100per'>
                                 Live Navigation
                             </Button>
                         </NavLink>
@@ -607,7 +603,7 @@ class ChooseExistingTrack extends Component {
                         {this.state.tracks.map(this.viewTracks)}
                     </div>
 
-                    <Card.Body style={{ textAlign: 'center' }}>
+                    <Card.Body className="textCenter">
                         {this.state.loading ? (
                             <div className="col-12 mx-auto">
                                 {this.state.tracks.map(this.viewTracks)}

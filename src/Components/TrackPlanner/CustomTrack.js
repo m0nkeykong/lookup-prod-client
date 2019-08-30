@@ -8,6 +8,7 @@ import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Brea
 import { getGoogleApiKey, fetchDataHandleError, originURL } from '../../globalService';
 import TrackBuilder from './../TrackBuilder';
 import '../style/AutoGenerateTrack.css';
+import '../style/general.css'
 import Menu from './../Menu';
 import { lookup } from 'dns';
 import { Icon } from 'semantic-ui-react'
@@ -515,7 +516,7 @@ class CustomTrack extends Component {
     return (
       <Card.Body>
 
-        <Card.Title style={{ textAlign: 'center'}}>
+        <Card.Title className="textCenter">
           <h6> Search </h6>
         </Card.Title>
         <p id='searchAlert'></p>
@@ -536,11 +537,11 @@ class CustomTrack extends Component {
             <Modal.Title>Instructions</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img alt="handIcon" src={`/images/searchIcon.png`} style={{ height: '40px', width: '60px' }}></img><br></br>
+            <img alt="handIcon" src={`/images/searchIcon.png`} className='height40px width60px'></img><br></br>
             Use the search bar to focus the map on a certain address.<br></br><br></br>
-            <img alt="markerIcon" src={`/images/markerIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+            <img alt="markerIcon" src={`/images/markerIcon.png`} className='height40px width40px'></img><br></br>
             Use the marker icon to add points/waypoints to your track.<br></br><br></br>
-            <img alt="handIcon" src={`/images/handIcon.png`} style={{ height: '40px', width: '40px' }}></img><br></br>
+            <img alt="handIcon" src={`/images/handIcon.png`} className='height40px width40px'></img><br></br>
             Use the hand marker to move the map.<br></br>
             You can move markers by dragging them.<br></br>
             To remove a marker, simply click on it.<br></br>
@@ -553,15 +554,11 @@ class CustomTrack extends Component {
         </Modal>
 
         <Form onSubmit={e => this.handleSubmit(e)}>
-          <Card.Header style={{ textAlign: 'center'}}>
+          <Card.Header className="textCenter">
             Planning Map
           </Card.Header>
           <Card.Body>
-            <div style={{
-              margin: "0 auto",
-              height: "400px",
-              maxWidth: "90%"
-            }}>
+            <div className='margin0auto height400px maxWidth90per'>
 
               <LoadScript
                 id="script-loader"
@@ -623,16 +620,16 @@ class CustomTrack extends Component {
 
           </Card.Body>
 
-          <Card.Title style={{ textAlign: 'center'}}>
+          <Card.Title className="textCenter">
             <h6> Travel Mode </h6>
           </Card.Title>
 
-          <Form.Group style={{ textAlign: 'center'}}>
+          <Form.Group className="textCenter">
             <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange} /><Icon name='male' size='large' />
             <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange} /><Icon name='bicycle' size='large' />
           </Form.Group>
 
-          <Card.Title style={{ textAlign: 'center'}}>
+          <Card.Title className="textCenter">
             <h6> Description and Title </h6>
           </Card.Title>
 
@@ -643,23 +640,23 @@ class CustomTrack extends Component {
           {/* @TODO: Validate if title is unique before continue */}
           <Form.Group controlId="formTitle">
             <Form.Control required type="text" placeholder="Track Title" name="title" value={this.state.track.title} onChange={this.handleInputChange} />
-            <Form.Text className="text-muted" style={{ float: 'left' }}>
+            <Form.Text className="text-muted floatL">
               This is a unique name.
           </Form.Text>
           </Form.Group>
           <br />
 
-          <Card.Title style={{ textAlign: 'center'}}>
+          <Card.Title className="textCenter">
             <h6> Required Settings </h6>
           </Card.Title>
 
-          <Form.Group style={{ textAlign: 'center'}}>
+          <Form.Group className="textCenter">
             <Form.Check disabled custom inline id="formTolls" type="radio" checked={true} label="Avoid Tolls" name="avoidTolls" value="true" />
             <Form.Check disabled custom inline id="formSafeWays" type="radio" checked={true} label="Safe Ways" name="safeWays" value="true" />
             <Form.Check disabled custom inline id="formHighway" type="radio" checked={true} label="Avoid Highways" name="avoidHighways" value="true" />
           </Form.Group>
 
-          <Button  style={{ margin: '0 auto', display: 'block'}} variant="primary" type="submit">
+          <Button className='displayBlock margin0auto' variant="primary" type="submit">
             Build Route
         </Button>
         </Form>
@@ -821,7 +818,7 @@ class CustomTrack extends Component {
             {this.state.isCustomGenerated && this.directionsRequest()}
           </Card.Body>
 
-          <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
+          <Card.Footer id="locationUpdate" className="text-muted height100px"></Card.Footer>
         </Card>
       </div>
     );

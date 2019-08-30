@@ -7,9 +7,9 @@ import { GoogleMap, LoadScript, DirectionsService } from '@react-google-maps/api
 import { Button, Card, Form, InputGroup, Modal, ButtonToolbar, ProgressBar, Breadcrumb, ListGroup} from 'react-bootstrap';
 import IoIosLocation from 'react-icons/lib/io/ios-location';
 import { originURL } from '../../globalService';
-import TrackBuilder from './../TrackBuilder';
 import {getGoogleApiKey} from '../../globalService';
 import '../style/AutoGenerateTrack.css';
+import '../style/general.css'
 import Menu from './../Menu';
 import { disabledFactor } from '../../MISC';
 import { Icon } from 'semantic-ui-react'
@@ -318,7 +318,7 @@ class AutoGenerateTrack extends Component {
     return(
       <Card.Body>
       <Form onSubmit={e => this.handleSubmit(e)}>
-        <Card.Title style={{ textAlign: 'center'}}>
+        <Card.Title className='textCenter'>
           <h6> Choose Origin and Destination </h6>
         </Card.Title>
 
@@ -335,16 +335,16 @@ class AutoGenerateTrack extends Component {
           <Form.Control required type="text" placeholder="Enter Destination" value={this.state.track.endPoint} name="endPoint" onChange={this.handleInputChange}/>
         </Form.Group>
 
-        <Card.Title style={{ textAlign: 'center'}}>
+        <Card.Title className="textCenter">
           <h6> Travel Mode </h6>
         </Card.Title>
 
-        <Form.Group style={{ textAlign: 'center'}}>
+        <Form.Group className="textCenter">
         <Form.Check custom inline id="formWalking" type="radio" label="Walking" name="travelMode" checked={this.state.track.travelMode === 'WALKING'} value="WALKING" onChange={this.handleRadioChange}/><Icon name='male' size='large' />
         <Form.Check custom inline id="formBicycling" type="radio" label="Bicycling" name="travelMode" checked={this.state.track.travelMode === 'BICYCLING'} value="BICYCLING" onChange={this.handleRadioChange}/><Icon name='bicycle' size='large' />
         </Form.Group>
 
-        <Card.Title style={{ textAlign: 'center'}}>
+        <Card.Title className="textCenter">
           <h6> Description and Title </h6>
         </Card.Title>
 
@@ -355,23 +355,23 @@ class AutoGenerateTrack extends Component {
         {/* @TODO: Validate if title is unique before continue */}
         <Form.Group controlId="formTitle">
           <Form.Control required type="text" placeholder="Track Title" name="title" value={this.state.track.title} onChange={this.handleInputChange}/>
-          <Form.Text className="text-muted" style={{float: 'left'}}>
+          <Form.Text className="text-muted floatL">
             This is a unique name.
           </Form.Text>
         </Form.Group>
         <br/>
 
-        <Card.Title style={{ textAlign: 'center'}}>
+        <Card.Title className="textCenter">
           <h6> Required settings </h6>
         </Card.Title>
 
-        <Form.Group style={{ textAlign: 'center'}}>
+        <Form.Group className="textCenter">
           <Form.Check disabled custom inline id="formTolls" type="radio" checked={true} label="Avoid Tolls" name="avoidTolls" value="true"/>
           <Form.Check disabled custom inline id="formSafeWays" type="radio" checked={true} label="Safe Ways" name="safeWays" value="true"/>
           <Form.Check disabled custom inline id="formHighway" type="radio" checked={true} label="Avoid Highways" name="avoidHighways" value="true"/>
         </Form.Group>
 
-        <Button style={{ margin: '0 auto', display: 'block'}} variant="primary" type="submit">
+        <Button className='displayBlock margin0auto' variant="primary" type="submit">
           Generate Route
         </Button>
       </Form>
@@ -542,7 +542,7 @@ class AutoGenerateTrack extends Component {
             {this.state.isGenerated && this.directionsRequest()}
           </Card.Body>
 
-          <Card.Footer style={{ height: '100px' }} id="locationUpdate" className="text-muted"></Card.Footer>
+          <Card.Footer id="locationUpdate" className="text-muted height100px"></Card.Footer>
         </Card>
       </div>
     );
