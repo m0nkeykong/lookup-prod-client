@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../style/ChooseExistingTrack.css'
+import '../style/general.css'
 import IoAndroidBicycle from 'react-icons/lib/io/android-bicycle'
 import MdDirectionsWalk from 'react-icons/lib/md/directions-walk'
 import {
@@ -255,7 +256,7 @@ class ChooseExistingTrack extends Component {
         if (track.title === '') {
             return (
                 <div key={'viewTracks'}>
-                    <h3 style={{ margin: '0 auto' }}>
+                    <h3 className="textCenter">
                         {' '}
                         There are no tracks to display
                     </h3>

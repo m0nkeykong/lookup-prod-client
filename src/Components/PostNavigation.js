@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import './style/ChooseExistingTrack.css'
+import './style/general.css'
 import './style/PostNavigation.css'
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import {
