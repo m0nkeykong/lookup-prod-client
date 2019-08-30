@@ -200,74 +200,74 @@ class Login extends Component {
                         </div>
                     </header>
                 </div>
-                
-                    <div>
-                        <section id="projects" className="projects-section bg-light">
-                            <div className="container">
-                                <div className="row align-items-center no-gutters mb-4 mb-lg-5">
-                                    <div className="col-xl-8 col-lg-7">
-                                        <div className="embed-responsive embed-responsive-16by9">
-                                            <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowFullScreen></iframe>
-                                        </div>
+
+                <div>
+                    <section id="projects" className="projects-section bg-light">
+                        <div className="container">
+                            <div className="row align-items-center no-gutters mb-4 mb-lg-5">
+                                <div className="col-xl-8 col-lg-7">
+                                    <div className="embed-responsive embed-responsive-16by9">
+                                        <iframe className="embed-responsive-item" src="https://drive.google.com/file/d/1G_EbGMAaICLLZlIJCPbYuPqLhEUh45ql/preview" allowFullScreen></iframe>
                                     </div>
-                                    <div className="col-xl-4 col-lg-5">
-                                        <div className="featured-text text-center text-lg-left">
-                                            <h4>What are we?</h4>
-                                            <p className="text-black-50 mb-0">Our system is design to provide users with navgiation instructions without endangering themselfs while riding on the streets</p>
-                                        </div>
+                                </div>
+                                <div className="col-xl-4 col-lg-5">
+                                    <div className="featured-text text-center text-lg-left">
+                                        <h4>What are we?</h4>
+                                        <p className="text-black-50 mb-0">Our system is design to provide users with navgiation instructions without endangering themselfs while riding on the streets</p>
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                        <section id="signup" className="signup-section">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-md-10 col-lg-8 mx-auto text-center">
-                                        <h2 className="text-white mb-5">Developed By</h2>
+                        </div>
+                    </section>
+                    <section id="signup" className="signup-section">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-10 col-lg-8 mx-auto text-center">
+                                    <h2 className="text-white mb-5">Developed By</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section className="contact-section bg-black">
+                        <div className="container">
+                            <div className="row">
+
+                                <div className="col-md-4 mb-3 mb-md-0">
+                                    <div className="card py-4 h-100">
+                                        <div className="card-body text-center">
+                                            <a href="https://github.com/m0nkeykong" target="_blank"><h4 className="text-uppercase m-0">Haim Elbaz</h4><br></br>
+                                                <img className="rounded-circle" src="https://avatars1.githubusercontent.com/u/27493738?s=460&v=4" alt="profPic" width="90" height="90" /><br></br></a>
+                                            <hr className="my-4" />
+                                            <div className="small text-black-50">AKA. Elbazon Ha Hason</div>
                                         </div>
                                     </div>
                                 </div>
-                        </section>
-                        <section className="contact-section bg-black">
-                            <div className="container">
-                                <div className="row">
 
-                                    <div className="col-md-4 mb-3 mb-md-0">
-                                        <div className="card py-4 h-100">
-                                            <div className="card-body text-center">
-                                                <a href="https://github.com/m0nkeykong" target="_blank"><h4 className="text-uppercase m-0">Haim Elbaz</h4><br></br>
-                                                    <img className="rounded-circle" src="https://avatars1.githubusercontent.com/u/27493738?s=460&v=4" alt="profPic" width="90" height="90" /><br></br></a>
-                                                <hr className="my-4"/>
-                                                <div className="small text-black-50">AKA. Elbazon Ha Hason</div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                    <div className="col-md-4 mb-3 mb-md-0">
-                                        <div className="card py-4 h-100">
-                                            <div className="card-body text-center">
-                                                <a href="https://github.com/ronipolisanov" target="_blank"><h4 className="text-uppercase m-0">Roni Polisanov</h4><br></br>
-                                                    <img className="rounded-circle" src="https://avatars3.githubusercontent.com/u/32986144?s=400&u=aba2a7d183a15bd4a2c99c4b9a540c5291e1cffa&v=4" alt="profPic" width="90" height="90" /><br></br></a>
-                                                <hr className="my-4"/>
-                                                <div className="small text-black-50">AKA. The Gever Of The Toar</div>
-                                            </div>
+                                <div className="col-md-4 mb-3 mb-md-0">
+                                    <div className="card py-4 h-100">
+                                        <div className="card-body text-center">
+                                            <a href="https://github.com/ronipolisanov" target="_blank"><h4 className="text-uppercase m-0">Roni Polisanov</h4><br></br>
+                                                <img className="rounded-circle" src="https://avatars3.githubusercontent.com/u/32986144?s=400&u=aba2a7d183a15bd4a2c99c4b9a540c5291e1cffa&v=4" alt="profPic" width="90" height="90" /><br></br></a>
+                                            <hr className="my-4" />
+                                            <div className="small text-black-50">AKA. The Gever Of The Toar</div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div className="col-md-4 mb-3 mb-md-0">
-                                        <div className="card py-4 h-100">
-                                            <div className="card-body text-center">
-                                                <a href="https://github.com/reutleib" target="_blank"><h4 className="text-uppercase m-0">Reut Leib</h4><br></br>
+                                <div className="col-md-4 mb-3 mb-md-0">
+                                    <div className="card py-4 h-100">
+                                        <div className="card-body text-center">
+                                            <a href="https://github.com/reutleib" target="_blank"><h4 className="text-uppercase m-0">Reut Leib</h4><br></br>
                                                 <img className="rounded-circle" src="https://avatars2.githubusercontent.com/u/28447221?s=460&v=4" alt="profPic" width="90" height="90" /><br></br></a>
-                                                <hr className="my-4"/>
-                                                <div className="small text-black-50">AKA. The Tut</div>
-                                            </div>
+                                            <hr className="my-4" />
+                                            <div className="small text-black-50">AKA. The Tut</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    
+                        </div>
+                    </section>
+
                 </div>
                 <div>
                     <footer className="bg-black small text-center text-white-50">
@@ -276,12 +276,12 @@ class Login extends Component {
                         </div>
                     </footer>
                     <footer>
-                        
+
                     </footer>
                 </div>
             </div>
-            )
-        }
+        )
     }
-    
+}
+
 export default Login;
