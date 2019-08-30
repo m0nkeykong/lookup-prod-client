@@ -347,3 +347,11 @@ template {
 [hidden] {
   display: none;
 }
+
+
+.firstDiv {
+  margin: 0 auto !important;
+  border: 2px solid red !important;
+  height: 400px !important;
+  max-width: 90% !important;
+}

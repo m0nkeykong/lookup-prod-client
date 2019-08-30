@@ -182,14 +182,14 @@ class PostNavigation extends Component {
                         />
 
                         <div className="row pt-3">
-                            <div class="col-10" style={{ margin: `20px auto` }}>
+                            <div className="col-10">
                                 <h6>
                                     Have you encountered a report <br />
                                     during the track?
                                 </h6>
-                                <div class="col-12" id="add-report">
-                                    <div class="form-group">
-                                        <div class="col-12 pt-1">
+                                <div className="col-12" id="add-report">
+                                    <div className="form-group">
+                                        <div className="col-12 pt-1">
                                             <textarea
                                                 className="form-control textareaSize"
                                                 placeholder="Tell us!"

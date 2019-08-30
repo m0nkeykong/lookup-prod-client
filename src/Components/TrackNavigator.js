@@ -150,13 +150,13 @@ class Map extends Component {
                                         //while (this.state.UpdatedPosition.lat != leg.steps[leg.steps.length].end_location.lat() && this.state.UpdatedPosition.lng != leg.steps[leg.steps.length].end_location.lng()) {
                                         if (
                                             this.state.UpdatedPosition.lat !==
-                                                leg.steps[
-                                                    leg.steps.length - 1
-                                                ].end_location.lat() &&
+                                            leg.steps[
+                                                leg.steps.length - 1
+                                            ].end_location.lat() &&
                                             this.state.UpdatedPosition.lng !==
-                                                leg.steps[
-                                                    leg.steps.length - 1
-                                                ].end_location.lng()
+                                            leg.steps[
+                                                leg.steps.length - 1
+                                            ].end_location.lng()
                                         ) {
                                             var R = 6378.137 // Radius of earth in KM
                                             var dLat =
@@ -164,39 +164,39 @@ class Map extends Component {
                                                     this.state.currStep
                                                 ].end_location.lat() *
                                                     Math.PI) /
-                                                    180 -
+                                                180 -
                                                 (this.state.UpdatedPosition
                                                     .lat *
                                                     Math.PI) /
-                                                    180
+                                                180
                                             var dLon =
                                                 (leg.steps[
                                                     this.state.currStep
                                                 ].end_location.lng() *
                                                     Math.PI) /
-                                                    180 -
+                                                180 -
                                                 (this.state.UpdatedPosition
                                                     .lng *
                                                     Math.PI) /
-                                                    180
+                                                180
                                             var a =
                                                 Math.sin(dLat / 2) *
-                                                    Math.sin(dLat / 2) +
+                                                Math.sin(dLat / 2) +
                                                 Math.cos(
                                                     (this.state.UpdatedPosition
                                                         .lat *
                                                         Math.PI) /
-                                                        180
+                                                    180
                                                 ) *
-                                                    Math.cos(
-                                                        (leg.steps[
-                                                            this.state.currStep
-                                                        ].end_location.lat() *
-                                                            Math.PI) /
-                                                            180
-                                                    ) *
-                                                    Math.sin(dLon / 2) *
-                                                    Math.sin(dLon / 2)
+                                                Math.cos(
+                                                    (leg.steps[
+                                                        this.state.currStep
+                                                    ].end_location.lat() *
+                                                        Math.PI) /
+                                                    180
+                                                ) *
+                                                Math.sin(dLon / 2) *
+                                                Math.sin(dLon / 2)
                                             var c =
                                                 2 *
                                                 Math.atan2(
@@ -210,41 +210,41 @@ class Map extends Component {
 
                                             console.log(
                                                 'Start lat:' +
-                                                    leg.steps[
-                                                        this.state.currStep
-                                                    ].start_location.lat() +
-                                                    ',' +
-                                                    ' Start lng:' +
-                                                    leg.steps[
-                                                        this.state.currStep
-                                                    ].start_location.lng()
+                                                leg.steps[
+                                                    this.state.currStep
+                                                ].start_location.lat() +
+                                                ',' +
+                                                ' Start lng:' +
+                                                leg.steps[
+                                                    this.state.currStep
+                                                ].start_location.lng()
                                             )
                                             console.log(
                                                 'End lat:' +
-                                                    leg.steps[
-                                                        this.state.currStep
-                                                    ].end_location.lat() +
-                                                    ',' +
-                                                    ' End lng:' +
-                                                    leg.steps[
-                                                        this.state.currStep
-                                                    ].end_location.lng()
+                                                leg.steps[
+                                                    this.state.currStep
+                                                ].end_location.lat() +
+                                                ',' +
+                                                ' End lng:' +
+                                                leg.steps[
+                                                    this.state.currStep
+                                                ].end_location.lng()
                                             )
                                             console.log(
                                                 'Distance: ' +
-                                                    distance +
-                                                    ', Direction: ' +
-                                                    directions
+                                                distance +
+                                                ', Direction: ' +
+                                                directions
                                             )
 
                                             if (
                                                 !this.state.startedNavigation &&
                                                 this.state.UpdatedPosition
                                                     .lat ===
-                                                    leg.steps[0].start_location.lat() &&
+                                                leg.steps[0].start_location.lat() &&
                                                 this.state.UpdatedPosition
                                                     .lng ===
-                                                    leg.steps[0].start_location.lng()
+                                                leg.steps[0].start_location.lng()
                                             ) {
                                                 this.BLE.send(
                                                     'navigation-start,0'
@@ -261,14 +261,14 @@ class Map extends Component {
                                             directions.includes('left')
                                                 ? (directions = 'turn-left')
                                                 : directions.includes('right')
-                                                ? (directions = 'turn-right')
-                                                : directions.includes(
-                                                      'straight'
-                                                  )
-                                                ? (directions =
-                                                      'continue-straight')
-                                                : (directions =
-                                                      'continue-straight')
+                                                    ? (directions = 'turn-right')
+                                                    : directions.includes(
+                                                        'straight'
+                                                    )
+                                                        ? (directions =
+                                                            'continue-straight')
+                                                        : (directions =
+                                                            'continue-straight')
 
                                             // handle only specific meters before the turn - in order to not overload the component
                                             if (
@@ -308,7 +308,7 @@ class Map extends Component {
                                                 if (
                                                     !(
                                                         leg.steps[
-                                                            this.state.currStep
+                                                        this.state.currStep
                                                         ] ==
                                                         leg.steps.length - 1
                                                     )
@@ -395,14 +395,7 @@ class Map extends Component {
     render() {
         // const { loading } = this.state;
         return (
-            <div
-                style={{
-                    margin: '0 auto',
-                    // border: '2px solid red',
-                    height: '400px',
-                    maxWidth: '90%',
-                }}
-            >
+            <div className='firstDiv'>
                 {this.state.loading ? (
                     <div className="load-container">
                         <LoadScript
@@ -443,74 +436,74 @@ class Map extends Component {
 
                                     {this.props.isFromTrackDetails === true
                                         ? this.state.response === null && (
-                                              <DirectionsService
-                                                  options={{
-                                                      avoidFerries: true,
-                                                      avoidHighways: true,
-                                                      avoidTolls: true,
-                                                      waypoints: this.getWayPoints(
-                                                          this.props.track
-                                                              .wayPoints
-                                                      ),
-                                                      travelMode: this.props.track.travelMode.toUpperCase(),
-                                                      origin: this.getStartPoint(
-                                                          this.props.track
-                                                              .startPointObj
-                                                      ),
-                                                      destination: this.getEndPoint(
-                                                          this.props.track
-                                                              .endPointObj
-                                                      ),
-                                                      drivingOptions: {
-                                                          departureTime: new Date(
-                                                              Date.now()
-                                                          ),
-                                                          trafficModel:
-                                                              'bestguess',
-                                                      },
-                                                      optimizeWaypoints: true,
-                                                  }}
-                                                  callback={
-                                                      this.directionsCallback
-                                                  }
-                                              />
-                                          )
+                                            <DirectionsService
+                                                options={{
+                                                    avoidFerries: true,
+                                                    avoidHighways: true,
+                                                    avoidTolls: true,
+                                                    waypoints: this.getWayPoints(
+                                                        this.props.track
+                                                            .wayPoints
+                                                    ),
+                                                    travelMode: this.props.track.travelMode.toUpperCase(),
+                                                    origin: this.getStartPoint(
+                                                        this.props.track
+                                                            .startPointObj
+                                                    ),
+                                                    destination: this.getEndPoint(
+                                                        this.props.track
+                                                            .endPointObj
+                                                    ),
+                                                    drivingOptions: {
+                                                        departureTime: new Date(
+                                                            Date.now()
+                                                        ),
+                                                        trafficModel:
+                                                            'bestguess',
+                                                    },
+                                                    optimizeWaypoints: true,
+                                                }}
+                                                callback={
+                                                    this.directionsCallback
+                                                }
+                                            />
+                                        )
                                         : this.state.response === null && (
-                                              <DirectionsService
-                                                  options={{
-                                                      // transitOptions: TransitOptions,
-                                                      // unitSystem: UnitSystem,
-                                                      // optimizeWaypoints: Boolean,
-                                                      // provideRouteAlternatives: Boolean,
-                                                      avoidFerries: true,
-                                                      avoidHighways: true,
-                                                      avoidTolls: true,
-                                                      waypoints: this.props
-                                                          .track.wayPoints
-                                                          ? this.props.track
-                                                                .wayPoints
-                                                          : null,
-                                                      // travelMode: this.props.track.type.toUpperCase() }}
-                                                      origin: this.props.track
-                                                          .startPoint,
-                                                      destination: this.props
-                                                          .track.endPoint,
-                                                      travelMode: this.props
-                                                          .track.travelMode,
-                                                      drivingOptions: {
-                                                          departureTime: new Date(
-                                                              Date.now()
-                                                          ),
-                                                          trafficModel:
-                                                              'bestguess',
-                                                      },
-                                                      optimizeWaypoints: true,
-                                                  }}
-                                                  callback={
-                                                      this.directionsCallback
-                                                  }
-                                              />
-                                          )}
+                                            <DirectionsService
+                                                options={{
+                                                    // transitOptions: TransitOptions,
+                                                    // unitSystem: UnitSystem,
+                                                    // optimizeWaypoints: Boolean,
+                                                    // provideRouteAlternatives: Boolean,
+                                                    avoidFerries: true,
+                                                    avoidHighways: true,
+                                                    avoidTolls: true,
+                                                    waypoints: this.props
+                                                        .track.wayPoints
+                                                        ? this.props.track
+                                                            .wayPoints
+                                                        : null,
+                                                    // travelMode: this.props.track.type.toUpperCase() }}
+                                                    origin: this.props.track
+                                                        .startPoint,
+                                                    destination: this.props
+                                                        .track.endPoint,
+                                                    travelMode: this.props
+                                                        .track.travelMode,
+                                                    drivingOptions: {
+                                                        departureTime: new Date(
+                                                            Date.now()
+                                                        ),
+                                                        trafficModel:
+                                                            'bestguess',
+                                                    },
+                                                    optimizeWaypoints: true,
+                                                }}
+                                                callback={
+                                                    this.directionsCallback
+                                                }
+                                            />
+                                        )}
 
                                     {this.state.response != null && (
                                         <DirectionsRenderer
@@ -524,11 +517,11 @@ class Map extends Component {
                         </LoadScript>
                     </div>
                 ) : (
-                    <div className="sweet-loading">
-                        {' '}
-                        <BeatLoader color={'#123abc'} />{' '}
-                    </div>
-                )}
+                        <div className="sweet-loading">
+                            {' '}
+                            <BeatLoader color={'#123abc'} />{' '}
+                        </div>
+                    )}
             </div>
         )
     }

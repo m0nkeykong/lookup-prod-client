@@ -177,7 +177,7 @@ class TrackDetails extends Component {
         if (wayPoints.length !== 0) {
             for (let i = 0; i < wayPoints.length; i++) {
                 html.push(
-                    <p style={{ fontSize: '15px' }}> &#9; point number: {i}</p>
+                    <p className='firstP'> &#9; point number: {i}</p>
                 )
                 html.push(<p> &#8227; &#9;latitude: {wayPoints[i].latitude}</p>)
                 html.push(
@@ -274,8 +274,7 @@ class TrackDetails extends Component {
                         onChange={this.updateTrack}
                     >
                         <h1
-                            className="card-title title"
-                            style={{ textAlign: `center`, marginTop: '20px' }}
+                            className="card-title title firstH1"
                         >
                             {track.title}
                         </h1>
@@ -300,9 +299,8 @@ class TrackDetails extends Component {
 
                         <div className="row">
                             <div
-                                className="col-sm-12 col-md-5"
+                                className="col-sm-12 col-md-5 secDiv"
                                 id="logout"
-                                style={{ margin: `20px auto` }}
                             >
                                 <div className="report-tabs">
                                     <ul className="nav nav-tabs" role="tablist">
@@ -325,24 +323,24 @@ class TrackDetails extends Component {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="tab-content">
-                                            <div
-                                                className="tab-pane active"
-                                                id="reports-logout"
-                                            >
-                                                {this.getReports(
-                                                    track.reports,
-                                                    track.userDetails
-                                                )}
+                                            <div className="tab-content">
+                                                <div
+                                                    className="tab-pane active"
+                                                    id="reports-logout"
+                                                >
+                                                    {this.getReports(
+                                                        track.reports,
+                                                        track.userDetails
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
                                 </div>
                             </div>
                         </div>
                     </TamplateComponent>
 
-                    <div style={{ paddingBottom: '20px' }}>
+                    <div ClassName='mapDiv'>
                         <Map
                             track={this.buildTrack(track)}
                             idOfTrack={track._id}
