@@ -1,76 +1,76 @@
 .firstDiv {
-    margin: 0;
+    margin: 0 !important;
 }
 
 
 .secDiv {
-    width: 350px;
-    position: relative;
-    margin: 0 auto;
+    width: 350px !important;
+    position: relative !important;
+    margin: 0 auto !important;
 }
 
 .firstH2 {
-    text-align: center;
+    text-align: center !important;
 }
 
 .firstNavLink {
-    position: absolute; 
-    right: 15px;
+    position: absolute !important; 
+    right: 15px !important;
 }
 
 .firstImage {
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
 }
 
 .thirdDiv {
-    padding-left: 20px;
+    padding-left: 20px !important;
 }
 
 .fourthDiv {
-    margin: 0 auto;
-    text-align: center;
-    width: 350px;
-    height: 175px;
+    margin: 0 auto !important;
+    text-align: center !important;
+    width: 350px !important;
+    height: 175px !important;
 }
 
 .stats {
-    padding-top: 25px;
+    padding-top: 25px !important;
 }
 
 .firstButton {
-    color: white;
-    text-decoration: none;
+    color: white !important;
+    text-decoration: none !important;
 }
 
 .secButton {
-    color: white;
-    text-decoration: none;
+    color: white !important;
+    text-decoration: none !important;
 }
 
 .thirdButton {
-    color: white;
-    text-decoration: none;
+    color: white !important;
+    text-decoration: none !important;
 }
 
 .secStats {
-    padding-top: 25px;
-    display: block;
+    padding-top: 25px !important;
+    display: block !important;
 }
 
 .secNavLink {
-    color: white;
-    text-decoration: none;
+    color: white !important;
+    text-decoration: none !important;
 }
 
 
 .thirdStats {
-    padding-top: 25px;
+    padding-top: 25px !important;
     display: block !important;
 }
 
 .thirdNavLink {
-    color: white;
-    text-decoration: none;
-    padding-bottom: 45px;
+    color: white !important;
+    text-decoration: none !important;
+    padding-bottom: 45px !important;
 }
 

@@ -1,11 +1,11 @@
 .onSubmitClass {
-    padding: 7px;
+    padding: 7px !important;
 }
 
 .firstIMG {
-    height: 52px;width: 52px;border-radius: 50%;display: block; margin: 0 auto; margin-bottom: 5px;
+    height: 52px !important; width: 52px !important; border-radius: 50% !important; display: block !important;  margin: 0 auto !important;  margin-bottom: 5px !important;
 }
 
 .disabledButton {
-    display: block;margin: 0 auto;
+    display: block !important; margin: 0 auto !important;
 }
