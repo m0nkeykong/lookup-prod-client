@@ -350,8 +350,6 @@ template {
 
 
 .firstDiv {
-  margin: 0 auto !important;
-  border: 2px solid red !important;
+  margin: '0 auto' !important;
   height: 400px !important;
-  max-width: 90% !important;
 }
