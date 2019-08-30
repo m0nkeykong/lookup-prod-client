@@ -1,9 +1,9 @@
 .extra{
-    padding: 0 !important
+    padding: 0 !important;
 }
 
 .caseClass {
-    display: inline-block;
+    display: inline-block !important;
 }
 
 .cardGroup {
@@ -16,14 +16,14 @@
 }
 
 .spanClass {
-    float: right;
+    float: right !important;
 }
 
 
 .labelClass {
-    width: 55px;
+    width: 60px !important;
 }
 
 .buttonClass {
-    width: 100%;
+    width: 100% !important;
 }

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Card, Icon, Label, Button } from 'semantic-ui-react'
 import { originURL, getGoogleApiKey } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
-
 import { NavLink } from "react-router-dom";
 import {
   StaticGoogleMap,
@@ -14,6 +13,7 @@ import Menu from './Menu';
 import FavoriteButton from './FavoriteButton';
 import BLE from './BLE';
 import './style/FavoriteList.css';
+
 
 class MyTracks extends Component {
   constructor(props) {
@@ -155,7 +155,7 @@ class MyTracks extends Component {
                 <Card.Meta>
                 <div>
                   { this.getDifficulty(parseInt(track.difficultyLevel.star)) }
-                  <span className='date' style={{ float: 'right'}}>
+                  <span className='date spanClass'>
                       {track.travelMode.toString() === 'WALKING' ? <Icon title='Walking' name='male' color='blue' size='large'/> : <Icon name='bicycle' color='blue' size='large'/>}
                   </span>
                 </div>
@@ -164,11 +164,11 @@ class MyTracks extends Component {
 
                 <Card.Description> 
                   <Label.Group>
-                    <Label style={{ width: '55px'}} size='large' color='teal'>From</Label>
+                      <Label className='labelClass' size='large' color='teal'>From</Label>
                     <Label size='large'> {` ${track.startPoint.street ? track.startPoint.street + ', ' : ''} ${track.startPoint.city ? track.startPoint.city + '' : ''}`} </Label>
                   </Label.Group>
                   <Label.Group>
-                    <Label style={{ width: '55px'}} size='large' color='teal'>To</Label>
+                      <Label className='labelClass' size='large' color='teal'>To</Label>
                     <Label size='large'> {` ${track.endPoint.street ? track.endPoint.street + ', ' : ''} ${track.endPoint.city ? track.endPoint.city + '' : ''}`} </Label>
                   </Label.Group>
                   <Label.Group>
@@ -196,7 +196,7 @@ class MyTracks extends Component {
                 //navigate to TrackDetails via TemplateComponent with the params
                 {{pathname: `${process.env.PUBLIC_URL}/trackDetails`, 
                   idOfTrack: track._id}}>
-                  <Button primary style={{width: '100%'}}>
+                  <Button primary className='buttonClass'>
                   Live Navigation
                   </Button>
                 </NavLink>
