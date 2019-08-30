@@ -8,7 +8,7 @@ import google from './style/Login.css'
 import { Modal, Button, Form, Jumbotron, Container, Image } from 'react-bootstrap';
 import { originURL } from '../globalService';
 import styles from './style/grayscale.css';
-import './style/LoginCSS.css'
+import './style/LoginCSS.css';
 
 class Login extends Component {
     constructor(props) {
