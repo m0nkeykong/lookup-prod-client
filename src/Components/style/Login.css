@@ -104,27 +104,27 @@ ul>li{
 
 
 iframe {
-    height: 100%;
-    width: 100%;
+    height: 100% !important;
+    width: 100% !important;
 }
 
 .firstDiv {
-    display: block;
+    display: block !important;
 }
 
 .firstIMG {
-    height: 34px;
-    width: 34px; 
-    border-radius: 50%; 
-    display: block; 
-    margin: 0 auto;
+    height: 34px !important;
+    width: 34px !important; 
+    border-radius: 50% !important;
+    display: block !important; 
+    margin: 0 auto !important;
 }
 
 .firstH5 {
-    text-align: center;
+    text-align: center !important;
 }
 
 .secondDiv {
-    display: block;
-    margin-top: 25px;
+    display: block !important;
+    margin-top: 25px !important;
 }
