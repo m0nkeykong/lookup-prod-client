@@ -1,0 +1,19 @@
+.mainDiv {
+    position: absolute !important;
+    right: -300px !important;
+}
+
+.secDiv {
+    font-size: 100% !important;
+    line-height: 100% !important;
+}
+
+.disabledIcon {
+    color: orange !important;
+    font-size: 20px !important;
+}
+
+.enabledIcon {
+    color: green !important;
+    font-size: 20px !important;
+}
