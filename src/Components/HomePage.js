@@ -7,6 +7,7 @@ import { Breadcrumb } from 'react-bootstrap'
 import { rank } from '../MISC'
 import { Statistic, List, Icon, Image, Button } from 'semantic-ui-react'
 import BLE from './BLE'
+import './style/HomePage.css'
 
 class HomePage extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class HomePage extends Component {
     render() {
         const userDetails = { ...this.state.userDetails }
         return (
-            <div style={{ margin: '0' }}>
+            <div className='firstDiv'>
                 {/* Page Menu */}
                 <Menu currentPage={'Home'}> </Menu>
 
@@ -53,32 +54,26 @@ class HomePage extends Component {
                 </Breadcrumb>
 
                 {!this.state.isLoading && (
-                    <div
-                        style={{
-                            width: '350px',
-                            position: 'relative',
-                            margin: '0 auto',
-                        }}
-                    >
-                        <h2 style={{ textAlign: 'center' }}>
+                    <div className='secDiv'>
+                        <h2 className='firstH2'>
                             {userDetails.name}
                         </h2>
                         <NavLink
                             to={{
                                 pathname: `${process.env.PUBLIC_URL}/profile`,
                             }}
-                            style={{ position: 'absolute', right: '15px' }}
+                            className='firstNavLink'
                         >
                             <Button circular icon="settings" />
                         </NavLink>
                         <Image
-                            style={{ paddingBottom: '10px' }}
+                            className='firstImage'
                             src={this.state.userDetails.profilePicture}
                             size="tiny"
                             circular
                             centered
                         />
-                        <div style={{ paddingLeft: '20px' }}>
+                        <div className='thirdDiv'>
                             <p>
                                 <strong>
                                     <List.Icon name="users" size="large" />{' '}
@@ -120,18 +115,10 @@ class HomePage extends Component {
                                 {userDetails.birthDay}
                             </p>
                         </div>
-                        <div
-                            style={{
-                                margin: '0 auto',
-                                textAlign: 'center',
-                                width: '350px',
-                                height: '175px',
-                            }}
-                        >
+                        <div className='fourthDiv'>
                             <Statistic
                                 color={'green'}
-                                style={{ paddingTop: '25px' }}
-                            >
+                                className='stats'>
                                 <Statistic.Value>
                                     {userDetails.trackRecords.length}
                                     <Icon name="check" />
@@ -148,10 +135,7 @@ class HomePage extends Component {
                                                 process.env.PUBLIC_URL
                                             }/auto`,
                                         }}
-                                        style={{
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}
+                                        className='secButton'
                                     >
                                         Auto generate
                                     </NavLink>
@@ -164,10 +148,7 @@ class HomePage extends Component {
                                                 process.env.PUBLIC_URL
                                             }/custom`,
                                         }}
-                                        style={{
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}
+                                        className='thirdButton'
                                     >
                                         Custom generate
                                     </NavLink>
@@ -175,7 +156,7 @@ class HomePage extends Component {
                             </Button.Group>
                             <Statistic
                                 color={'red'}
-                                style={{ paddingTop: '25px', display: 'block' }}
+                                className='secStats'
                             >
                                 <Statistic.Value>
                                     {userDetails.favoriteTracks.length}
@@ -193,10 +174,7 @@ class HomePage extends Component {
                                                 process.env.PUBLIC_URL
                                             }/favorites`,
                                         }}
-                                        style={{
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}
+                                        className='secNavLink'
                                     >
                                         Favorite list
                                     </NavLink>
@@ -209,10 +187,7 @@ class HomePage extends Component {
                                                 process.env.PUBLIC_URL
                                             }/mytracks`,
                                         }}
-                                        style={{
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}
+                                        className='firstButton'
                                     >
                                         My tracks
                                     </NavLink>
@@ -220,7 +195,7 @@ class HomePage extends Component {
                             </Button.Group>
                             <Statistic
                                 color={'blue'}
-                                style={{ paddingTop: '25px', display: 'block' }}
+                                className='thirdStats'
                             >
                                 <Statistic.Value>
                                     {userDetails.totalDistance}m
@@ -236,11 +211,7 @@ class HomePage extends Component {
                                             process.env.PUBLIC_URL
                                         }/choose`,
                                     }}
-                                    style={{
-                                        color: 'white',
-                                        textDecoration: 'none',
-                                        paddingBottom: '45px',
-                                    }}
+                                    className='thirdNavLink'
                                 >
                                     Search tracks
                                 </NavLink>

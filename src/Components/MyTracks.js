@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Icon, Label, Button } from 'semantic-ui-react'
 import { originURL, getGoogleApiKey } from '../globalService';
 import { Breadcrumb } from 'react-bootstrap';
-import './style/FavoriteList.css';
+
 import { NavLink } from "react-router-dom";
 import {
   StaticGoogleMap,
@@ -13,6 +13,7 @@ import {
 import Menu from './Menu';
 import FavoriteButton from './FavoriteButton';
 import BLE from './BLE';
+import './style/FavoriteList.css';
 
 class MyTracks extends Component {
   constructor(props) {
@@ -76,27 +77,27 @@ class MyTracks extends Component {
   getDifficulty(difficulty){
     switch(difficulty){
       case 1:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
         break;
 
       case 2:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/></div>)
         break;
 
       case 3:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/><Icon name='star'/></div>)
         break;
 
       case 4:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/></div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon name='star'/></div>)
         break;
 
       case 5:
-        return( <div style={{ display: 'inline-block' }}> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/> </div>)
+        return( <div className='caseClass'> <Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/><Icon color='yellow' name='star'/> </div>)
         break;
 
       default:
-        return( <div style={{ display: 'inline-block' }}> <Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
+        return( <div className='caseClass'> <Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/><Icon name='star'/> </div>)
         break;
     }
   }
@@ -115,12 +116,12 @@ class MyTracks extends Component {
           </BLE>
         </Breadcrumb>
 
-        <Card.Group style={{ marginTop: '15px'}}>
+        <Card.Group className='cardGroup'>
         {!this.state.loading && userDetails.trackRecords.length > 0 && userDetails.trackRecords.map( (track, index) => 
           (
             <React.Fragment key={index}>
             
-            <Card style={{ margin: '0 auto', padding: '5px'}}>
+            <Card className='cardClass'>
               <StaticGoogleMap
                   maptype='roadmap'
                   apiKey={getGoogleApiKey()}

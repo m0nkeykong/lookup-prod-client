@@ -5,8 +5,9 @@ import { Button, Form, Alert, Breadcrumb} from 'react-bootstrap';
 import { originURL } from '../globalService';
 import Menu from './Menu';
 import BLE from './BLE';
-
+import './style/Profile.css';
 const _ = require('lodash');
+
 
 class Profile extends Component {
   constructor(props) {
@@ -116,14 +117,14 @@ class Profile extends Component {
           </BLE>
         </Breadcrumb>
 
-        <Form onSubmit={e => this.handleSubmit(e)} style={{ padding: '7px'}}>
+        <Form onSubmit={e => this.handleSubmit(e)} className='onSubmitClass'>
           <Form.Group controlId="formUserID">
             <Form.Label> User ID </Form.Label>
             <Form.Control disabled type="text" placeholder={this.userid} value={this.userid} name="userId"/>
           </Form.Group>
           <Form.Group controlId="formUserProfilePicture">
             <Form.Label> Profile Picture </Form.Label>
-            <img alt="Profile" src={userDetails.profilePicture} style={{ height: '52px', width: '52px', borderRadius: '50%', display: 'block', margin: '0 auto', marginBottom: '5px'}}></img>
+            <img alt="Profile" src={userDetails.profilePicture} className='firstIMG'></img>
             <Form.Control disabled type="text" placeholder={userDetails.profilePicture} value={userDetails.profilePicture} name="profilePicture"/>
           </Form.Group>
           <Form.Group controlId="formUserCreationDate">
@@ -176,7 +177,7 @@ class Profile extends Component {
               </Button>
             </div>
          </Alert>
-          { !this.state.show && <Button disabled={_.isEqual(this.state.initalUserDetails, this.state.userDetails)} style={{ display: "block", margin: "0 auto" }} variant="primary" type="submit">
+          {!this.state.show && <Button disabled={_.isEqual(this.state.initalUserDetails, this.state.userDetails)} className='disabledButton' variant="primary" type="submit">
               Update Details
           </Button>}
         </Form>
